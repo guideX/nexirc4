@@ -1,0 +1,15 @@
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\bin\Release\net7.0\nexIRC.Model.deps.json
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\bin\Release\net7.0\nexIRC.Model.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\bin\Release\net7.0\nexIRC.Model.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\bin\Release\net7.0\team-nexgen.core.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\bin\Release\net7.0\team-nexgen.core.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.csproj.AssemblyReference.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.AssemblyInfoInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.AssemblyInfo.cs
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.csproj.CoreCompileInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.csproj.CopyComplete
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\refint\nexIRC.Model.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\nexIRC.Model.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Model\obj\Release\net7.0\ref\nexIRC.Model.dll

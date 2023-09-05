@@ -1,0 +1,12 @@
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\bin\Debug\net7.0\nexIRC.IrcProtocol.deps.json
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\bin\Debug\net7.0\nexIRC.IrcProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\bin\Debug\net7.0\nexIRC.IrcProtocol.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.csproj.AssemblyReference.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.GeneratedMSBuildEditorConfig.editorconfig
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.AssemblyInfoInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.AssemblyInfo.cs
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.csproj.CoreCompileInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\refint\nexIRC.IrcProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\nexIRC.IrcProtocol.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.IrcProtocol\obj\Debug\net7.0\ref\nexIRC.IrcProtocol.dll

@@ -1,0 +1,15 @@
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.csproj.AssemblyReference.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.GeneratedMSBuildEditorConfig.editorconfig
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.AssemblyInfoInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.AssemblyInfo.cs
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.csproj.CoreCompileInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\bin\Debug\net7.0\nexIRC.MatrixProtocol.deps.json
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\bin\Debug\net7.0\nexIRC.MatrixProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\bin\Debug\net7.0\nexIRC.MatrixProtocol.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\bin\Debug\net7.0\team-nexgen.core.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\bin\Debug\net7.0\team-nexgen.core.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.csproj.CopyComplete
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\refint\nexIRC.MatrixProtocol.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\nexIRC.MatrixProtocol.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.MatrixProtocol\obj\Debug\net7.0\ref\nexIRC.MatrixProtocol.dll

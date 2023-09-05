@@ -1,0 +1,71 @@
+﻿<Application x:Class="nexIRC.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:nexIRC.Models"
+    StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="MesloLGS">pack://application:,,,/Fonts/#MesloLGS NF</FontFamily>
+
+            <Style TargetType="{x:Type TextBlock}">
+                <Style.Setters>
+                    <Setter Property="FontFamily" Value="{StaticResource MesloLGS}" />
+                </Style.Setters>
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}">
+                <Style.Setters>
+                    <Setter Property="FontFamily" Value="{StaticResource MesloLGS}" />
+                </Style.Setters>
+            </Style>
+
+            <ControlTemplate x:Key="MessagesControlTemplate">
+                <ScrollViewer CanContentScroll="True">
+                    <ItemsPresenter />
+                </ScrollViewer>
+            </ControlTemplate>
+
+            <ItemsPanelTemplate x:Key="MessageItemsTemplate">
+                <VirtualizingStackPanel IsItemsHost="True" />
+            </ItemsPanelTemplate>
+
+            <Style x:Key="ChatViewerStyle" TargetType="ItemsControl">
+                <Setter Property="Template" Value="{StaticResource MessagesControlTemplate}" />
+                <Setter Property="ItemsPanel" Value="{StaticResource MessageItemsTemplate}" />
+            </Style>
+
+            <DataTemplate DataType="{x:Type models:Message}">
+                <Grid IsSharedSizeScope="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Margin="5,0,5,0"
+                        FontWeight="Bold"
+                        Text="{Binding Timestamp, StringFormat=[\{0:HH:mm\}]}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="10,0,10,0"
+                        HorizontalAlignment="Right"
+                        FontWeight="Bold"
+                        Text="{Binding From}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        Text="{Binding Text}"
+                        TextWrapping="Wrap" />
+                </Grid>
+            </DataTemplate>
+
+            <ResourceDictionary.MergedDictionaries>
+                <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <!--  Theme setting  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,456 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC4\\nexIRC4.Client.csproj": {}
+  },
+  "projects": {
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\nexIRC.Business.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\nexIRC.Business.csproj",
+        "projectName": "nexIRC.Business",
+        "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\nexIRC.Business.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj",
+        "projectName": "nexIRC.IrcProtocol",
+        "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\nexIRC.MatrixProtocol.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\nexIRC.MatrixProtocol.csproj",
+        "projectName": "nexIRC.MatrixProtocol",
+        "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\nexIRC.MatrixProtocol.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj",
+        "projectName": "nexIRC.Model",
+        "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Model\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC4\\nexIRC4.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC4\\nexIRC4.Client.csproj",
+        "projectName": "nexIRC4",
+        "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC4\\nexIRC4.Client.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC4\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0-windows7.0": {
+            "targetAlias": "net7.0-windows",
+            "projectReferences": {
+              "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\nexIRC.Business.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.Business\\nexIRC.Business.csproj"
+              },
+              "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj"
+              },
+              "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\nexIRC.MatrixProtocol.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\nexIRC\\nexIRC4\\nexIRC.MatrixProtocol\\nexIRC.MatrixProtocol.csproj"
+              },
+              "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj": {
+                "projectPath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0-windows7.0": {
+          "targetAlias": "net7.0-windows",
+          "dependencies": {
+            "ControlzEx": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "MahApps.Metro": {
+              "target": "Package",
+              "version": "[2.4.4, )"
+            },
+            "MahApps.Metro.IconPacks.BoxIcons": {
+              "target": "Package",
+              "version": "[4.8.0, )"
+            },
+            "Microsoft.AspNetCore.SystemWebAdapters": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Microsoft.CSharp": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "Microsoft.Xaml.Behaviors.Wpf": {
+              "target": "Package",
+              "version": "[1.1.19, )"
+            },
+            "Refractored.MvvmHelpers": {
+              "target": "Package",
+              "version": "[1.6.2, )"
+            },
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "System.Data.DataSetExtensions": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "System.Runtime.CompilerServices.Unsafe": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "System.Windows.Interactivity.WPF": {
+              "target": "Package",
+              "version": "[2.0.20525, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj",
+        "projectName": "team-nexgen.core",
+        "projectPath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj",
+        "packagesPath": "C:\\Users\\leonadmin\\.nuget\\packages\\",
+        "outputPath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\leonadmin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

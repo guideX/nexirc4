@@ -1,0 +1,131 @@
+﻿<mah:MetroWindow x:Class="nexIRC.Views.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:nexIRC.Views"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:props="clr-namespace:nexIRC.Properties"
+    Title="Settings"
+    Width="1101"
+    Height="Auto"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner"
+    WindowStyle="SingleBorderWindow"
+    mc:Ignorable="d" d:DesignHeight="583.181">
+    <StackPanel Margin="20,10,30,10" DataContext="{Binding Source={x:Static props:Settings.Default}}">
+        <TabControl Height="700">
+            <TabItem Header="IRC">
+                <Grid>
+                    <StackPanel>
+                        <Label Margin="0,0,0,10" Content="User Information" FontWeight="Bold" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".5*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label HorizontalAlignment="Right" Content="Nickname:" />
+                            <TextBox x:Name="Nickname" Grid.Column="1" Margin="5,0,0,5" Text="{Binding Nick, Mode=OneTime}" />
+                            <Label Grid.Row="1" HorizontalAlignment="Right" Content="Alternative:" />
+                            <TextBox x:Name="Alternative" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding Alternative, Mode=OneTime}" />
+                            <Label Grid.Row="2" HorizontalAlignment="Right" Content="Name:" />
+                            <TextBox x:Name="RealName" Grid.Row="2" Grid.Column="1" Margin="5,0,0,0" Text="{Binding RealName, Mode=OneTime}" />
+                            <Label Grid.Row="3" HorizontalAlignment="Right" Content="Channel:" />
+                            <TextBox x:Name="DefaultChannel" Grid.Row="3" Grid.Column="1" Margin="5,0,0,0" Text="{Binding DefaultChannel, Mode=OneTime}" />
+                        </Grid>
+                        <Label Margin="0,10,0,10" Content="Visual Experience" FontWeight="Bold" Visibility="Hidden" />
+                        <Grid Visibility="Hidden">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".5*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label HorizontalAlignment="Right" Content="Theme:" />
+                            <ComboBox x:Name="Theme" Grid.Column="1" Margin="5,0,0,5" IsEditable="False" ItemsSource="{Binding Themes, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, Mode=OneTime}" SelectedValue="{Binding Theme, Mode=OneTime}" />
+                        </Grid>
+
+                        <Label Margin="0,10,0,10" Content="Server" FontWeight="Bold" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".5*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label HorizontalAlignment="Right" Content="Server Name:" />
+                            <TextBox x:Name="ServerName" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerName, Mode=OneTime}" />
+
+                            <Label Grid.Row="1" HorizontalAlignment="Right" Content="Address:" />
+                            <TextBox x:Name="ServerAddress" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerAddress, Mode=OneTime}" />
+
+                            <Label Grid.Row="2" HorizontalAlignment="Right" Content="Port:" />
+                            <TextBox x:Name="ServerPort" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerPort, Mode=OneTime}" />
+
+                            <Label Grid.Row="3" HorizontalAlignment="Right" Content="Password:" />
+                            <TextBox x:Name="ServerPassword" Grid.Row="3" Grid.Column="1" Margin="5,0,0,0" Text="{Binding ServerPassword, Mode=OneTime}" />
+                        </Grid>
+
+                        <Button x:Name="ConnectButton" Width="100" Margin="20" Content="Connect" />
+
+                        <DockPanel Margin="0,0,0,10" HorizontalAlignment="Center">
+                            <Button x:Name="OkButton" Width="80" Margin="0,0,20,0" Content="OK" IsDefault="True" />
+                            <Button x:Name="CancelButton" Grid.Column="1" Width="80" Content="Cancel" IsCancel="True" />
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Matrix">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*"/>
+                        <ColumnDefinition Width="1013*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.ColumnSpan="2">
+                        <Label Margin="0,10,0,10" Content="Matrix Settings" FontWeight="Bold" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".5*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Label HorizontalAlignment="Right" Content="Matrix Node Address:" />
+                            <TextBox x:Name="MatrixNodeAddress" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixNodeAddress, Mode=OneTime}" />
+
+                            <Label Grid.Row="1" HorizontalAlignment="Right" Content="Matrix Username:" />
+                            <TextBox x:Name="MatrixUsername" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixUserName, Mode=OneTime}" />
+
+                            <Label Grid.Row="2" HorizontalAlignment="Right" Content="Matrix Password:" />
+                            <TextBox x:Name="MatrixPassword" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixPassword, Mode=OneTime}" />
+
+                            <Label Grid.Row="3" HorizontalAlignment="Right" Content="Matrix MachineID:" />
+                            <TextBox x:Name="MatrixMachineID" Grid.Row="3" Grid.Column="1" Margin="5,0,0,0" Text="{Binding MatrixMachineID, Mode=OneTime}" />
+
+                            <Label Grid.Row="4" HorizontalAlignment="Right" Content="Matrix ChannelID:" />
+                            <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,0,0" Text="{Binding MatrixChannel, Mode=OneTime}" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</mah:MetroWindow>
