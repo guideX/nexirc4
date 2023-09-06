@@ -1,5 +1,0 @@
-D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Olm\obj\Debug\net7.0\nexIRC.Olm.csproj.AssemblyReference.cache
-D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Olm\obj\Debug\net7.0\nexIRC.Olm.GeneratedMSBuildEditorConfig.editorconfig
-D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Olm\obj\Debug\net7.0\nexIRC.Olm.AssemblyInfoInputs.cache
-D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Olm\obj\Debug\net7.0\nexIRC.Olm.AssemblyInfo.cs
-D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Olm\obj\Debug\net7.0\nexIRC.Olm.csproj.CoreCompileInputs.cache

@@ -99,8 +99,6 @@ namespace nexIRC.ViewModels {
                 if (_sendMatrixMessages && !doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
                     var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
                     var isMention = false;
-                    var isRelyTo = false;
-                    var replyingTo = "";
                     var mentioningTo = "";
                     var splt = e.Message.Split(' ');
                     if (e.Message.Contains("<") && e.Message.Contains(">")) {
@@ -125,8 +123,6 @@ namespace nexIRC.ViewModels {
                         } else {
                             msg = username + ": " + e.Message;
                         }
-                        
-                        //"> <@ggguidex:matrix.org> testing\n\nyaya"
                     }
                     _ircClient.SendRaw("PRIVMSG " + Settings.Default.DefaultChannel + " :" + msg);
                 }
