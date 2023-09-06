@@ -152,13 +152,13 @@
       <dsig:DigestValue>+4yjHiiXODDmuvFp7A3z/X6RWsgBeQAzZn9TO8CwrVM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="nexIRC.dll" size="1343488">
+  <file name="nexIRC.dll" size="1346048">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>1ohIeOXXmjI0xgahddqi6/CSLRR6mBQalwAFTPP3Q2o=</dsig:DigestValue>
+      <dsig:DigestValue>UgZD92Fu80mxU1qlbRuUg/AOWQ9qmVdcZkhALHcjQAM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="nexIRC.dll.config" size="2519">
