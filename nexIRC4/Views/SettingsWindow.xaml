@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:props="clr-namespace:nexIRC.Properties"
     Title="Settings"
-    Width="1101"
-    Height="580"
+    Width="847"
+    Height="375"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="Height"
@@ -17,10 +17,10 @@
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d"
     Background="#3A3B3C">
-    <StackPanel Margin="20,10,30,10" DataContext="{Binding Source={x:Static props:Settings.Default}}" Background="#3A3B3C">
-        <TabControl Height="500">
+    <StackPanel Margin="20,10,30,21" DataContext="{Binding Source={x:Static props:Settings.Default}}" Background="#3A3B3C">
+        <TabControl Height="300">
             <TabItem Header="IRC" Background="#3A3B3C" BorderThickness="0" FontFamily="Tahoma" >
-                <Grid Background="#3A3B3C">
+                <Grid Background="#3A3B3C" Height="300">
                     <StackPanel>
                         <Label FontFamily="Tahoma"  Margin="0,0,0,10" Content="User Information" FontWeight="Bold" Foreground="White" />
                         <Grid>
@@ -35,14 +35,15 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Label FontFamily="Tahoma" HorizontalAlignment="Left" Content="Nickname:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox x:Name="Nickname" Grid.Column="1" Margin="5,0,0,5" Text="{Binding Nick, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="Nickname" Grid.Column="1" Margin="5,0,10,5" Text="{Binding Nick, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
                             <Label FontFamily="Tahoma" Grid.Row="1" HorizontalAlignment="Left" Content="Alternative:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontFamily="Tahoma" x:Name="Alternative" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding Alternative, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="Alternative" Grid.Row="1" Grid.Column="1" Margin="5,0,10,5" Text="{Binding Alternative, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
                             <Label FontFamily="Tahoma" Grid.Row="2" HorizontalAlignment="Left" Content="Name:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontFamily="Tahoma" x:Name="RealName" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5" Text="{Binding RealName, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="RealName" Grid.Row="2" Grid.Column="1" Margin="5,0,10,5" Text="{Binding RealName, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
                             <Label FontFamily="Tahoma" Grid.Row="3" HorizontalAlignment="Left" Content="Channel:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontFamily="Tahoma" x:Name="DefaultChannel" Grid.Row="3" Grid.Column="1" Margin="5,0,0,5" Text="{Binding DefaultChannel, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="DefaultChannel" Grid.Row="3" Grid.Column="1" Margin="5,0,10,5" Text="{Binding DefaultChannel, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
                         </Grid>
+                        <!--
                         <Label FontFamily="Tahoma" Margin="0,10,0,10" Content="Visual Experience" FontWeight="Bold" Visibility="Hidden" />
                         <Grid Visibility="Hidden">
                             <Grid.ColumnDefinitions>
@@ -52,6 +53,7 @@
                             <Label HorizontalAlignment="Right" Content="Theme:" FontFamily="Tahoma" />
                             <ComboBox FontFamily="Tahoma" x:Name="Theme" Grid.Column="1" Margin="5,0,0,5" IsEditable="False" ItemsSource="{Binding Themes, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, Mode=OneTime}" SelectedValue="{Binding Theme, Mode=OneTime}" />
                         </Grid>
+                        -->
 
                         <Label Margin="0,10,0,10" Content="Server" FontWeight="Bold" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
                         <Grid>
@@ -67,22 +69,22 @@
                             </Grid.RowDefinitions>
 
                             <Label Content="Server Name:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontFamily="Tahoma"  x:Name="ServerName" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerName, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma"  x:Name="ServerName" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerName, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
 
                             <Label Grid.Row="1" Foreground="White" HorizontalAlignment="Left" Content="Address:" FontFamily="Tahoma" />
-                            <TextBox FontFamily="Tahoma" x:Name="ServerAddress" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerAddress, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="ServerAddress" Grid.Row="1" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerAddress, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
 
                             <Label Grid.Row="2" Content="Port:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontFamily="Tahoma" x:Name="ServerPort" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerPort, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="ServerPort" Grid.Row="2" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerPort, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
 
                             <Label Grid.Row="3" Content="Password:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontFamily="Tahoma" x:Name="ServerPassword" Grid.Row="3" Grid.Column="1" Margin="5,0,0,5" Text="{Binding ServerPassword, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" />
+                            <TextBox FontFamily="Tahoma" x:Name="ServerPassword" Grid.Row="3" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerPassword, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
                         </Grid>
                     </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Matrix" Background="#3A3B3C" BorderThickness="0" FontFamily="Tahoma">
-                <Grid>
+                <Grid Height="300">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32*"/>
                         <ColumnDefinition Width="1013*"/>
@@ -102,19 +104,19 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Label FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix Node Address:" />
-                            <TextBox x:Name="MatrixNodeAddress" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixNodeAddress, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="MatrixNodeAddress" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixNodeAddress, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
 
                             <Label Grid.Row="1" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix Username:" />
-                            <TextBox x:Name="MatrixUsername" Grid.Row="1" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixUserName, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="MatrixUsername" Grid.Row="1" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixUserName, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
 
                             <Label Grid.Row="2" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix Password:" />
-                            <TextBox x:Name="MatrixPassword" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixPassword, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="MatrixPassword" Grid.Row="2" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixPassword, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
 
                             <Label Grid.Row="3" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix MachineID:" />
-                            <TextBox x:Name="MatrixMachineID" Grid.Row="3" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixMachineID, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="MatrixMachineID" Grid.Row="3" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixMachineID, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
 
                             <Label Grid.Row="4" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix ChannelID:" />
-                            <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,0,5" Text="{Binding MatrixChannel, Mode=OneTime}" Background="#000000" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixChannel, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
                         </Grid>
                     </StackPanel>
                 </Grid>

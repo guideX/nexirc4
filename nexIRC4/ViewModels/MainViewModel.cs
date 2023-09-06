@@ -97,15 +97,17 @@ namespace nexIRC.ViewModels {
                     if (splt[0].Contains("[l]")) doubleRelayed = true;
                 }
                 if (_sendMatrixMessages && !doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
-                    var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "").Replace("@", "") + "[m]";
+                    var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
                     var isMention = false;
+                    var isRelyTo = false;
+                    var replyingTo = "";
                     var mentioningTo = "";
                     var splt = e.Message.Split(' ');
                     if (e.Message.Contains("<") && e.Message.Contains(">")) {
                         try {
                             if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
                                 isMention = true;
-                                mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "");
+                                mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
                             }
                         } catch {
                         }
@@ -114,7 +116,17 @@ namespace nexIRC.ViewModels {
                     if (isMention) {
                         msg = username + " to " + mentioningTo + ": " + e.Message;
                     } else {
-                        msg = username + ": " + e.Message;
+                        if (e.Message.Substring(0, 3) == "> <") {
+                            var msg2 = e.Message.Substring(2, e.Message.Length - 2);
+                            var splt2 = msg2.Split(' ');
+                            username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                            var splt3 = msg2.Split("\n\n");
+                            msg = username + ": " + splt3[1];
+                        } else {
+                            msg = username + ": " + e.Message;
+                        }
+                        
+                        //"> <@ggguidex:matrix.org> testing\n\nyaya"
                     }
                     _ircClient.SendRaw("PRIVMSG " + Settings.Default.DefaultChannel + " :" + msg);
                 }

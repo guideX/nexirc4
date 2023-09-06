@@ -47,7 +47,7 @@ namespace nexIRC.Views {
             Settings.Default.Alternative = Alternative.Text;
             Settings.Default.RealName = RealName.Text;
             Settings.Default.DefaultChannel = DefaultChannel.Text;
-            Settings.Default.Theme = Theme.SelectedValue.ToString();
+            //Settings.Default.Theme = 
             Settings.Default.ServerName = ServerName.Text;
             Settings.Default.ServerAddress = ServerAddress.Text;
             Settings.Default.ServerPort = ServerPort.Text;
@@ -58,7 +58,7 @@ namespace nexIRC.Views {
             Settings.Default.MatrixPassword = MatrixPassword.Text;
             Settings.Default.MatrixUserName = MatrixUsername.Text;
             Settings.Default.Save();
-            ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
+            //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
         }
     }
 }
