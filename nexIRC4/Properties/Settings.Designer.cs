@@ -190,5 +190,17 @@ namespace nexIRC.Properties {
                 this["MatrixMachineID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseMultipleNicknames {
+            get {
+                return ((bool)(this["UseMultipleNicknames"]));
+            }
+            set {
+                this["UseMultipleNicknames"] = value;
+            }
+        }
     }
 }

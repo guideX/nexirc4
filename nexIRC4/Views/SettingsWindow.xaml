@@ -118,6 +118,7 @@
                             <Label Grid.Row="4" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix ChannelID:" />
                             <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixChannel, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
                         </Grid>
+                        <CheckBox Name="chkUseMultipleNicknames" Content="Use Multiple Nicknames" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMultipleNicknames}" />
                     </StackPanel>
                 </Grid>
             </TabItem>

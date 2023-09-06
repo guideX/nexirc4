@@ -57,6 +57,7 @@ namespace nexIRC.Views {
             Settings.Default.MatrixNodeAddress = MatrixNodeAddress.Text;
             Settings.Default.MatrixPassword = MatrixPassword.Text;
             Settings.Default.MatrixUserName = MatrixUsername.Text;
+            Settings.Default.UseMultipleNicknames = chkUseMultipleNicknames.IsChecked.Value;
             Settings.Default.Save();
             //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
         }

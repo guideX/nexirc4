@@ -75,7 +75,11 @@ namespace nexIRC.ViewModels {
             _matrixDelay.Interval = new TimeSpan(0, 0, 10);
             _matrixDelay.Start();
         }
-
+        /// <summary>
+        /// Matrix Delay Before Linking
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _matrixDelay_Tick(object sender, EventArgs e) {
             _matrixDelayValue++;
             if (_matrixDelayValue == 3) {
@@ -83,51 +87,51 @@ namespace nexIRC.ViewModels {
                 _sendMatrixMessages = true;
             }
         }
-
         /// <summary>
         /// Matrix Client Matrix Room Event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
-            var doubleRelayed = false;
-            if (e.EventType == MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message) {
-                if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
-                    var splt = e.Message.Split(' ');
-                    if (splt[0].Contains("[l]")) doubleRelayed = true;
-                }
-                if (_sendMatrixMessages && !doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
-                    var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                    var isMention = false;
-                    var mentioningTo = "";
-                    var splt = e.Message.Split(' ');
-                    if (e.Message.Contains("<") && e.Message.Contains(">")) {
-                        try {
-                            if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
-                                isMention = true;
-                                mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
+            switch (e.EventType) {
+                case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
+                    var doubleRelayed = false;
+                    if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
+                        var splt = e.Message.Split(' ');
+                        if (splt[0].Contains("[l]")) doubleRelayed = true;
+                    }
+                    if (_sendMatrixMessages && !doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
+                        var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                        var isMention = false;
+                        var mentioningTo = "";
+                        var splt = e.Message.Split(' ');
+                        if (e.Message.Contains("<") && e.Message.Contains(">")) {
+                            try {
+                                if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
+                                    isMention = true;
+                                    mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
+                                }
+                            } catch {
                             }
-                        } catch {
                         }
-                    }
-                    var msg = "";
-                    if (isMention) {
-                        msg = username + " to " + mentioningTo + ": " + e.Message;
-                    } else {
-                        if (e.Message.Substring(0, 3) == "> <") {
-                            var msg2 = e.Message.Substring(2, e.Message.Length - 2);
-                            var splt2 = msg2.Split(' ');
-                            username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                            var splt3 = msg2.Split("\n\n");
-                            msg = username + ": " + splt3[1];
+                        var msg = "";
+                        if (isMention) {
+                            msg = username + " to " + mentioningTo + ": " + e.Message;
                         } else {
-                            msg = username + ": " + e.Message;
+                            if (e.Message.Substring(0, 3) == "> <") {
+                                var msg2 = e.Message.Substring(2, e.Message.Length - 2);
+                                var splt2 = msg2.Split(' ');
+                                username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                                var splt3 = msg2.Split("\n\n");
+                                msg = username + ": " + splt3[1];
+                            } else {
+                                msg = username + ": " + e.Message;
+                            }
                         }
+                        _ircClient.SendRaw("PRIVMSG " + Settings.Default.DefaultChannel + " :" + msg);
                     }
-                    _ircClient.SendRaw("PRIVMSG " + Settings.Default.DefaultChannel + " :" + msg);
-                }
+                    break;
             }
-
         }
         /// <summary>
         /// Handle Async
@@ -140,7 +144,7 @@ namespace nexIRC.ViewModels {
                 MessageBox.Show("Client is already connected.");
                 return;
             }
-            var serverTab = new ServerViewModel(_ircClient, _matrixClient);
+            var serverTab = new ServerViewModel(_ircClient, _matrixClient, this);
             Tabs.Add(serverTab);
             SelectedTab = serverTab;
             await _ircClient.ConnectAsync();
@@ -209,6 +213,9 @@ namespace nexIRC.ViewModels {
         /// <returns></returns>
         private TabItemViewModel FindQueryTab(User user) {
             return Tabs.OfType<QueryViewModel>().FirstOrDefault(q => q.Query.User == user);
+        }
+        public TabItemViewModel FindChannelTab(string channel) {
+            return Tabs.OfType<ChannelViewModel>().FirstOrDefault(q => q.Channel.Name == channel);
         }
     }
 }

@@ -76,23 +76,13 @@ namespace nexIRC.ViewModels {
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             foreach (ChannelMessage message in e.NewItems) {
                 App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
-                /*
-                var isDoubleRelay = false;
-                if (message.Text.Contains(" ")) {
-                    var splt = message.Text.Split(' ');
-                    if (splt[0].Contains("[m]")) {
-                        isDoubleRelay = true;
-                    }
-                }
-                if (!isDoubleRelay) {
-                    if (!message.Text.Contains("[m]")) {
-                        _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + "[l]: " + message.Text);
-                    }
-                }
-                */
                 _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + "[l]: " + message.Text);
             }
         }
+        /// <summary>
+        /// To String
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() => Channel.Name;
     }
 }

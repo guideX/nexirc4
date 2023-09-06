@@ -4,6 +4,11 @@ using nexIRC.Business.Business;
 using nexIRC.Properties;
 using System.Threading.Tasks;
 using nexIRC.MatrixProtocol.Wrapper;
+using System.Linq;
+using System.Threading.Channels;
+using nexIRC.Models;
+using System;
+
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Server View Model
@@ -18,11 +23,17 @@ namespace nexIRC.ViewModels {
         /// </summary>
         private MatrixWrapper _matrixClient;
         /// <summary>
+        /// Main View Model
+        /// </summary>
+        private MainViewModel _mainViewModel;
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
         /// <param name="matrixClient"></param>
-        public ServerViewModel(Client client, MatrixWrapper matrixClient) {
+        public ServerViewModel(Client client, MatrixWrapper matrixClient, MainViewModel mainViewModel) {
+            var chan = client.Channels.Where(c => c.Name == Properties.Settings.Default.DefaultChannel);
+            _mainViewModel = mainViewModel;
             _ircClient = client;
             _matrixClient = matrixClient;
             _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
@@ -36,7 +47,7 @@ namespace nexIRC.ViewModels {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _matrixClient_MatrixConnected(object sender, System.EventArgs e) {
-            ShowText("Matrix Connected");
+            ShowText("Connected to: '" + Settings.Default.MatrixNodeAddress + "'");
         }
         /// <summary>
         /// Matrix Room Event
@@ -46,14 +57,48 @@ namespace nexIRC.ViewModels {
         /// <exception cref="System.NotImplementedException"></exception>
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
-                case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
-                    ShowText("[" + e.RoomId + e.SenderUserId + "] " + e.Message);
-                    break;
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                    ShowText("[" + e.RoomId + e.SenderUserId + "] " + e.Message);
-                    break;
-                case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Create:
-                    //ShowText(e.RoomId + " was created by " + e.SenderUserId + );
+                    var doubleRelayed = false;
+                    if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
+                        var splt = e.Message.Split(' ');
+                        if (splt[0].Contains("[l]")) doubleRelayed = true;
+                    }
+                    if (!doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
+                        var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                        var isMention = false;
+                        var mentioningTo = "";
+                        var splt = e.Message.Split(' ');
+                        if (e.Message.Contains("<") && e.Message.Contains(">")) {
+                            try {
+                                if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
+                                    isMention = true;
+                                    mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
+                                }
+                            } catch {
+                            }
+                        }
+                        var msg = "";
+                        if (isMention) {
+                            msg = username + " to " + mentioningTo + ": " + e.Message;
+                        } else {
+                            if (e.Message.Substring(0, 3) == "> <") {
+                                var msg2 = e.Message.Substring(2, e.Message.Length - 2);
+                                var splt2 = msg2.Split(' ');
+                                username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                                var splt3 = msg2.Split("\n\n");
+                                msg = username + ": " + splt3[1];
+                            } else {
+                                msg = username + ": " + e.Message;
+                            }
+                        }
+                        var tab = _mainViewModel.FindChannelTab(Settings.Default.DefaultChannel);
+                        if (tab != null) {
+                            var user = new User(Settings.Default.Nick);
+                            var channel = new nexIRC.IrcProtocol.Channel(Settings.Default.DefaultChannel);
+                            var channelMessage = new ChannelMessage(user, channel, msg);
+                            App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(channelMessage)));
+                        }
+                    }
                     break;
             }
         }
@@ -97,13 +142,6 @@ namespace nexIRC.ViewModels {
                         break;
                     case Business.Enum.OutputEventEnum.ConnectMatrix:
                         _matrixClient?.Login();
-                        /*
-                        tb.ConnectMatrix?.Invoke(this, new MatrixRoomEventArgs() {
-                            RoomId = roomId,
-                            SenderUserId = senderUserId,
-                            Message = message
-                        });
-                        */
                         break;
                     case Business.Enum.OutputEventEnum.AutoJoinMatrix:
                         _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
@@ -140,6 +178,13 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="message"></param>
         public void ShowText(ServerMessage message) {
+            App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
+        }
+        /// <summary>
+        /// Show Text
+        /// </summary>
+        /// <param name="message"></param>
+        public void ShowTextInChannel(ChannelMessage message) {
             App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
         }
     }
