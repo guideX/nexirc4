@@ -56,61 +56,15 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                    var message = MessageHelper.GetMessageDetails(Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, e);
-                    if (!message.DoubleRelayDetected && message.SendMessage) {
-                        var tab = _mainViewModel.FindChannelTab(message.IrcChannel);
+                    if (!e.Details.DoubleRelayDetected && e.Details.SendMessage) {
+                        var tab = _mainViewModel.FindChannelTab(e.Details.IrcChannel);
                         if (tab != null)
                             App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
-                                new User(message.SenderUserID),
-                                new nexIRC.IrcProtocol.Channel(message.IrcChannel),
-                                message.Message
+                                new User(e.Details.SenderUserID),
+                                new nexIRC.IrcProtocol.Channel(e.Details.IrcChannel),
+                                e.Details.Message
                             ))));
                     }
-                    /*
-                    var doubleRelayed = false;
-                    if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
-                        var splt = e.Message.Split(' ');
-                        if (splt[0].Contains("[l]")) doubleRelayed = true;
-                    }
-                    if (!doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
-                        var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                        var isMention = false;
-                        var mentioningTo = "";
-                        var splt = e.Message.Split(' ');
-                        if (e.Message.Contains("<") && e.Message.Contains(">")) {
-                            try {
-                                if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
-                                    isMention = true;
-                                    mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
-                                }
-                            } catch {
-                            }
-                        }
-                        var msg = "";
-                        if (isMention) {
-                            msg = username + " to " + mentioningTo + ": " + e.Message;
-                        } else {
-                            if (e.Message.Substring(0, 3) == "> <") {
-                                var senderUserID = e.SenderUserId.Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                                var msg2 = e.Message.Substring(2, e.Message.Length - 2);
-                                var splt2 = msg2.Split(' ');
-                                username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                                var splt3 = msg2.Split("\n\n");
-                                msg = senderUserID + ": " + username + ": " + splt3[1];
-                            } else {
-                                msg = username + ": " + e.Message;
-                            }
-                        }
-                        var tab = _mainViewModel.FindChannelTab(Settings.Default.DefaultChannel);
-                        if (tab != null) {
-                            App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
-                                new User(Settings.Default.Nick),
-                                new nexIRC.IrcProtocol.Channel(Settings.Default.DefaultChannel),
-                                msg
-                            ))));
-                        }
-                    }
-                    */
                     break;
             }
         }

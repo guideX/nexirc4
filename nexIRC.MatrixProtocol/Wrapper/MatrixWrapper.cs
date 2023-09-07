@@ -69,7 +69,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="deviceID"></param>
-        public MatrixWrapper(string matrixNodeAddress, string userName, string password, string deviceID, string currentChannelID) {
+        public MatrixWrapper(string matrixNodeAddress, string userName, string password, string deviceID, string currentChannelID, string ircChannel) {
             _currentChannelID = currentChannelID;
             _matrixClientFactory = new MatrixClientFactory();
             _matrixNodeAddress = matrixNodeAddress;
@@ -81,12 +81,14 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                 foreach (BaseRoomEvent roomEvent in eventArgs.MatrixRoomEvents) {
                     if (roomEvent is TextMessageEvent) {
                         (string roomId, string senderUserId, string message) = (TextMessageEvent)roomEvent;
-                        MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() {
-                            RoomId = roomId,
-                            SenderUserId = senderUserId,
-                            Message = message,
-                            EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Message
-                        });
+                        MatrixRoomEvent?.Invoke(this,
+                            new MatrixRoomEventArgs() {
+                                RoomId = roomId,
+                                SenderUserId = senderUserId,
+                                Message = message,
+                                EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Message,
+                                Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId)
+                            });
                     } else if (roomEvent is CreateRoomEvent) {
                         (string RoomId, string SenderUserId, string RoomCreatorUserId) = (CreateRoomEvent)roomEvent;
                         MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() {

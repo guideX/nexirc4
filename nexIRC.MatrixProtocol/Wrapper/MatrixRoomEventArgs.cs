@@ -8,6 +8,10 @@
         /// </summary>
         public nexIRC.MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType? EventType { get; set; }
         /// <summary>
+        /// Details
+        /// </summary>
+        public MessageHelperModel? Details { get; set; }
+        /// <summary>
         /// RoomId
         /// </summary>
         public string? RoomId { get; set; }

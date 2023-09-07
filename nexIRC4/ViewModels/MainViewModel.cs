@@ -65,7 +65,7 @@ namespace nexIRC.ViewModels {
             ShowSettingsWindow = new Command(showSettingsAction);
             ShowAboutWindow = new Command(showAboutAction);
             App.EventAggregator.SubscribeOnPublishedThread(this);
-            _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel);
+            _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel);
             _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
             _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
             _ircClient = App.CreateClient();
@@ -106,9 +106,9 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                    var message = MessageHelper.GetMessageDetails(Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, e);
-                    if (!message.DoubleRelayDetected && message.SendMessage) {
-                        _ircClient.SendRaw("PRIVMSG " + message.IrcChannel + " :" + message.Message);
+                    //var message = MessageHelper.GetMessageDetails(e.RoomId, Settings.Default.MatrixMachineID, Settings.Default.DefaultChannel, e.Message, e.SenderUserId);
+                    if (!e.Details.DoubleRelayDetected && e.Details.SendMessage) {
+                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
                     }
                     break;
             }
