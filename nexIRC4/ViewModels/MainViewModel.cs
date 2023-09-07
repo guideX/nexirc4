@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 namespace nexIRC.ViewModels {
     /// <summary>
@@ -64,9 +65,10 @@ namespace nexIRC.ViewModels {
             ShowSettingsWindow = new Command(showSettingsAction);
             ShowAboutWindow = new Command(showAboutAction);
             App.EventAggregator.SubscribeOnPublishedThread(this);
-            _ircClient = App.CreateClient();
             _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel);
             _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
+            _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
+            _ircClient = App.CreateClient();
             _ircClient.RegistrationCompleted += Client_RegistrationCompleted;
             _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
             _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
@@ -74,6 +76,15 @@ namespace nexIRC.ViewModels {
             _matrixDelay.Tick += _matrixDelay_Tick;
             _matrixDelay.Interval = new TimeSpan(0, 0, 10);
             _matrixDelay.Start();
+        }
+        /// <summary>
+        /// Matrix Connection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void _matrixClient_MatrixConnected(object sender, EventArgs e) {
+            _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
         }
         /// <summary>
         /// Matrix Delay Before Linking
@@ -95,40 +106,9 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                    var doubleRelayed = false;
-                    if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
-                        var splt = e.Message.Split(' ');
-                        if (splt[0].Contains("[l]")) doubleRelayed = true;
-                    }
-                    if (_sendMatrixMessages && !doubleRelayed && e.RoomId == Settings.Default.MatrixChannel) {
-                        var username = e.SenderUserId.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                        var isMention = false;
-                        var mentioningTo = "";
-                        var splt = e.Message.Split(' ');
-                        if (e.Message.Contains("<") && e.Message.Contains(">")) {
-                            try {
-                                if (splt[1] == ">" && splt[2].StartsWith("<") && splt[2].Contains(">")) {
-                                    isMention = true;
-                                    mentioningTo = splt[2].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
-                                }
-                            } catch {
-                            }
-                        }
-                        var msg = "";
-                        if (isMention) {
-                            msg = username + " to " + mentioningTo + ": " + e.Message;
-                        } else {
-                            if (e.Message.Substring(0, 3) == "> <") {
-                                var msg2 = e.Message.Substring(2, e.Message.Length - 2);
-                                var splt2 = msg2.Split(' ');
-                                username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
-                                var splt3 = msg2.Split("\n\n");
-                                msg = username + ": " + splt3[1];
-                            } else {
-                                msg = username + ": " + e.Message;
-                            }
-                        }
-                        _ircClient.SendRaw("PRIVMSG " + Settings.Default.DefaultChannel + " :" + msg);
+                    var message = MessageHelper.GetMessageDetails(Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, e);
+                    if (!message.DoubleRelayDetected && message.SendMessage) {
+                        _ircClient.SendRaw("PRIVMSG " + message.IrcChannel + " :" + message.Message);
                     }
                     break;
             }
@@ -180,9 +160,7 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private async void Client_RegistrationCompleted(object sender, EventArgs e) {
             var channel = Settings.Default.DefaultChannel;
-            if (string.IsNullOrWhiteSpace(channel)) {
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(channel)) return;
             await App.Client.SendAsync(new JoinMessage(channel));
             _matrixClient.Login();
         }
@@ -192,9 +170,8 @@ namespace nexIRC.ViewModels {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Queries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-            foreach (Query query in e.NewItems) {
+            foreach (Query query in e.NewItems)
                 App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query)));
-            }
         }
         /// <summary>
         /// Channels Collection Changed
@@ -202,9 +179,8 @@ namespace nexIRC.ViewModels {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Channels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-            foreach (Channel channel in e.NewItems) {
+            foreach (Channel channel in e.NewItems)
                 App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient)));
-            }
         }
         /// <summary>
         /// Fnd Query Tab
@@ -213,7 +189,13 @@ namespace nexIRC.ViewModels {
         /// <returns></returns>
         private TabItemViewModel FindQueryTab(User user) {
             return Tabs.OfType<QueryViewModel>().FirstOrDefault(q => q.Query.User == user);
+        
         }
+        /// <summary>
+        /// Find Channel Tab
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         public TabItemViewModel FindChannelTab(string channel) {
             return Tabs.OfType<ChannelViewModel>().FirstOrDefault(q => q.Channel.Name == channel);
         }

@@ -1,13 +1,11 @@
-﻿using MvvmHelpers.Commands;
+﻿using System.Threading.Tasks;
+using System.Linq;
+using MvvmHelpers.Commands;
 using nexIRC.IrcProtocol;
 using nexIRC.Business.Business;
 using nexIRC.Properties;
-using System.Threading.Tasks;
 using nexIRC.MatrixProtocol.Wrapper;
-using System.Linq;
-using System.Threading.Channels;
-using nexIRC.Models;
-using System;
+using System.Windows.Interop;
 
 namespace nexIRC.ViewModels {
     /// <summary>
@@ -58,6 +56,17 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
+                    var message = MessageHelper.GetMessageDetails(Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, e);
+                    if (!message.DoubleRelayDetected && message.SendMessage) {
+                        var tab = _mainViewModel.FindChannelTab(message.IrcChannel);
+                        if (tab != null)
+                            App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
+                                new User(message.SenderUserID),
+                                new nexIRC.IrcProtocol.Channel(message.IrcChannel),
+                                message.Message
+                            ))));
+                    }
+                    /*
                     var doubleRelayed = false;
                     if (e.Message.Contains("[l]") && e.Message.Contains(" ")) {
                         var splt = e.Message.Split(' ');
@@ -82,23 +91,26 @@ namespace nexIRC.ViewModels {
                             msg = username + " to " + mentioningTo + ": " + e.Message;
                         } else {
                             if (e.Message.Substring(0, 3) == "> <") {
+                                var senderUserID = e.SenderUserId.Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
                                 var msg2 = e.Message.Substring(2, e.Message.Length - 2);
                                 var splt2 = msg2.Split(' ');
                                 username = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
                                 var splt3 = msg2.Split("\n\n");
-                                msg = username + ": " + splt3[1];
+                                msg = senderUserID + ": " + username + ": " + splt3[1];
                             } else {
                                 msg = username + ": " + e.Message;
                             }
                         }
                         var tab = _mainViewModel.FindChannelTab(Settings.Default.DefaultChannel);
                         if (tab != null) {
-                            var user = new User(Settings.Default.Nick);
-                            var channel = new nexIRC.IrcProtocol.Channel(Settings.Default.DefaultChannel);
-                            var channelMessage = new ChannelMessage(user, channel, msg);
-                            App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(channelMessage)));
+                            App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
+                                new User(Settings.Default.Nick),
+                                new nexIRC.IrcProtocol.Channel(Settings.Default.DefaultChannel),
+                                msg
+                            ))));
                         }
                     }
+                    */
                     break;
             }
         }

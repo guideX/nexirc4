@@ -1,23 +1,17 @@
-﻿using System;
-
-namespace nexIRC.IrcProtocol.Connection
-{
+﻿namespace nexIRC.IrcProtocol.Connection {
     /// <summary>
-    /// Provides the data received from a connection
+    /// Data Received Event Args
     /// </summary>
-    public class DataReceivedEventArgs : EventArgs
-    {
+    public class DataReceivedEventArgs : EventArgs {
         /// <summary>
-        /// Data received from the connection
+        /// Data
         /// </summary>
         public string Data { get; }
-
         /// <summary>
-        /// Initializes a new instance of NetIRC.Connection.DataReceivedEventArgs
+        /// Constructor
         /// </summary>
-        /// <param name="data">Data received from the connection</param>
-        public DataReceivedEventArgs(string data)
-        {
+        /// <param name="data"></param>
+        public DataReceivedEventArgs(string data) {
             Data = data;
         }
     }

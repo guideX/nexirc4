@@ -2,23 +2,24 @@
 using nexIRC.IrcProtocol.Connection;
 using nexIRC.IrcProtocol.Ctcp;
 using nexIRC.IrcProtocol.Messages;
-using System;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-
-namespace nexIRC.IrcProtocol
-{
+namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// The NetIRC IRC client
+    /// Client
     /// </summary>
-    public class Client : IDisposable
-    {
+    public class Client : IDisposable {
+        /// <summary>
+        /// Connection
+        /// </summary>
         private readonly IConnection connection;
-
+        /// <summary>
+        /// Password
+        /// </summary>
         private readonly string password;
-
-        private readonly MessageHandlerContainer messageHandlerContainer;
+        /// <summary>
+        /// Message Handler Container
+        /// </summary>
+        private readonly MessageHandlerContainer _messageHandlerContainer;
 
         /// <summary>
         /// Enables a custom dispatcher to be used if necessary. For example, WPF Dispatcher, to make sure collections are manipulated in the UI thread
@@ -67,8 +68,7 @@ namespace nexIRC.IrcProtocol
         /// It happens when the server sends a 001 (Welcome) reply to a user upon successful registration
         /// </summary>
         public event EventHandler RegistrationCompleted;
-        internal void OnRegistrationCompleted()
-        {
+        internal void OnRegistrationCompleted() {
             RegistrationCompleted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -76,8 +76,7 @@ namespace nexIRC.IrcProtocol
         /// Indicates that we received a CTCP message (Client-To-Client-Protocol)
         /// </summary>
         public event CtcpHandler CtcpReceived;
-        internal void OnCtcpReceived(CtcpEventArgs ctcp)
-        {
+        internal void OnCtcpReceived(CtcpEventArgs ctcp) {
             CtcpReceived?.Invoke(this, ctcp);
 
             CtcpCommands.HandleCtcp(this, ctcp);
@@ -95,14 +94,13 @@ namespace nexIRC.IrcProtocol
         /// </summary>
         /// <param name="user">User who wishes to connect to the server</param>
         /// <param name="connection">IConnection implementation</param>
-        public Client(User user, IConnection connection)
-        {
+        public Client(User user, IConnection connection) {
             User = user;
             this.connection = connection;
 
             DispatcherInvoker = a => a.Invoke();
 
-            messageHandlerContainer = new MessageHandlerContainer(this);
+            _messageHandlerContainer = new MessageHandlerContainer(this);
 
             this.connection.DataReceived += Connection_DataReceived;
         }
@@ -114,15 +112,12 @@ namespace nexIRC.IrcProtocol
         /// <param name="password">Password to use when connecting to the server</param>
         /// <param name="connection">IConnection implementation</param>
         public Client(User user, string password, IConnection connection)
-            : this(user, connection)
-        {
+            : this(user, connection) {
             this.password = password;
         }
 
-        private async void Connection_DataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(e.Data))
-            {
+        private async void Connection_DataReceived(object sender, DataReceivedEventArgs e) {
+            if (string.IsNullOrWhiteSpace(e.Data)) {
                 return;
             }
 
@@ -136,7 +131,7 @@ namespace nexIRC.IrcProtocol
 
             IRCMessageParsed?.Invoke(this, parsedIRCMessage);
 
-            await messageHandlerContainer.HandleAsync(parsedIRCMessage)
+            await _messageHandlerContainer.HandleAsync(parsedIRCMessage)
                 .ConfigureAwait(false);
         }
 
@@ -146,13 +141,11 @@ namespace nexIRC.IrcProtocol
         /// <param name="host">IRC server address</param>
         /// <param name="port">Port number</param>
         /// <returns>The task object representing the asynchronous operation</returns>
-        public async Task ConnectAsync()
-        {
+        public async Task ConnectAsync() {
             await connection.ConnectAsync()
                 .ConfigureAwait(false);
 
-            if (!string.IsNullOrWhiteSpace(password))
-            {
+            if (!string.IsNullOrWhiteSpace(password)) {
                 await SendAsync(new PassMessage(password))
                     .ConfigureAwait(false);
             }
@@ -167,8 +160,7 @@ namespace nexIRC.IrcProtocol
         /// </summary>
         /// <param name="rawData">The raw data to be sent</param>
         /// <returns>The task object representing the asynchronous operation</returns>
-        public Task SendRaw(string rawData)
-        {
+        public Task SendRaw(string rawData) {
             return connection.SendAsync(rawData);
         }
 
@@ -177,16 +169,14 @@ namespace nexIRC.IrcProtocol
         /// </summary>
         /// <param name="message">An implementation of IClientMessage. Check NetIRC.Messages namespace</param>
         /// <returns>The task object representing the asynchronous operation</returns>
-        public Task SendAsync(IClientMessage message)
-        {
+        public Task SendAsync(IClientMessage message) {
             return connection.SendAsync(message.ToString());
         }
 
         /// <summary>
         /// Disposes the connection
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             connection.Dispose();
         }
 
@@ -195,18 +185,16 @@ namespace nexIRC.IrcProtocol
         /// </summary>
         /// <typeparam name="TCustomMessageHandler">The type of the custom message handler to add.</typeparam>
         public void RegisterCustomMessageHandler<TCustomMessageHandler>()
-            where TCustomMessageHandler : ICustomHandler
-        {
-            messageHandlerContainer.RegisterCustomMessageHandler(typeof(TCustomMessageHandler));
+            where TCustomMessageHandler : ICustomHandler {
+            _messageHandlerContainer.RegisterCustomMessageHandler(typeof(TCustomMessageHandler));
         }
 
         /// <summary>
         /// Adds all custom message handlers present in a specific assembly
         /// </summary>
         /// <param name="assembly">The assembly containing custom message handlers to add.</param>
-        public void RegisterCustomMessageHandlers(Assembly assembly)
-        {
-            messageHandlerContainer.RegisterCustomMessageHandlers(assembly);
+        public void RegisterCustomMessageHandlers(Assembly assembly) {
+            _messageHandlerContainer.RegisterCustomMessageHandlers(assembly);
         }
 
         /// <summary>
@@ -214,28 +202,23 @@ namespace nexIRC.IrcProtocol
         /// For WPF you can pass Application.Dispatcher.Invoke
         /// </summary>
         /// <param name="dispatcherInvoke"></param>
-        public void SetDispatcherInvoker(Action<Action> dispatcherInvoke)
-        {
+        public void SetDispatcherInvoker(Action<Action> dispatcherInvoke) {
             _ = dispatcherInvoke ?? throw new ArgumentNullException(nameof(dispatcherInvoke));
 
             DispatcherInvoker = dispatcherInvoke;
         }
 
-        private Task HandleServerMessages(ParsedIRCMessage parsedIRCMessage)
-        {
-            if (parsedIRCMessage.IsNumeric)
-            {
+        private Task HandleServerMessages(ParsedIRCMessage parsedIRCMessage) {
+            if (parsedIRCMessage.IsNumeric) {
                 return HandleNumericReply(parsedIRCMessage);
             }
 
             return Task.CompletedTask;
         }
 
-        private Task HandleNumericReply(ParsedIRCMessage parsedIRCMessage)
-        {
+        private Task HandleNumericReply(ParsedIRCMessage parsedIRCMessage) {
             string text = string.Empty;
-            switch (parsedIRCMessage.NumericReply)
-            {
+            switch (parsedIRCMessage.NumericReply) {
                 case IRCNumericReply.RPL_MYINFO:
                 case IRCNumericReply.RPL_ISUPPORT:
                     text = string.Join(" ", parsedIRCMessage.Parameters.Skip(1));
@@ -253,8 +236,7 @@ namespace nexIRC.IrcProtocol
                     break;
             }
 
-            if (!string.IsNullOrEmpty(text))
-            {
+            if (!string.IsNullOrEmpty(text)) {
                 DispatcherInvoker.Invoke(() => ServerMessages.Add(new ServerMessage(text)));
             }
 

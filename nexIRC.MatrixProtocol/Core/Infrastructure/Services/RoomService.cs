@@ -1,23 +1,16 @@
-﻿namespace nexIRC.MatrixProtocol.Core.Infrastructure.Services
-{
-    using System;
+﻿namespace nexIRC.MatrixProtocol.Core.Infrastructure.Services {
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using Dto.Room.Create;
     using Dto.Room.Join;
     using Dto.Room.Joined;
-    using Extensions;
-
-    public class RoomService : BaseApiService
-    {
-        public RoomService(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
-        {
+    public class RoomService : BaseApiService {
+        public RoomService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) {
         }
 
         public async Task<CreateRoomResponse> CreateRoomAsync(string accessToken, string[]? members,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             var model = new CreateRoomRequest
             (
                 Invite: members,
@@ -33,8 +26,7 @@
         }
 
         public async Task<JoinRoomResponse> JoinRoomAsync(string accessToken, string roomId,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             HttpClient httpClient = CreateHttpClient(accessToken);
 
             var path = $"{ResourcePath}/rooms/{roomId}/join";
@@ -44,8 +36,7 @@
 
 
         public async Task<JoinedRoomsResponse> GetJoinedRoomsAsync(string accessToken,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             HttpClient httpClient = CreateHttpClient(accessToken);
 
             var path = $"{ResourcePath}/joined_rooms";
@@ -54,8 +45,7 @@
         }
 
         public async Task LeaveRoomAsync(string accessToken, string roomId,
-            CancellationToken cancellationToken)
-        {
+            CancellationToken cancellationToken) {
             HttpClient httpClient = CreateHttpClient(accessToken);
 
             var path = $"{ResourcePath}/rooms/{roomId}/leave";

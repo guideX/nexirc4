@@ -1,23 +1,20 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
-
-namespace nexIRC.IrcProtocol
-{
+namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// An observable collection that represents all channels we joined
+    /// Channel Collection
     /// </summary>
-    public class ChannelCollection : ObservableCollection<Channel>
-    {
-        public Channel GetChannel(string name)
-        {
+    public class ChannelCollection : ObservableCollection<Channel> {
+        /// <summary>
+        /// Get Channel
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Channel GetChannel(string name) {
             var channel = Items.FirstOrDefault(c => c.Name == name);
-
-            if (channel is null)
-            {
+            if (channel is null) {
                 channel = new Channel(name);
                 Client.DispatcherInvoker.Invoke(() => Add(channel));
             }
-
             return channel;
         }
     }

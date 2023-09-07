@@ -1,4 +1,3 @@
-namespace nexIRC.MatrixProtocol.Core.Infrastructure.Extensions {
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -7,8 +6,9 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Extensions {
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Serialization;
+using nexIRC.MatrixProtocol;
 
-    internal static class HttpClientExtensions {
+internal static class HttpClientExtensions {
         private static JsonSerializerSettings GetJsonSettings() {
             var contractResolver = new DefaultContractResolver {
                 NamingStrategy = new SnakeCaseNamingStrategy()
@@ -87,4 +87,6 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Extensions {
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", bearer);
     }
+namespace nexIRC.MatrixProtocol.Core.Infrastructure.Extensions {
+
 }

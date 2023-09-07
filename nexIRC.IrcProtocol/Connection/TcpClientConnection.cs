@@ -1,49 +1,59 @@
 ﻿using nexIRC.IrcProtocol.Extensions;
-using System;
-using System.IO;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-
-namespace nexIRC.IrcProtocol.Connection
-{
+namespace nexIRC.IrcProtocol.Connection {
     /// <summary>
-    /// Represents a TCP connection to an IRC server
+    /// Tcp Client Connection
     /// </summary>
-    public class TcpClientConnection : IConnection
-    {
+    public class TcpClientConnection : IConnection {
+        /// <summary>
+        /// Tcp Client
+        /// </summary>
         private TcpClient tcpClient;
-
+        /// <summary>
+        /// Stream Reader
+        /// </summary>
         private StreamReader streamReader;
+        /// <summary>
+        /// Stream Writer
+        /// </summary>
         private StreamWriter streamWriter;
+        /// <summary>
+        /// Disposed
+        /// </summary>
         private bool disposed;
-
         /// <summary>
         /// Indicates that data has been received through the connection
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> DataReceived;
-
         /// <summary>
         /// Indicates that the TCP connection is completed
         /// </summary>
         public event EventHandler Connected;
-
         /// <summary>
         /// Indicates that the TCP connection was closed
         /// </summary>
         public event EventHandler Disconnected;
-
+        /// <summary>
+        /// Host
+        /// </summary>
         private readonly string host;
+        /// <summary>
+        /// Port
+        /// </summary>
         private readonly int port;
-
-        public TcpClientConnection(string host, int port = 6667)
-        {
-            if (string.IsNullOrWhiteSpace(host))
-            {
+        /// <summary>
+        /// Tcp Client Connection
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public TcpClientConnection(string host, int port = 6667) {
+            if (string.IsNullOrWhiteSpace(host)) {
                 throw new ArgumentNullException(nameof(host));
             }
 
-            if (port <= 0)
-            {
+            if (port <= 0) {
                 throw new ArgumentException($"Port {port} is invalid.", nameof(port));
             }
 
@@ -58,8 +68,7 @@ namespace nexIRC.IrcProtocol.Connection
         /// <param name="host">The host of the IRC server</param>
         /// <param name="port">The port number</param>
         /// <returns>The task object representing the asynchronous operation</returns>
-        public async Task ConnectAsync()
-        {
+        public async Task ConnectAsync() {
             tcpClient?.Dispose();
             tcpClient = new TcpClient();
 
@@ -77,12 +86,10 @@ namespace nexIRC.IrcProtocol.Connection
                     onException: ex => Disconnected?.Invoke(this, EventArgs.Empty));
         }
 
-        private async Task RunDataReceiver()
-        {
+        private async Task RunDataReceiver() {
             string line;
 
-            while ((line = await streamReader.ReadLineAsync().ConfigureAwait(false)) != null)
-            {
+            while ((line = await streamReader.ReadLineAsync().ConfigureAwait(false)) != null) {
                 DataReceived?.Invoke(this, new DataReceivedEventArgs(line));
             }
 
@@ -94,10 +101,8 @@ namespace nexIRC.IrcProtocol.Connection
         /// </summary>
         /// <param name="data">Data to be sent</param>
         /// <returns>The task object representing the asynchronous operation</returns>
-        public async Task SendAsync(string data)
-        {
-            if (!data.EndsWith(Constants.CrLf))
-            {
+        public async Task SendAsync(string data) {
+            if (!data.EndsWith(Constants.CrLf)) {
                 data += Constants.CrLf;
             }
 
@@ -110,21 +115,17 @@ namespace nexIRC.IrcProtocol.Connection
         /// <summary>
         /// Disposes streams and the TcpClient
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (disposed)
-            {
+        private void Dispose(bool disposing) {
+            if (disposed) {
                 return;
             }
 
-            if (disposing)
-            {
+            if (disposing) {
                 streamReader?.Dispose();
                 streamWriter?.Dispose();
                 tcpClient.Dispose();
