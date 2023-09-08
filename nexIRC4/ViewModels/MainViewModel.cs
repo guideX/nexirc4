@@ -1,5 +1,6 @@
 ﻿using MvvmHelpers.Commands;
 using nexIRC.IrcProtocol;
+using nexIRC.IrcProtocol.Collections;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
@@ -57,6 +58,10 @@ namespace nexIRC.ViewModels {
         private int _matrixDelayValue = 0;
         private bool _sendMatrixMessages = false;
         /// <summary>
+        /// Client Collection
+        /// </summary>
+        private ClientCollection _clientCollection;
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="showSettingsAction"></param>
@@ -72,6 +77,9 @@ namespace nexIRC.ViewModels {
             _ircClient.RegistrationCompleted += Client_RegistrationCompleted;
             _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
             _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
+            if (Settings.Default.UseMultipleNicknames) {
+                _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+            }
             _matrixDelay = new DispatcherTimer();
             _matrixDelay.Tick += _matrixDelay_Tick;
             _matrixDelay.Interval = new TimeSpan(0, 0, 10);
@@ -107,7 +115,21 @@ namespace nexIRC.ViewModels {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
                     if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
-                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
+                        if (Settings.Default.UseMultipleNicknames) {
+                            _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
+                        } else {
+                            if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
+                                _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava speed");
+                            } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava elev")) {
+                                _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava elev");
+                            } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava slope")) {
+                                _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava slope");
+                            } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava")) {
+                                _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava");
+                            } else {
+                                _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
+                            }
+                        }
                     break;
             }
         }
