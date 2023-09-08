@@ -61,7 +61,7 @@ namespace nexIRC.IrcProtocol.Ctcp
             var version = typeof(Client).Assembly
                 .GetCustomAttribute<AssemblyFileVersionAttribute>()
                 .Version;
-            return client.SendAsync(new CtcpReplyMessage(target, $"{VERSION} NetIRC v{version} - Simple cross-platform IRC Client Library (https://github.com/fredimachado/NetIRC)"));
+            return client.SendAsync(new CtcpReplyMessage(target, $"{VERSION} nexIRC v{version})"));
         }
     }
 }

@@ -106,10 +106,8 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                    //var message = MessageHelper.GetMessageDetails(e.RoomId, Settings.Default.MatrixMachineID, Settings.Default.DefaultChannel, e.Message, e.SenderUserId);
-                    if (!e.Details.DoubleRelayDetected && e.Details.SendMessage) {
+                    if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
                         _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
-                    }
                     break;
             }
         }
@@ -138,9 +136,8 @@ namespace nexIRC.ViewModels {
         public Task HandleAsync(OpenQueryMessage message, CancellationToken cancellationToken) {
             App.Client.Queries.GetQuery(message.User);
             var tab = FindQueryTab(message.User);
-            if (tab != null) {
+            if (tab != null) 
                 SelectedTab = tab;
-            }
             return Task.CompletedTask;
         }
         /// <summary>

@@ -165,10 +165,10 @@ namespace nexIRC.IrcProtocol {
         }
 
         /// <summary>
-        /// Allows you to send a strong typed client message to the IRC server
+        /// Send Async
         /// </summary>
-        /// <param name="message">An implementation of IClientMessage. Check NetIRC.Messages namespace</param>
-        /// <returns>The task object representing the asynchronous operation</returns>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public Task SendAsync(IClientMessage message) {
             return connection.SendAsync(message.ToString());
         }

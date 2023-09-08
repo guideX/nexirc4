@@ -5,8 +5,6 @@ using nexIRC.IrcProtocol;
 using nexIRC.Business.Business;
 using nexIRC.Properties;
 using nexIRC.MatrixProtocol.Wrapper;
-using System.Windows.Interop;
-
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Server View Model
