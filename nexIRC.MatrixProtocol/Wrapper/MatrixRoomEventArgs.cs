@@ -4,6 +4,22 @@
     /// </summary>
     public class MatrixRoomEventArgs : EventArgs {
         /// <summary>
+        /// Message Type
+        /// </summary>
+        public int MessageType { get; set; } = 4;
+        /// <summary>
+        /// Sender Key
+        /// </summary>
+        public string? SenderKey { get; set; }
+        /// <summary>
+        /// Sender Session ID
+        /// </summary>
+        public string? SenderSessionID { get; set; }
+        /// <summary>
+        /// Algorithm
+        /// </summary>
+        public string? Algorithm { get; set; }
+        /// <summary>
         /// Event Type
         /// </summary>
         public nexIRC.MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType? EventType { get; set; }

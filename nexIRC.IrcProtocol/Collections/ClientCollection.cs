@@ -4,6 +4,7 @@ namespace nexIRC.IrcProtocol.Collections {
     /// Client Collection
     /// </summary>
     public class ClientCollection {
+        #region "private variables"
         /// <summary>
         /// Clients
         /// </summary>
@@ -16,6 +17,8 @@ namespace nexIRC.IrcProtocol.Collections {
         /// Port
         /// </summary>
         private string _port;
+        #endregion
+        #region "public methods"
         /// <summary>
         /// Constructor
         /// </summary>
@@ -34,18 +37,23 @@ namespace nexIRC.IrcProtocol.Collections {
         /// <param name="message"></param>
         public bool SendMessageAsUser(string channel, string user, string message) {
             var clientsFound = _clients.Where(c => c.User == user);
+            var clientMessage = new ClientMessageToSend(channel, message);
             if (clientsFound.Any()) {
                 var client = clientsFound.FirstOrDefault();
-                if (client != null) 
-                    client.Send(new ClientMessageToSend(channel, message));
+                if (client != null) {
+                    client.Send(clientMessage);
+                    return true;
+                }
             } else {
                 var client = new ClientWrapper(_server, _port, user, user, "", channel);
-                client.Send(new ClientMessageToSend(channel, message));
+                client.Send(clientMessage);
                 client.Connect();
                 _clients.Add(client);
+                return true;
             }
             return false;
         }
+        #endregion
     }
     /// <summary>
     /// Client Wrapper
@@ -73,13 +81,64 @@ namespace nexIRC.IrcProtocol.Collections {
         /// </summary>
         private string _user;
         /// <summary>
-        /// Joined Channel
-        /// </summary>
-        private bool _joinedChannel;
-        /// <summary>
         /// Channel
         /// </summary>
         private string _channel;
+        #endregion
+        #region "private methods"
+        /// <summary>
+        /// Registration Completed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _client_RegistrationCompleted(object? sender, EventArgs e) {
+            AutoJoinChannel();
+        }
+        /// <summary>
+        /// Auto Join Channel
+        /// </summary>
+        private async void AutoJoinChannel() {
+            if (string.IsNullOrWhiteSpace(_channel)) return;
+            await _client.SendAsync(new JoinMessage(_channel));
+            Thread.Sleep(2000);
+            if (_messagesToSend.Count > 0) SendMessages();
+        }
+        /// <summary>
+        /// Connected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _connection_Connected(object? sender, EventArgs e) {
+            _connected = true;
+        }
+        /// <summary>
+        /// Disconnected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _connection_Disconnected(object? sender, EventArgs e) {
+            try {
+                _user = "";
+                _messagesToSend = new List<ClientMessageToSend>();
+                _connected = false;
+                _client.Dispose();
+                _connection.Dispose();
+            } catch {
+            }
+        }
+        /// <summary>
+        /// Send Message As User
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="message"></param>
+        private void SendMessages() {
+            if (_connected) {
+                foreach (var item in _messagesToSend.Where(i => i.Sent == false).ToList()) {
+                    _client.SendRaw("PRIVMSG " + item.Channel + " :" + item.Message);
+                    item.Sent = true;
+                }
+            }
+        }
         #endregion
         #region "public methods"
         /// <summary>
@@ -94,14 +153,10 @@ namespace nexIRC.IrcProtocol.Collections {
             _channel = channel;
             _user = user;
             _connection = new IrcProtocol.Connection.TcpClientConnection(host, Convert.ToInt32(port));
-            _connection.DataReceived += _connection_DataReceived;
             _connection.Disconnected += _connection_Disconnected;
             _connection.Connected += _connection_Connected;
             _client = new Client(new User(user, realName), _connection);
-            _client.CtcpReceived += _client_CtcpReceived;
-            _client.IRCMessageParsed += _client_IRCMessageParsed;
             _client.RegistrationCompleted += _client_RegistrationCompleted;
-            _client.RawDataReceived += _client_RawDataReceived;
             _messagesToSend = new List<ClientMessageToSend>();
         }
         /// <summary>
@@ -135,90 +190,12 @@ namespace nexIRC.IrcProtocol.Collections {
             if (Connected) SendMessages();
         }
         #endregion
-        #region "private methods"
-        /// <summary>
-        /// Raw Data Received
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="rawData"></param>
-        private void _client_RawDataReceived(Client client, string rawData) {
-        }
-        /// <summary>
-        /// Registration Completed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _client_RegistrationCompleted(object? sender, EventArgs e) {
-            AutoJoinChannel();
-        }
-        /// <summary>
-        /// Auto Join Channel
-        /// </summary>
-        private async void AutoJoinChannel() {
-            if (string.IsNullOrWhiteSpace(_channel)) return;
-            await _client.SendAsync(new JoinMessage(_channel));
-            Thread.Sleep(2000);
-            if (_messagesToSend.Count > 0) SendMessages();
-        }
-        /// <summary>
-        /// Irc Message Parsed
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="ircMessage"></param>
-        private void _client_IRCMessageParsed(Client client, ParsedIRCMessage ircMessage) {
-            System.IO.File.AppendAllText(@"C:\bkup\irclog.txt", ircMessage.Raw);
-        }
-        /// <summary>
-        /// Ctcp Received
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="ctcpEventArgs"></param>
-        private void _client_CtcpReceived(Client client, Ctcp.CtcpEventArgs ctcpEventArgs) {
-        }
-        /// <summary>
-        /// Connected
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _connection_Connected(object? sender, EventArgs e) {
-            _connected = true;
-        }
-        /// <summary>
-        /// Disconnected
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _connection_Disconnected(object? sender, EventArgs e) {
-            _user = "";
-            _messagesToSend = new List<ClientMessageToSend>();
-            _connected = false;
-        }
-        /// <summary>
-        /// Data Received
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _connection_DataReceived(object? sender, Connection.DataReceivedEventArgs e) {
-        }
-        /// <summary>
-        /// Send Message As User
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="message"></param>
-        private void SendMessages() {
-            if (_connected) {
-                foreach (var item in _messagesToSend.Where(i => i.Sent == false).ToList()) {
-                    _client.SendRaw("PRIVMSG " + item.Channel + " :" + item.Message);
-                    item.Sent = true;
-                }
-            }
-        }
-        #endregion
     }
     /// <summary>
     /// Client Message To Send
     /// </summary>
-    public class ClientMessageToSend { 
+    public class ClientMessageToSend {
+        #region "public variables"
         /// <summary>
         /// Channel
         /// </summary>
@@ -231,6 +208,8 @@ namespace nexIRC.IrcProtocol.Collections {
         /// Sent
         /// </summary>
         public bool Sent { get; set; }
+        #endregion
+        #region "public methods"
         /// <summary>
         /// Constructor
         /// </summary>
@@ -240,6 +219,6 @@ namespace nexIRC.IrcProtocol.Collections {
             Channel = channel;
             Message = message;
         }
-
+        #endregion
     }
 }

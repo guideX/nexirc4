@@ -21,11 +21,11 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// <summary>
         /// Connection Result
         /// </summary>
-        private MatrixResultModel? _connectionResult;
+        private AjaxResultModel? _connectionResult;
         /// <summary>
         /// Connection Result
         /// </summary>
-        public MatrixResultModel? ConnectionResult { get { return _connectionResult; } }
+        public AjaxResultModel? ConnectionResult { get { return _connectionResult; } }
         /// <summary>
         /// Matrix Node Address
         /// </summary>
@@ -109,12 +109,16 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                             SenderUserId = SenderUserId
                         });
                     } else if (roomEvent is EncryptedEvent) {
-                        (string roomId, string senderUserID, string message) = (EncryptedEvent)roomEvent;
-                        MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() { 
+                        (string roomId, string senderUserId, string message, string algorithm, string senderKey, string SenderSessionID) = (EncryptedEvent)roomEvent;
+                        MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() {
+                            Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId),
                             RoomId = roomId,
-                            SenderUserId = senderUserID,
+                            SenderUserId = senderUserId,
                             Message = message,
-                            EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted
+                            EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted,
+                            Algorithm = algorithm,
+                            SenderKey = senderKey,
+                            SenderSessionID = SenderSessionID
                         });
                     }
                 }
@@ -124,7 +128,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// Login
         /// </summary>
         public async void Login() {
-            var result = new MatrixResultModel();
+            var result = new AjaxResultModel();
             if (!string.IsNullOrWhiteSpace(_matrixNodeAddress) && _matrixClient != null && !string.IsNullOrWhiteSpace(_userName) && !string.IsNullOrWhiteSpace(_password) && !string.IsNullOrWhiteSpace(_deviceID)) {
                 await _matrixClient.LoginAsync(new Uri(_matrixNodeAddress), _userName, _password, _deviceID);
                 if (MatrixConnected != null)

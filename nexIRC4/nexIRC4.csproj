@@ -75,6 +75,7 @@
     <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
     <ProjectReference Include="..\nexIRC.IrcProtocol\nexIRC.IrcProtocol.csproj" />
     <ProjectReference Include="..\nexIRC.MatrixProtocol\nexIRC.MatrixProtocol.csproj" />
+    <ProjectReference Include="..\nexIRC.Olm\nexIRC.Olm.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">

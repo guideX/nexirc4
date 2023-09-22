@@ -1,20 +1,26 @@
-﻿using MvvmHelpers.Commands;
+﻿using Microsoft.AspNetCore.Routing.Matching;
+using MvvmHelpers.Commands;
 using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Collections;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
+using nexIRC.Models;
+using nexIRC.Olm;
 using nexIRC.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using team_nexgen.core.Helpers;
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Main View Model
@@ -113,6 +119,21 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             switch (e.EventType) {
+                case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
+                    switch (e.Algorithm) {
+                        case "m.megolm.v1.aes-sha2":
+                            var decryptionResult = OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
+                            if (decryptionResult.Success && decryptionResult.Bytes != null) {
+                                e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
+                            } else {
+                                e.Message = "Warning: Decryption Failure";
+                            }
+                            /*
+                            var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
+                            */
+                            break;
+                    }
+                    break;
                 case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
                     if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
                         if (Settings.Default.UseMultipleNicknames) {
@@ -158,7 +179,7 @@ namespace nexIRC.ViewModels {
         public Task HandleAsync(OpenQueryMessage message, CancellationToken cancellationToken) {
             App.Client.Queries.GetQuery(message.User);
             var tab = FindQueryTab(message.User);
-            if (tab != null) 
+            if (tab != null)
                 SelectedTab = tab;
             return Task.CompletedTask;
         }
@@ -208,7 +229,7 @@ namespace nexIRC.ViewModels {
         /// <returns></returns>
         private TabItemViewModel FindQueryTab(User user) {
             return Tabs.OfType<QueryViewModel>().FirstOrDefault(q => q.Query.User == user);
-        
+
         }
         /// <summary>
         /// Find Channel Tab
