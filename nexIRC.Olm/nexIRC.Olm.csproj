@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\**" />
+    <EmbeddedResource Remove="Core\**" />
+    <None Remove="Core\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Account.cs" />
+    <Compile Remove="TestCase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
+    <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
+  </ItemGroup>
+
+</Project>

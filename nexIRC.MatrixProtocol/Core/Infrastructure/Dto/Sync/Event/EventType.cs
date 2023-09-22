@@ -22,6 +22,14 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Dto.Sync.Event {
         /// <summary>
         /// Encryption
         /// </summary>
-        Encrypted
+        Encrypted,
+        /// <summary>
+        /// Encryption
+        /// </summary>
+        Encryption,
+        /// <summary>
+        /// Room Key
+        /// </summary>
+        RoomKey
     }
 }

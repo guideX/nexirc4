@@ -1,5 +1,7 @@
 namespace nexIRC.MatrixProtocol.Core.Infrastructure.Dto.Sync.Event {
+    using Microsoft.VisualBasic;
     using Newtonsoft.Json.Linq;
+    using nexIRC.MatrixProtocol;
     /// <summary>
     /// Base Event
     /// </summary>
@@ -17,10 +19,12 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Dto.Sync.Event {
         /// </summary>
         public string Type {
             set => EventType = value switch {
-                Constants.EventType.Encrypted => EventType.Encrypted,
-                Constants.EventType.Create => EventType.Create,
-                Constants.EventType.Member => EventType.Member,
-                Constants.EventType.Message => EventType.Message,
+                nexIRC.MatrixProtocol.Constants.EventType.RoomKey => EventType.RoomKey,
+                nexIRC.MatrixProtocol.Constants.EventType.Encryption => EventType.Encryption,
+                nexIRC.MatrixProtocol.Constants.EventType.Encrypted => EventType.Encrypted,
+                nexIRC.MatrixProtocol.Constants.EventType.Create => EventType.Create,
+                nexIRC.MatrixProtocol.Constants.EventType.Member => EventType.Member,
+                nexIRC.MatrixProtocol.Constants.EventType.Message => EventType.Message,
                 _ => EventType.Unknown
             };
         }
