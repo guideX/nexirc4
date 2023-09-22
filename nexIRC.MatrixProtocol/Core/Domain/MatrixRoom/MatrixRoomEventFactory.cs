@@ -74,6 +74,10 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
                     roomEvents.Add(inviteToRoomEvent);
                 else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent))
                     roomEvents.Add(textMessageEvent);
+                else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent))
+                    roomEvents.Add(encryptionEvent);
+                else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent))
+                    roomEvents.Add(encryptedEvent);
             return roomEvents;
         }
     }
