@@ -71,11 +71,11 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
     <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
     <ProjectReference Include="..\nexIRC.IrcProtocol\nexIRC.IrcProtocol.csproj" />
     <ProjectReference Include="..\nexIRC.MatrixProtocol\nexIRC.MatrixProtocol.csproj" />
     <ProjectReference Include="..\nexIRC.Olm\nexIRC.Olm.csproj" />
+    <ProjectReference Include="..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">

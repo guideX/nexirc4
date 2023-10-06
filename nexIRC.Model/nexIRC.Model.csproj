@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
     <ProjectReference Include="..\nexIRC.Enum\nexIRC.Enum.csproj" />
   </ItemGroup>
 
