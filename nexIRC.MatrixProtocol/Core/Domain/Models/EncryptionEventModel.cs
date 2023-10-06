@@ -6,11 +6,11 @@
         /// <summary>
         /// Algorithm
         /// </summary>
-        public string algorithm { get; set; }
+        public string? algorithm { get; set; }
         /// <summary>
         /// EventID
         /// </summary>
-        public string event_id { get; set; }
+        public string? event_id { get; set; }
         /// <summary>
         /// Origin Server TS
         /// </summary>
@@ -18,14 +18,14 @@
         /// <summary>
         /// RoomID
         /// </summary>
-        public string room_id { get; set; }
+        public string? room_id { get; set; }
         /// <summary>
         /// Sender
         /// </summary>
-        public string sender { get; set; }
+        public string? sender { get; set; }
         /// <summary>
         /// State Key
         /// </summary>
-        public string state_key { get; set; }
+        public string? state_key { get; set; }
     }
 }

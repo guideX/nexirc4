@@ -57,7 +57,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// <summary>
         /// Last Result
         /// </summary>
-        private AjaxResultModel? _lastResult;
+        //private AjaxResultModel? _lastResult;
         /// <summary>
         /// 
         /// </summary>
@@ -87,7 +87,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                                 SenderUserId = senderUserId,
                                 Message = message,
                                 EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Message,
-                                Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId)
+                                Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, false)
                             });
                     } else if (roomEvent is CreateRoomEvent) {
                         (string RoomId, string SenderUserId, string RoomCreatorUserId) = (CreateRoomEvent)roomEvent;
@@ -111,7 +111,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                     } else if (roomEvent is EncryptedEvent) {
                         (string roomId, string senderUserId, string message, string algorithm, string senderKey, string SenderSessionID) = (EncryptedEvent)roomEvent;
                         MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() {
-                            Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId),
+                            Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, true),
                             RoomId = roomId,
                             SenderUserId = senderUserId,
                             Message = message,

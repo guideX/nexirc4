@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace nexIRC.Model {
+﻿namespace nexIRC.Model {
     /// <summary>
     /// Matrix Join Channel Model
     /// </summary>
@@ -12,6 +6,6 @@ namespace nexIRC.Model {
         /// <summary>
         /// Channel Name
         /// </summary>
-        public string ChannelName { get; set; }
+        public string? ChannelName { get; set; }
     }
 }

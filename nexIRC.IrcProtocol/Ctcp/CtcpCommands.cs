@@ -1,4 +1,5 @@
 ﻿using nexIRC.IrcProtocol.Messages;
+using nexIRC.IrcProtocol.Messages.Handlers;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -26,6 +27,10 @@ namespace nexIRC.IrcProtocol.Ctcp
             switch (ctcp.CtcpCommand.ToUpper())
             {
                 case ACTION:
+                    var msg = "";
+                    msg = "2";
+                    break;
+
                 case ERRMSG:
                     break;
                 case CLIENTINFO:

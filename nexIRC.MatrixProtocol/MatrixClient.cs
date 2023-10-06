@@ -12,6 +12,8 @@
     using Core.Infrastructure.Dto.Room.Join;
     using Core.Infrastructure.Dto.Room.Joined;
     using Core.Infrastructure.Services;
+    using nexIRC.Enum;
+
     /// <summary>
     /// Matrix Client
     /// </summary>
@@ -78,7 +80,7 @@
         /// <summary>
         /// On Matrix Room Events Recieved
         /// </summary>
-        public event EventHandler<MatrixRoomEventsEventArgs> OnMatrixRoomEventsReceived;
+        public event EventHandler<MatrixRoomEventsEventArgs>? OnMatrixRoomEventsReceived;
         #endregion
         /// <summary>
         /// Constructor
@@ -146,7 +148,7 @@
         /// <returns></returns>
         public async Task<JoinRoomResponse> JoinTrustedPrivateRoomAsync(string roomId) {
             MatrixRoom? matrixRoom = _pollingService.GetMatrixRoom(roomId);
-            if (matrixRoom != null && matrixRoom.Status != MatrixRoomStatus.Invited)
+            if (matrixRoom != null && matrixRoom.Status != MatrixRoomStatusEnum.Invited)
                 return new JoinRoomResponse(matrixRoom.Id);
             return await _roomService.JoinRoomAsync(_accessToken!, roomId, _cts.Token);
         }
@@ -190,7 +192,7 @@
             if (sender is not IPollingService)
                 throw new ArgumentException("sender is not polling service");
             SyncBatch batch = syncBatchEventArgs.SyncBatch;
-            OnMatrixRoomEventsReceived.Invoke(this, new MatrixRoomEventsEventArgs(batch.MatrixRoomEvents, batch.NextBatch));
+            OnMatrixRoomEventsReceived?.Invoke(this, new MatrixRoomEventsEventArgs(batch.MatrixRoomEvents, batch.NextBatch));
         }
         /// <summary>
         /// Create TransactionID

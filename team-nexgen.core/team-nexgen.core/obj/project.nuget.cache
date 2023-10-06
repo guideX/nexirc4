@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "wYeriPg/7/6otZPLa07TIk4vLHYh/1vQz7v+qWXsP87Mq4lAvrd47Dzx1jTM2IJx7PHQ4fEaW1WuuyxkLi1gbg==",
+  "success": true,
+  "projectFilePath": "D:\\devgithub\\team-nexgen\\team-nexgen.core\\team-nexgen.core\\team-nexgen.core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\leonadmin\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

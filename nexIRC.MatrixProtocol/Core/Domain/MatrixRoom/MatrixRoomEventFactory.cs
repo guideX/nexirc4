@@ -2,6 +2,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
     using System.Collections.Generic;
     using Infrastructure.Dto.Sync;
     using Infrastructure.Dto.Sync.Event.Room;
+    using Newtonsoft.Json;
     using RoomEvent;
     /// <summary>
     /// Constructor
@@ -15,23 +16,33 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromJoined(string roomId, JoinedRoom joinedRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomEvent timelineEvent in joinedRoom.Timeline.Events)
-                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent))
+            foreach (RoomEvent timelineEvent in joinedRoom.Timeline.Events) {
+                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_join.txt", JsonConvert.SerializeObject(joinRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(joinRoomEvent);
-                else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent))
+                } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_create.txt", JsonConvert.SerializeObject(createRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(createRoomEvent);
-                else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent))
+                } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_invite.txt", JsonConvert.SerializeObject(inviteToRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(inviteToRoomEvent);
-                else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent))
+                } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_message.txt", JsonConvert.SerializeObject(textMessageEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(textMessageEvent);
-                else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent))
+                } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_encrypted.txt", JsonConvert.SerializeObject(encryptedEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(encryptedEvent);
-                else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent))
-                    roomEvents.Add(unknownEvent);
-                else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent))
+                } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_encryption.txt", JsonConvert.SerializeObject(encryptionEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(encryptionEvent);
-                else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent))
+                } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_roomkey.txt", JsonConvert.SerializeObject(roomKeyEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(roomKeyEvent);
+                } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_unknown.txt", JsonConvert.SerializeObject(unknownEvent) + Environment.NewLine + Environment.NewLine);
+                    roomEvents.Add(unknownEvent);
+                }
+            }
             return roomEvents;
         }
         /// <summary>
@@ -42,19 +53,33 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromInvited(string roomId, InvitedRoom invitedRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomStrippedState inviteStateEvent in invitedRoom.InviteState.Events)
-                if (JoinRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out JoinRoomEvent joinRoomEvent))
+            foreach (RoomStrippedState inviteStateEvent in invitedRoom.InviteState.Events) {
+                if (JoinRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_join.txt", JsonConvert.SerializeObject(joinRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(joinRoomEvent!);
-                else if (CreateRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out CreateRoomEvent createRoomEvent))
+                } else if (CreateRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out CreateRoomEvent createRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_create.txt", JsonConvert.SerializeObject(createRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(createRoomEvent!);
-                else if (InviteToRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out InviteToRoomEvent inviteToRoomEvent))
+                } else if (InviteToRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_invite.txt", JsonConvert.SerializeObject(inviteToRoomEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(inviteToRoomEvent!);
-                else if (TextMessageEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out TextMessageEvent textMessageEvent))
+                } else if (TextMessageEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out TextMessageEvent textMessageEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_message.txt", JsonConvert.SerializeObject(textMessageEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(textMessageEvent);
-                else if (EncryptionEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptionEvent encryptionEvent))
+                } else if (EncryptionEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptionEvent encryptionEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_encryption.txt", JsonConvert.SerializeObject(encryptionEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(encryptionEvent);
-                else if (RoomKeyEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out RoomKeyEvent roomKeyEvent))
+                } else if (EncryptedEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptedEvent encryptedEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_encrypted.txt", JsonConvert.SerializeObject(encryptedEvent) + Environment.NewLine + Environment.NewLine);
+                    roomEvents.Add(encryptionEvent);
+                } else if (RoomKeyEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_roomKey.txt", JsonConvert.SerializeObject(roomKeyEvent) + Environment.NewLine + Environment.NewLine);
                     roomEvents.Add(roomKeyEvent);
+                } else if (UnknownEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out UnknownEvent unknownEvent)) {
+                    System.IO.File.AppendAllText(@"C:\bkup\event_unknown.txt", JsonConvert.SerializeObject(unknownEvent) + Environment.NewLine + Environment.NewLine);
+                    roomEvents.Add(roomKeyEvent);
+                }
+            }
             return roomEvents;
         }
         /// <summary>
@@ -65,19 +90,25 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromLeft(string roomId, LeftRoom leftRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomEvent timelineEvent in leftRoom.Timeline.Events)
-                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent))
+            foreach (RoomEvent timelineEvent in leftRoom.Timeline.Events) {
+                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
                     roomEvents.Add(joinRoomEvent);
-                else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent))
+                } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
                     roomEvents.Add(createRoomEvent);
-                else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent))
+                } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
                     roomEvents.Add(inviteToRoomEvent);
-                else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent))
+                } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
                     roomEvents.Add(textMessageEvent);
-                else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent))
+                } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
                     roomEvents.Add(encryptionEvent);
-                else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent))
+                } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
                     roomEvents.Add(encryptedEvent);
+                } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                    roomEvents.Add(roomKeyEvent);
+                } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
+                    roomEvents.Add(unknownEvent);
+                }
+            }
             return roomEvents;
         }
     }

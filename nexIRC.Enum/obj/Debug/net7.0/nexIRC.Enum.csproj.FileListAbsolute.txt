@@ -1,0 +1,12 @@
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\bin\Debug\net7.0\nexIRC.Enum.deps.json
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\bin\Debug\net7.0\nexIRC.Enum.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\bin\Debug\net7.0\nexIRC.Enum.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.csproj.AssemblyReference.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.GeneratedMSBuildEditorConfig.editorconfig
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.AssemblyInfoInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.AssemblyInfo.cs
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.csproj.CoreCompileInputs.cache
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\refint\nexIRC.Enum.dll
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\nexIRC.Enum.pdb
+D:\devgithub\team-nexgen\nexIRC\nexIRC4\nexIRC.Enum\obj\Debug\net7.0\ref\nexIRC.Enum.dll

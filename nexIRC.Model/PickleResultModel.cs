@@ -14,6 +14,6 @@
         /// <summary>
         /// Bytes
         /// </summary>
-        public byte[] Bytes { get; set; }
+        public byte[]? Bytes { get; set; }
     }
 }

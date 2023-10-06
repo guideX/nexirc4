@@ -22,8 +22,8 @@
             /// <param name="encryptionEvent"></param>
             /// <returns></returns>
             public static bool TryCreateFrom(RoomEvent roomEvent, string roomID, out EncryptionEvent encryptionEvent) {
-                if (roomEvent.EventType == EventType.Encryption) {
-                    var encryptionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptionEventModel>(roomEvent.Content.ToString());
+                var encryptionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptionEventModel>(roomEvent.Content.ToString());
+                if (roomEvent.EventType == EventType.Encryption && encryptionModel != null && encryptionModel.sender != null && encryptionModel.state_key != null) {
                     encryptionEvent = new EncryptionEvent(roomID, encryptionModel.sender, encryptionModel.state_key);
                     return true;
                 }
@@ -38,8 +38,8 @@
             /// <param name="encryptionEvent"></param>
             /// <returns></returns>
             public static bool TryCreateFromStrippedState(RoomStrippedState roomStrippedState, string roomId, out EncryptionEvent encryptionEvent) {
-                if (roomStrippedState.EventType == EventType.Encryption) {
-                    var encryptionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptionEventModel>(roomStrippedState.Content.ToString());
+                var encryptionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptionEventModel>(roomStrippedState.Content.ToString());
+                if (roomStrippedState.EventType == EventType.Encryption && encryptionModel != null && encryptionModel.room_id != null && encryptionModel.sender != null && encryptionModel.state_key != null) {
                     encryptionEvent = new EncryptionEvent(encryptionModel.room_id, encryptionModel.sender, encryptionModel.state_key);
                     return true;
                 }

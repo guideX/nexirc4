@@ -9,6 +9,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
     using Infrastructure.Services;
     using MatrixRoom;
     using Microsoft.Extensions.Logging;
+    using nexIRC.Enum;
     /// <summary>
     /// Polling Service
     /// </summary>
@@ -20,15 +21,15 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// <summary>
         /// Logger
         /// </summary>
-        private readonly ILogger<PollingService>? _logger;
+        private readonly ILogger<PollingService> _logger;
         /// <summary>
         /// Matrix Rooms
         /// </summary>
-        private ConcurrentDictionary<string, MatrixRoom> _matrixRooms;
+        private ConcurrentDictionary<string, MatrixRoom> _matrixRooms = new ConcurrentDictionary<string, MatrixRoom>();
         /// <summary>
         /// Cts
         /// </summary>
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource? _cts;
         /// <summary>
         /// Access Token
         /// </summary>
@@ -36,7 +37,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// <summary>
         /// Next Batch
         /// </summary>
-        private string _nextBatch;
+        private string? _nextBatch;
         /// <summary>
         /// Polling Timer
         /// </summary>
@@ -50,7 +51,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// </summary>
         /// <param name="eventService"></param>
         /// <param name="logger"></param>
-        public PollingService(EventService eventService, ILogger<PollingService>? logger) {
+        public PollingService(EventService eventService, ILogger<PollingService> logger) {
             _eventService = eventService;
             _logger = logger;
             _timeout = Constants.FirstSyncTimout;
@@ -66,15 +67,15 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// <summary>
         /// Invited Rooms
         /// </summary>
-        public MatrixRoom[] InvitedRooms => _matrixRooms.Values.Where(x => x.Status == MatrixRoomStatus.Invited).ToArray();
+        public MatrixRoom[] InvitedRooms => _matrixRooms.Values.Where(x => x.Status == nexIRC.Enum.MatrixRoomStatusEnum.Invited).ToArray();
         /// <summary>
         /// Joined Rooms
         /// </summary>
-        public MatrixRoom[] JoinedRooms => _matrixRooms.Values.Where(x => x.Status == MatrixRoomStatus.Joined).ToArray();
+        public MatrixRoom[] JoinedRooms => _matrixRooms.Values.Where(x => x.Status == MatrixRoomStatusEnum.Joined).ToArray();
         /// <summary>
         /// Left Rooms
         /// </summary>
-        public MatrixRoom[] LeftRooms => _matrixRooms.Values.Where(x => x.Status == MatrixRoomStatus.Left).ToArray();
+        public MatrixRoom[] LeftRooms => _matrixRooms.Values.Where(x => x.Status == MatrixRoomStatusEnum.Left).ToArray();
         /// <summary>
         /// Init
         /// </summary>
@@ -104,7 +105,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// Stop
         /// </summary>
         public void Stop() {
-            _cts.Cancel();
+            _cts?.Cancel();
             if (_pollingTimer != null) _pollingTimer.Change(Timeout.Infinite, Timeout.Infinite);
             IsSyncing = false;
         }
@@ -119,7 +120,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// Dispose
         /// </summary>
         public void Dispose() {
-            _cts.Dispose();
+            _cts?.Dispose();
             _pollingTimer?.Dispose();
         }
         /// <summary>
@@ -130,24 +131,28 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
             try {
                 _pollingTimer!.Change(Timeout.Infinite, Timeout.Infinite);
                 IsSyncing = true;
-                SyncResponse response = await _eventService.SyncAsync(_accessToken!, _cts.Token,
-                    _timeout, _nextBatch);
-                SyncBatch syncBatch = SyncBatch.Factory.CreateFromSync(response.NextBatch, response.Rooms);
-                _nextBatch = syncBatch.NextBatch;
-                _timeout = Constants.LaterSyncTimout;
-                RefreshRooms(syncBatch.MatrixRooms);
-                OnSyncBatchReceived.Invoke(this, new SyncBatchEventArgs(syncBatch));
-                _pollingTimer?.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(-1));
-            } catch (TaskCanceledException ex) {
-                if (!_cts.IsCancellationRequested) {
-                    _pollingTimer?
-                        .Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));
+                CancellationToken token;
+                if (_cts != null) {
+                    token = _cts.Token;
+                    SyncResponse response = await _eventService.SyncAsync(_accessToken!, _cts.Token,
+                        _timeout, _nextBatch);
+                    SyncBatch syncBatch = SyncBatch.Factory.CreateFromSync(response.NextBatch, response.Rooms);
+                    _nextBatch = syncBatch.NextBatch;
+                    _timeout = Constants.LaterSyncTimout;
+                    RefreshRooms(syncBatch.MatrixRooms);
+                    OnSyncBatchReceived.Invoke(this, new SyncBatchEventArgs(syncBatch));
+                    _pollingTimer?.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(-1));
                 }
-
-                IsSyncing = false;
-                _logger?.LogError(
-                    "Polling cancelled, _cts.IsCancellationRequested {@IsCancellationRequested}:, {@Message}",
-                    _cts.IsCancellationRequested, ex.Message);
+            } catch (TaskCanceledException ex) {
+                if (_cts != null) {
+                    if (_cts.IsCancellationRequested) {
+                        _pollingTimer?.Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));
+                    }
+                    IsSyncing = false;
+                    _logger.LogError(
+                        "Polling cancelled, _cts.IsCancellationRequested {@IsCancellationRequested}:, {@Message}",
+                        _cts.IsCancellationRequested, ex.Message);
+                }
             } catch (Exception ex) {
                 _pollingTimer?
                     .Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));

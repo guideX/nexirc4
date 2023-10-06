@@ -53,12 +53,12 @@
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public static MessageHelperModel GetMessageDetails(string matrixRoomID, string defaultMatrixRoomID, string ircChannel, string message, string senderUserID) {
+        public static MessageHelperModel GetMessageDetails(string matrixRoomID, string defaultMatrixRoomID, string ircChannel, string message, string senderUserID, bool encrypted) {
             var result = new MessageHelperModel {
                 MatrixChannel = matrixRoomID,
                 IrcChannel = ircChannel
             };
-            if (!string.IsNullOrWhiteSpace(message)) {
+            if (!string.IsNullOrWhiteSpace(message) && !encrypted) {
                 if (message.Contains("[l]") && message.Contains(" ")) {
                     var splt = message.Split(' ');
                     if (splt[0].Contains("[l]")) result.DoubleRelayDetected = true;
@@ -93,8 +93,8 @@
                         }
                     }
                 }
+                if (string.IsNullOrEmpty(result.Message)) result.SendMessage = false;
             }
-            if (string.IsNullOrEmpty(result.Message)) result.SendMessage = false;
             return result;
         }
     }

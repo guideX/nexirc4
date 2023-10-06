@@ -1,8 +1,7 @@
 ﻿namespace nexIRC.MatrixProtocol.Core.Domain.RoomEvent {
     using Infrastructure.Dto.Sync.Event;
     using Infrastructure.Dto.Sync.Event.Room;
-    using Infrastructure.Dto.Sync.Event.Room.Messaging;
-    using nexIRC.MatrixProtocol.Core.Domain.Models;
+    using nexIRC.Model.Matrix.Events;
     /// <summary>
     /// Encrypted Event
     /// </summary>
@@ -10,7 +9,7 @@
     /// <param name="SenderUserId"></param>
     /// <param name="CipherText"></param>
     /// <param name="Algorithm"></param>
-    public record EncryptedEvent(string RoomId, string SenderUserId, string CipherText, string Algorithm, string SenderKey, string SenderSessionID) : BaseRoomEvent(RoomId, SenderUserId) {
+    public record EncryptedEvent(string roomId, string senderUserId, string cipherText, string algorithm, string senderKey, string SenderSessionID) : BaseRoomEvent(roomId, senderUserId) {
         /// <summary>
         /// Factory
         /// </summary>
@@ -23,8 +22,8 @@
             /// <param name="encryptedEvent"></param>
             /// <returns></returns>
             public static bool TryCreateFrom(RoomEvent roomEvent, string roomId, out EncryptedEvent encryptedEvent) {
-                if (roomEvent.EventType == EventType.Encrypted) {
-                    var encryptedModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptedEventModel>(roomEvent.Content.ToString());
+                var encryptedModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptedEventModel>(roomEvent.Content.ToString());
+                if (roomEvent.EventType == EventType.Encrypted && encryptedModel != null && encryptedModel.ciphertext != null && encryptedModel.algorithm != null && encryptedModel.sender_key != null && encryptedModel.session_id != null) {
                     encryptedEvent = new EncryptedEvent(roomId, roomEvent.SenderUserId, encryptedModel.ciphertext, encryptedModel.algorithm, encryptedModel.sender_key, encryptedModel.session_id);
                     return true;
                 }
@@ -39,8 +38,8 @@
             /// <param name="encryptedEvent"></param>
             /// <returns></returns>
             public static bool TryCreateFromStrippedState(RoomStrippedState roomStrippedState, string roomId, out EncryptedEvent encryptedEvent) {
-                if (roomStrippedState.EventType == EventType.Encrypted) {
-                    var encryptedModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptedEventModel>(roomStrippedState.Content.ToString());
+                var encryptedModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EncryptedEventModel>(roomStrippedState.Content.ToString());
+                if (roomStrippedState.EventType == EventType.Encrypted && encryptedModel?.ciphertext != null && encryptedModel.algorithm != null && encryptedModel.sender_key != null && encryptedModel.session_id != null) {
                     encryptedEvent = new EncryptedEvent(roomId, roomStrippedState.SenderUserId, encryptedModel.ciphertext, encryptedModel.algorithm, encryptedModel.sender_key, encryptedModel.session_id);
                     return true;
                 }

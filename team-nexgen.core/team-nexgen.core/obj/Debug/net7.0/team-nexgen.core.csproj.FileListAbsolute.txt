@@ -1,0 +1,12 @@
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\bin\Debug\net7.0\team-nexgen.core.deps.json
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\bin\Debug\net7.0\team-nexgen.core.dll
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\bin\Debug\net7.0\team-nexgen.core.pdb
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.csproj.AssemblyReference.cache
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.GeneratedMSBuildEditorConfig.editorconfig
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.AssemblyInfoInputs.cache
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.AssemblyInfo.cs
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.csproj.CoreCompileInputs.cache
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.dll
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\refint\team-nexgen.core.dll
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\team-nexgen.core.pdb
+D:\devgithub\team-nexgen\team-nexgen.core\team-nexgen.core\obj\Debug\net7.0\ref\team-nexgen.core.dll

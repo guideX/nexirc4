@@ -2,6 +2,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
     using System.Collections.Generic;
     using Infrastructure.Dto.Sync;
     using Infrastructure.Dto.Sync.Event.Room;
+    using nexIRC.Enum;
     using RoomEvent;
     /// <summary>
     /// Matrix Room Factory
@@ -18,7 +19,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
             foreach (RoomEvent timelineEvent in joinedRoom.Timeline.Events)
                 if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent))
                     joinedUserIds.Add(joinRoomEvent.SenderUserId);
-            return new MatrixRoom(roomId, MatrixRoomStatus.Joined, joinedUserIds);
+            return new MatrixRoom(roomId, MatrixRoomStatusEnum.Joined, joinedUserIds);
         }
         /// <summary>
         /// Create Invite
@@ -33,7 +34,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
                         out JoinRoomEvent joinRoomEvent))
                     joinedUserIds.Add(joinRoomEvent.SenderUserId);
 
-            return new MatrixRoom(roomId, MatrixRoomStatus.Invited, joinedUserIds);
+            return new MatrixRoom(roomId, MatrixRoomStatusEnum.Invited, joinedUserIds);
         }
         /// <summary>
         /// Create Left
@@ -46,7 +47,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
             foreach (RoomEvent timelineEvent in leftRoom.Timeline.Events)
                 if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent))
                     joinedUserIds.Add(joinRoomEvent.SenderUserId);
-            return new MatrixRoom(roomId, MatrixRoomStatus.Left, joinedUserIds);
+            return new MatrixRoom(roomId, MatrixRoomStatusEnum.Left, joinedUserIds);
         }
     }
 }
