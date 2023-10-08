@@ -53,19 +53,18 @@
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public static MessageHelperModel GetMessageDetails(string matrixRoomID, string defaultMatrixRoomID, string ircChannel, string message, string senderUserID, bool encrypted) {
+        public static MessageHelperModel GetMessageDetails(string matrixRoomID, string defaultMatrixRoomID, string ircChannel, string message, string senderUserID, bool encrypted, string settings_MatrixNick, string settings_IrcNick) {
             var result = new MessageHelperModel {
                 MatrixChannel = matrixRoomID,
                 IrcChannel = ircChannel
             };
-            if (!string.IsNullOrWhiteSpace(message) && !encrypted) {
-                if (message.Contains("[l]") && message.Contains(" ")) {
-                    var splt = message.Split(' ');
-                    if (splt[0].Contains("[l]")) result.DoubleRelayDetected = true;
-                }
-                if (matrixRoomID == defaultMatrixRoomID && !result.DoubleRelayDetected && !string.IsNullOrWhiteSpace(senderUserID)) {
+            if (!string.IsNullOrWhiteSpace(message) && !encrypted && !string.IsNullOrWhiteSpace(senderUserID)) {
+                result.SenderUserID = senderUserID.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
+                if (result.SenderUserID.ToLower().Trim() == settings_MatrixNick.ToLower().Trim())
+                    result.DoubleRelayDetected = true;
+                if (matrixRoomID == defaultMatrixRoomID && !result.DoubleRelayDetected) {
                     result.SendMessage = true;
-                    result.SenderUserID = senderUserID.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                    result.SenderUserID = senderUserID.Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
                     var splt = message.Split(' ');
                     if (message.Contains("<") && message.Contains(">")) {
                         try {
@@ -83,7 +82,7 @@
                         if (message.Substring(0, 3) == "> <") {
                             var msg2 = message.Substring(2, message.Length - 2);
                             var splt2 = msg2.Split(' ');
-                            result.ReplyToNickname = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "") + "[m]";
+                            result.ReplyToNickname = splt2[0].Replace("<", "").Replace(">", "").Replace(":matrix.org", "").Replace(":myportal.social", "").Replace("@", "");
                             var splt3 = msg2.Split("\n\n");
                             result.Message = result.SenderUserID + ": " + result.ReplyToNickname + ": " + splt3[1];
                             result.RawMessage = splt3[1];

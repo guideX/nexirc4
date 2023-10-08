@@ -66,7 +66,7 @@ namespace nexIRC.Models {
         /// </summary>
         /// <param name="serverMessage"></param>
         /// <returns></returns>
-        public static Message Received(ServerMessage serverMessage) =>
+        public static Message Received(ServerMessageModel serverMessage) =>
             new Message(string.Empty, serverMessage.Text, serverMessage.Timestamp, isSentByClient: false);
     }
 }

@@ -1,12 +1,6 @@
 ﻿using nexIRC.Olm.Core;
 using System.Runtime.InteropServices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text;
-using System.Collections;
-using team_nexgen.core.Helpers;
-using System.Security.Cryptography;
-using System.Drawing;
-using System;
 namespace nexIRC.Olm {
     /// <summary>
     /// Group Api
@@ -380,7 +374,7 @@ namespace nexIRC.Olm {
                     }
                 }
             } catch (Exception ex) {
-                result.Message = ex.Message;
+                //result.Message = ex.Message;
             }
             return result;
         }

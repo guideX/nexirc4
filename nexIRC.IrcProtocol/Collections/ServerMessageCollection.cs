@@ -3,6 +3,6 @@ namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Server Message Collection
     /// </summary>
-    public class ServerMessageCollection : ObservableCollection<ServerMessage> {
+    public class ServerMessageCollection : ObservableCollection<ServerMessageModel> {
     }
 }

@@ -76,7 +76,7 @@ namespace nexIRC.ViewModels {
             ShowSettingsWindow = new Command(showSettingsAction);
             ShowAboutWindow = new Command(showAboutAction);
             App.EventAggregator.SubscribeOnPublishedThread(this);
-            _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel);
+            _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, Settings.Default.Nick, Settings.Default.MatrixUserName);
             _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
             _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
             _ircClient = App.CreateClient();

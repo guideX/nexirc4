@@ -3,7 +3,6 @@ using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.Messages;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -77,8 +76,7 @@ namespace nexIRC.ViewModels {
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             foreach (ChannelMessage message in e.NewItems) {
                 App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
-                if (!message.User.Nick.Contains("[m]"))
-                    _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + "[l]: " + message.Text);
+                _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
             }
         }
         /// <summary>

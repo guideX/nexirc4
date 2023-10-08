@@ -19,7 +19,7 @@
     Background="#3A3B3C">
     <StackPanel Margin="20,10,30,21" DataContext="{Binding Source={x:Static props:Settings.Default}}" Background="#3A3B3C">
         <TabControl Height="300">
-            <TabItem Header="IRC" Background="#3A3B3C" BorderThickness="0" FontFamily="Tahoma" >
+            <TabItem Header="IRC" Background="#3A3B3C" BorderThickness="1,1,1,1" FontFamily="Tahoma" >
                 <Grid Background="#3A3B3C" Height="300">
                     <StackPanel>
                         <Label FontFamily="Tahoma"  Margin="0,0,0,10" Content="User Information" FontWeight="Bold" Foreground="White" />
@@ -83,7 +83,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Matrix" Background="#3A3B3C" BorderThickness="0" FontFamily="Tahoma">
+            <TabItem Header="Matrix" Background="#3A3B3C" BorderThickness="1,1,1,1" FontFamily="Tahoma">
                 <Grid Height="300">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32*"/>
@@ -119,6 +119,7 @@
                             <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixChannel, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
                         </Grid>
                         <CheckBox Name="chkUseMultipleNicknames" Content="Use Multiple Nicknames" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMultipleNicknames}" />
+                        <CheckBox Name="chkUseMatrixDoubleRelayDetection" Content="Use Double Relay Detection" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMatrixDoubleRelayDetection}" />
                     </StackPanel>
                 </Grid>
             </TabItem>

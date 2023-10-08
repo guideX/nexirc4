@@ -237,7 +237,7 @@ namespace nexIRC.IrcProtocol {
             }
 
             if (!string.IsNullOrEmpty(text)) {
-                DispatcherInvoker.Invoke(() => ServerMessages.Add(new ServerMessage(text)));
+                DispatcherInvoker.Invoke(() => ServerMessages.Add(new ServerMessageModel(text)));
             }
 
             return Task.CompletedTask;

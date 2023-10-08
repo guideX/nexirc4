@@ -121,7 +121,7 @@ namespace nexIRC.ViewModels {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ServerMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
-            foreach (ServerMessage message in e.NewItems) {
+            foreach (ServerMessageModel message in e.NewItems) {
                 ShowText(message);
             }
         }
@@ -135,13 +135,13 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="message"></param>
         public void ShowText(string message) {
-            ShowText(new ServerMessage(message));
+            ShowText(new ServerMessageModel(message));
         }
         /// <summary>
         /// Show Text
         /// </summary>
         /// <param name="message"></param>
-        public void ShowText(ServerMessage message) {
+        public void ShowText(ServerMessageModel message) {
             App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
         }
         /// <summary>

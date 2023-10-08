@@ -69,7 +69,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="deviceID"></param>
-        public MatrixWrapper(string matrixNodeAddress, string userName, string password, string deviceID, string currentChannelID, string ircChannel) {
+        public MatrixWrapper(string matrixNodeAddress, string userName, string password, string deviceID, string currentChannelID, string ircChannel, string settings_IrcNickname, string settings_MatrixNick) {
             _currentChannelID = currentChannelID;
             _matrixClientFactory = new MatrixClientFactory();
             _matrixNodeAddress = matrixNodeAddress;
@@ -87,7 +87,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                                 SenderUserId = senderUserId,
                                 Message = message,
                                 EventType = Core.Infrastructure.Dto.Sync.Event.EventType.Message,
-                                Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, false)
+                                Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, false, settings_MatrixNick, settings_IrcNickname)
                             });
                     } else if (roomEvent is CreateRoomEvent) {
                         (string RoomId, string SenderUserId, string RoomCreatorUserId) = (CreateRoomEvent)roomEvent;
@@ -111,7 +111,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                     } else if (roomEvent is EncryptedEvent) {
                         (string roomId, string senderUserId, string message, string algorithm, string senderKey, string SenderSessionID) = (EncryptedEvent)roomEvent;
                         MatrixRoomEvent?.Invoke(this, new MatrixRoomEventArgs() {
-                            Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, true),
+                            Details = MessageHelper.GetMessageDetails(roomId, currentChannelID, ircChannel, message, senderUserId, true, settings_MatrixNick, settings_IrcNickname),
                             RoomId = roomId,
                             SenderUserId = senderUserId,
                             Message = message,
@@ -119,6 +119,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
                             Algorithm = algorithm,
                             SenderKey = senderKey,
                             SenderSessionID = SenderSessionID
+
                         });
                     }
                 }
