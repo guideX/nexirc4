@@ -1,11 +1,19 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// Ident
+    /// The Ident Protocol (Identification Protocol, Ident), specified in RFC 1413, is an Internet protocol that helps 
+    /// identify the user of a particular TCP connection. One popular daemon program for providing the ident service is identd
     /// </summary>
     public class Ident {
+        /// <summary>
+        /// Local Port - Generally 113
+        /// </summary>
+        private int _localPort;
+        /// <summary>
+        /// Remote Port
+        /// </summary>
+        private int _remotePort;
         /// <summary>
         /// Socket
         /// </summary>
@@ -27,14 +35,6 @@ namespace nexIRC.IrcProtocol {
         /// </summary>
         private AsyncCallback _callbackWrite;
         /// <summary>
-        /// Local Port
-        /// </summary>
-        private int _localPort;
-        /// <summary>
-        /// Remote Port
-        /// </summary>
-        private int _remotePort;
-        /// <summary>
         /// Username
         /// </summary>
         private string? _username;
@@ -46,10 +46,10 @@ namespace nexIRC.IrcProtocol {
         /// Constructor
         /// </summary>
         /// <param name="port"></param>
-        public Ident(int localPort, int remotePort, string username, string system) { 
+        public Ident(string username, string system = "UNIX", int localPort = 113, int remotePort = 6191) {
+            _username = username;
             _localPort = localPort;
             _remotePort = remotePort;
-            _username = username;
             _system = system;
             var ep = new IPEndPoint(IPAddress.Any, _localPort);
             _clientSocket = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -61,7 +61,7 @@ namespace nexIRC.IrcProtocol {
         /// Start
         /// </summary>
         public async void Start() {
-            Thread socketThread = new Thread(new ThreadStart(listen));
+            Thread socketThread = new(new ThreadStart(listen));
         }
         /// <summary>
         /// On Read Complete
@@ -75,15 +75,13 @@ namespace nexIRC.IrcProtocol {
             } else {
                 _networkStream.Close();
                 _clientSocket.Close();
-                _networkStream = null;
-                _clientSocket = null;
             }
         }
         /// <summary>
         /// Listen
         /// </summary>
         private void listen() {
-            _clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(" : USERID : UNIX : " + _username + Environment.NewLine));
+            _clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(" : USERID : " + _system + " : " + _username + Environment.NewLine));
             _clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(_localPort.ToString() + ", " + _remotePort.ToString() + " : SYSTEM : " + _system + Environment.NewLine));
             _clientSocket.Close();
         }

@@ -78,7 +78,6 @@ namespace nexIRC.IrcProtocol {
         public event CtcpHandler CtcpReceived;
         internal void OnCtcpReceived(CtcpEventArgs ctcp) {
             CtcpReceived?.Invoke(this, ctcp);
-
             CtcpCommands.HandleCtcp(this, ctcp);
         }
 

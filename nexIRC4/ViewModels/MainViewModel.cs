@@ -151,6 +151,7 @@ namespace nexIRC.ViewModels {
                 switch (e.EventType) {
                     case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
                         switch (e.Algorithm) {
+                            // THIS DOESN'T WORK YET !!!
                             case "m.megolm.v1.aes-sha2":
                                 var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
                                 if (decryptionResult.Success && decryptionResult.Bytes != null) {
@@ -171,14 +172,24 @@ namespace nexIRC.ViewModels {
                             } else {
                                 if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava speed");
+                                    System.Threading.Thread.Sleep(500);
+                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava speed");
                                 } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava elev")) {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava elev");
+                                    System.Threading.Thread.Sleep(500);
+                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava elev");
                                 } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava slope")) {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava slope");
+                                    System.Threading.Thread.Sleep(500);
+                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava slope");
                                 } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava")) {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava");
+                                    System.Threading.Thread.Sleep(500);
+                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava");
                                 } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!help")) {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!help");
+                                    System.Threading.Thread.Sleep(500);
+                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !help");
                                 } else {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
                                 }
