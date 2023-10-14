@@ -1,8 +1,6 @@
-﻿using ControlzEx.Theming;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using nexIRC.Messages;
 using nexIRC.Properties;
-using System.Windows;
 namespace nexIRC.Views {
     /// <summary>
     /// Settings Window
@@ -58,6 +56,7 @@ namespace nexIRC.Views {
             Settings.Default.MatrixPassword = MatrixPassword.Text;
             Settings.Default.MatrixUserName = MatrixUsername.Text;
             Settings.Default.UseMultipleNicknames = chkUseMultipleNicknames.IsChecked.Value;
+            Settings.Default.AutoReconnect = chkAutoReconnect.IsChecked.Value;
             Settings.Default.Save();
             //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
         }

@@ -120,6 +120,7 @@
                         </Grid>
                         <CheckBox Name="chkUseMultipleNicknames" Content="Use Multiple Nicknames" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMultipleNicknames}" />
                         <CheckBox Name="chkUseMatrixDoubleRelayDetection" Content="Use Double Relay Detection" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMatrixDoubleRelayDetection}" />
+                        <CheckBox Name="chkAutoReconnect" Content="Auto Reconnect" Height="23" Width="248" Foreground="White" IsChecked="{Binding AutoReconnect}" />
                     </StackPanel>
                 </Grid>
             </TabItem>

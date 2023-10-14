@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using nexIRC.Business.Helper;
+using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 namespace nexIRC.ViewModels {
@@ -19,11 +21,15 @@ namespace nexIRC.ViewModels {
         /// <param name="propertyName"></param>
         /// <returns></returns>
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null) {
-            if (!Equals(field, newValue)) {
-                field = newValue;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
+            try {
+                if (!Equals(field, newValue)) {
+                    field = newValue;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                    return true;
+                }
+            } catch (Exception ex) { 
+                ExceptionHelper.HandleException(ex);
+            } 
             return false;
         }
         /// <summary>

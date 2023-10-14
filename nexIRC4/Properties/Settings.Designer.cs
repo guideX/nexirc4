@@ -202,5 +202,17 @@ namespace nexIRC.Properties {
                 this["UseMultipleNicknames"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoReconnect {
+            get {
+                return ((bool)(this["AutoReconnect"]));
+            }
+            set {
+                this["AutoReconnect"] = value;
+            }
+        }
     }
 }

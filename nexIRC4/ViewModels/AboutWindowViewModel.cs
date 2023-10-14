@@ -1,4 +1,5 @@
 ﻿using MvvmHelpers.Commands;
+using nexIRC.Business.Helper;
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -20,18 +21,26 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="closeAction"></param>
         public AboutWindowViewModel(Action closeAction) {
-            CloseCommand = new Command(closeAction);
-            OpenLinkCommand = new Command(OpenLink);
+            try {
+                CloseCommand = new Command(closeAction);
+                OpenLinkCommand = new Command(OpenLink);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex);
+            }
         }
         /// <summary>
         /// Open Link
         /// </summary>
         /// <param name="link"></param>
         private void OpenLink(object link) {
-            if (!(link is Uri uri) || string.IsNullOrWhiteSpace(uri.OriginalString)) {
-                return;
+            try {
+                if (!(link is Uri uri) || string.IsNullOrWhiteSpace(uri.OriginalString)) {
+                    return;
+                }
+                Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex);
             }
-            Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
         }
     }
 }

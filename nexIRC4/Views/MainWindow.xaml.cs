@@ -29,7 +29,7 @@ namespace nexIRC.Views {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MainWindow_ContentRendered(object sender, EventArgs e) {
-            ShowSettingsWindowDialog();
+            if (!Settings.Default.AutoReconnect) ShowSettingsWindowDialog();
         }
         /// <summary>
         /// Show Settings Window Dialog
