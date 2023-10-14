@@ -1,6 +1,7 @@
-﻿namespace nexIRC.IrcProtocol.Messages
-{
-    public interface IServerMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Server Message
+    /// </summary>
+    public interface IServerMessage {
     }
 }

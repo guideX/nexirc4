@@ -27,10 +27,7 @@ namespace nexIRC.IrcProtocol.Ctcp
             switch (ctcp.CtcpCommand.ToUpper())
             {
                 case ACTION:
-                    var msg = "";
-                    msg = "2";
                     break;
-
                 case ERRMSG:
                     break;
                 case CLIENTINFO:

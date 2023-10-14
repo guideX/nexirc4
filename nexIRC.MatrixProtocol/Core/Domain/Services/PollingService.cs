@@ -1,19 +1,23 @@
 namespace nexIRC.MatrixProtocol.Core.Domain.Services {
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using nexIRC.Enum;
     using Infrastructure.Dto.Sync;
     using Infrastructure.Services;
     using MatrixRoom;
-    using Microsoft.Extensions.Logging;
-    using nexIRC.Enum;
     /// <summary>
     /// Polling Service
     /// </summary>
     public class PollingService : IPollingService {
+        /// <summary>
+        /// On Sync Batch Received
+        /// </summary>
+        public event EventHandler<SyncBatchEventArgs>? OnSyncBatchReceived;
         /// <summary>
         /// Event Service
         /// </summary>
@@ -61,10 +65,6 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// </summary>
         public bool IsSyncing { get; private set; }
         /// <summary>
-        /// On Sync Batch Received
-        /// </summary>
-        public event EventHandler<SyncBatchEventArgs> OnSyncBatchReceived;
-        /// <summary>
         /// Invited Rooms
         /// </summary>
         public MatrixRoom[] InvitedRooms => _matrixRooms.Values.Where(x => x.Status == nexIRC.Enum.MatrixRoomStatusEnum.Invited).ToArray();
@@ -94,28 +94,35 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// <param name="nextBatch"></param>
         /// <exception cref="NullReferenceException"></exception>
         public void Start(string? nextBatch = null) {
-            if (_pollingTimer == null)
-                throw new NullReferenceException("Call Init first.");
-            if (nextBatch != null)
-                _nextBatch = nextBatch;
-            _pollingTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(-1));
-            IsSyncing = true;
+            try {
+                if (_pollingTimer == null)
+                    throw new NullReferenceException("Call Init first.");
+                if (nextBatch != null)
+                    _nextBatch = nextBatch;
+                _pollingTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(-1));
+                IsSyncing = true;
+            } catch { 
+                // Don't care
+            }
         }
         /// <summary>
         /// Stop
         /// </summary>
         public void Stop() {
-            _cts?.Cancel();
-            if (_pollingTimer != null) _pollingTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            IsSyncing = false;
+            try {
+                _cts?.Cancel();
+                if (_pollingTimer != null) _pollingTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                IsSyncing = false;
+            } catch { 
+                // Don't care
+            }
         }
         /// <summary>
         /// Get Matrix Room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public MatrixRoom? GetMatrixRoom(string roomId) =>
-            _matrixRooms.TryGetValue(roomId, out MatrixRoom? matrixRoom) ? matrixRoom : null;
+        public MatrixRoom? GetMatrixRoom(string roomId) => _matrixRooms.TryGetValue(roomId, out MatrixRoom? matrixRoom) ? matrixRoom : null;
         /// <summary>
         /// Dispose
         /// </summary>
@@ -140,24 +147,24 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
                     _nextBatch = syncBatch.NextBatch;
                     _timeout = Constants.LaterSyncTimout;
                     RefreshRooms(syncBatch.MatrixRooms);
-                    OnSyncBatchReceived.Invoke(this, new SyncBatchEventArgs(syncBatch));
+                    if (OnSyncBatchReceived != null) OnSyncBatchReceived.Invoke(this, new SyncBatchEventArgs(syncBatch));
                     _pollingTimer?.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(-1));
                 }
             } catch (TaskCanceledException ex) {
                 if (_cts != null) {
-                    if (_cts.IsCancellationRequested) {
-                        _pollingTimer?.Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));
-                    }
+                    if (_cts.IsCancellationRequested && _pollingTimer != null) _pollingTimer.Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));
                     IsSyncing = false;
-                    _logger.LogError(
-                        "Polling cancelled, _cts.IsCancellationRequested {@IsCancellationRequested}:, {@Message}",
-                        _cts.IsCancellationRequested, ex.Message);
+                    if (_logger != null) {
+                        _logger.LogError(
+                            "Polling cancelled, _cts.IsCancellationRequested {@IsCancellationRequested}:, {@Message}",
+                            _cts.IsCancellationRequested, ex.Message);
+                    }
                 }
             } catch (Exception ex) {
                 _pollingTimer?
                     .Change(TimeSpan.FromMilliseconds(Constants.LaterSyncTimout), TimeSpan.FromMilliseconds(-1));
                 IsSyncing = false;
-                _logger?.LogError("Polling: exception occured. Message: {@Message}", ex.Message);
+                if (_logger != null) _logger.LogError("Polling: exception occured. Message: {@Message}", ex.Message);
             }
         }
         /// <summary>
@@ -165,19 +172,24 @@ namespace nexIRC.MatrixProtocol.Core.Domain.Services {
         /// </summary>
         /// <param name="matrixRooms"></param>
         private void RefreshRooms(List<MatrixRoom> matrixRooms) {
-            foreach (MatrixRoom room in matrixRooms)
-                if (!_matrixRooms.TryGetValue(room.Id, out MatrixRoom? retrievedRoom)) {
-                    if (!_matrixRooms.TryAdd(room.Id, room))
-                        _logger?.LogError("Can not add matrix room");
-                } else {
-                    var updatedUserIds = retrievedRoom
-                        .JoinedUserIds
-                        .Concat(room.JoinedUserIds)
-                        .Distinct()
-                        .ToList();
-                    var updatedRoom = new MatrixRoom(retrievedRoom.Id, room.Status, updatedUserIds);
-                    _matrixRooms.TryUpdate(room.Id, updatedRoom, retrievedRoom);
-                }
+            try {
+                foreach (MatrixRoom room in matrixRooms)
+                    if (!_matrixRooms.TryGetValue(room.Id, out MatrixRoom? retrievedRoom)) {
+                        if (!_matrixRooms.TryAdd(room.Id, room))
+                            if (_logger != null) _logger.LogError("Can not add matrix room");
+                    } else {
+                        var updatedUserIds = retrievedRoom
+                            .JoinedUserIds
+                            .Concat(room.JoinedUserIds)
+                            .Distinct()
+                            .ToList();
+                        var updatedRoom = new MatrixRoom(retrievedRoom.Id, room.Status, updatedUserIds);
+                        _matrixRooms.TryUpdate(room.Id, updatedRoom, retrievedRoom);
+                    }
+            } catch {
+                // Don't care
+            }
+
         }
     }
 }
