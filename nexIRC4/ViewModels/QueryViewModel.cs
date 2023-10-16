@@ -1,6 +1,8 @@
 ﻿using MvvmHelpers.Commands;
+using nexIRC.Business.Helper;
 using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
+using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 namespace nexIRC.ViewModels {
@@ -17,29 +19,44 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="query"></param>
         public QueryViewModel(Query query) {
-            Query = query;
-            query.Messages.CollectionChanged += Messages_CollectionChanged;
-            SendMessageCommand = new AsyncCommand(SendQueryMessage);
+            try {
+                Query = query;
+                query.Messages.CollectionChanged += Messages_CollectionChanged;
+                SendMessageCommand = new AsyncCommand(SendQueryMessage);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.QueryViewModel", AppPath);
+            }
         }
         /// <summary>
         /// Send Query Message
         /// </summary>
         /// <returns></returns>
         private async Task SendQueryMessage() {
-            if (string.IsNullOrWhiteSpace(Message)) {
-                return;
+            try {
+                if (string.IsNullOrWhiteSpace(Message)) {
+                    return;
+                }
+                Messages.Add(Models.Message.Sent(new QueryMessage(App.Client.User, Message)));
+                await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
+                Message = string.Empty;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage", AppPath);
             }
-            Messages.Add(Models.Message.Sent(new QueryMessage(App.Client.User, Message)));
-            await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
-            Message = string.Empty;
         }
 
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-            foreach (QueryMessage message in e.NewItems) {
-                App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
+            try {
+                foreach (QueryMessage message in e.NewItems) {
+                    App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.Messages_CollectionChanged", AppPath);
             }
         }
-
+        /// <summary>
+        /// To String
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() => Query.Nick;
     }
 }

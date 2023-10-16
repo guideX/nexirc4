@@ -9,6 +9,16 @@ namespace nexIRC.ViewModels {
     /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged {
         /// <summary>
+        /// App Path
+        /// </summary>
+        public string AppPath;
+        /// <summary>
+        /// Base View Model
+        /// </summary>
+        public BaseViewModel() {
+            AppPath = System.AppDomain.CurrentDomain.BaseDirectory;
+        }
+        /// <summary>
         /// App
         /// </summary>
         public App App => (App)Application.Current;
@@ -28,7 +38,7 @@ namespace nexIRC.ViewModels {
                     return true;
                 }
             } catch (Exception ex) { 
-                ExceptionHelper.HandleException(ex);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.SetProperty", AppPath);
             } 
             return false;
         }

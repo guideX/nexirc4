@@ -84,6 +84,7 @@ namespace nexIRC.IrcProtocol {
             _clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(" : USERID : " + _system + " : " + _username + Environment.NewLine));
             _clientSocket.Send(System.Text.Encoding.ASCII.GetBytes(_localPort.ToString() + ", " + _remotePort.ToString() + " : SYSTEM : " + _system + Environment.NewLine));
             _clientSocket.Close();
+            
         }
         /// <summary>
         /// on Write Complete

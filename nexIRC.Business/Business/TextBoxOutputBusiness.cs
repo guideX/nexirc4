@@ -1,13 +1,7 @@
 ﻿using nexIRC.Business.Enum;
+using nexIRC.Business.Helper;
 using nexIRC.Model;
 namespace nexIRC.Business.Business {
-    /// <summary>
-    /// Matrix Send Message
-    /// </summary>
-    public class MatrixSendMessageModel {
-        public string ChannelName { get; set; } = "";
-        public string Message { get; set; } = "";
-    }
     /// <summary>
     /// Text Box Output Business
     /// </summary>
@@ -20,7 +14,6 @@ namespace nexIRC.Business.Business {
         /// Matrix Join Channel
         /// </summary>
         private MatrixJoinChannelModel? _matrixJoinChannel;
-        
         /// <summary>
         /// Input
         /// </summary>
@@ -34,9 +27,14 @@ namespace nexIRC.Business.Business {
         /// </summary>
         private OutputEventEnum? _lastOutputEvent;
         /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
         /// Constructor
         /// </summary>
-        public TextBoxOutputBusiness(string input) {
+        public TextBoxOutputBusiness(string input, string appPath) {
+            _appPath = appPath;
             _input = input;
         }
         /// <summary>
@@ -54,16 +52,18 @@ namespace nexIRC.Business.Business {
                                     break;
                                 case "join":
                                     _lastOutputEvent = OutputEventEnum.JoinChannelMatrix;
-                                    _matrixJoinChannel = new MatrixJoinChannelModel();
-                                    _matrixJoinChannel.ChannelName = splt[2];
+                                    _matrixJoinChannel = new MatrixJoinChannelModel {
+                                        ChannelName = splt[2]
+                                    };
                                     break;
                                 case "autojoin":
                                     _lastOutputEvent = OutputEventEnum.AutoJoinMatrix;
                                     break;
                                 case "leave":
                                     _lastOutputEvent = OutputEventEnum.PartChannelMatrix;
-                                    _matrixJoinChannel = new MatrixJoinChannelModel();
-                                    _matrixJoinChannel.ChannelName = splt[2];
+                                    _matrixJoinChannel = new() {
+                                        ChannelName = splt[2]
+                                    };
                                     break;
                                 case "connect":
                                     _lastOutputEvent = OutputEventEnum.ConnectMatrix;
@@ -97,6 +97,7 @@ namespace nexIRC.Business.Business {
                 _lastPrivMsg = new PrivMsgParamModel() { 
                     Message = ex.Message
                 };
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Business.TextBoxOutputBusiness.Process", _appPath);
             }
         }
         /// <summary>

@@ -73,7 +73,7 @@ namespace nexIRC.ViewModels {
         private async Task SendServerMessage() {
             if (string.IsNullOrWhiteSpace(Message)) return;
             if (Message.StartsWith("/")) {
-                var tb = new TextBoxOutputBusiness(Message);
+                var tb = new TextBoxOutputBusiness(Message, System.AppDomain.CurrentDomain.BaseDirectory);
                 tb.Process();
                 //_matrixClient.LastException = null;
                 switch (tb.LastOutputEvent) {

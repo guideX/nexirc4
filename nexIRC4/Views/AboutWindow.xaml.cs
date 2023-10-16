@@ -3,9 +3,12 @@ using nexIRC.ViewModels;
 using System.Windows;
 namespace nexIRC.Views {
     /// <summary>
-    /// Interaction logic for AboutWindow.xaml
+    /// About Window
     /// </summary>
     public sealed partial class AboutWindow : MetroWindow {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         private AboutWindow() {
             InitializeComponent();
             DataContext = new AboutWindowViewModel(Close);

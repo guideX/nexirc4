@@ -9,6 +9,10 @@ namespace nexIRC.ViewModels {
     /// </summary>
     public class AboutWindowViewModel {
         /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
         /// Close Command
         /// </summary>
         public ICommand CloseCommand { get; }
@@ -22,10 +26,11 @@ namespace nexIRC.ViewModels {
         /// <param name="closeAction"></param>
         public AboutWindowViewModel(Action closeAction) {
             try {
+                _appPath = System.AppDomain.CurrentDomain.BaseDirectory;
                 CloseCommand = new Command(closeAction);
                 OpenLinkCommand = new Command(OpenLink);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.AboutWindowViewModel", _appPath);
             }
         }
         /// <summary>
@@ -39,7 +44,7 @@ namespace nexIRC.ViewModels {
                 }
                 Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.AboutWindowViewModel.OpenLink", _appPath);
             }
         }
     }
