@@ -1,4 +1,6 @@
 ﻿using nexIRC.IrcProtocol;
+using nexIRC.Model;
+
 namespace nexIRC.Messages {
     /// <summary>
     /// Open Query Message
@@ -7,11 +9,11 @@ namespace nexIRC.Messages {
         /// <summary>
         /// User
         /// </summary>
-        public User User { get; }
+        public UserModel User { get; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="user"></param>
-        public OpenQueryMessage(User user) => User = user;
+        public OpenQueryMessage(UserModel user) => User = user;
     }
 }

@@ -1,5 +1,4 @@
-﻿/*
-namespace nexIRC.IrcProtocol {
+﻿namespace nexIRC.Model {
     /// <summary>
     /// Server Message Model
     /// </summary>
@@ -21,4 +20,4 @@ namespace nexIRC.IrcProtocol {
             Timestamp = DateTime.Now;
         }
     }
-}*/
+}

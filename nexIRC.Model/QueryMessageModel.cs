@@ -1,24 +1,29 @@
-﻿/*
-namespace nexIRC.IrcProtocol {
+﻿namespace nexIRC.Model {
     /// <summary>
-    /// Server Message Model
+    /// Query Message Model
     /// </summary>
-    public class ServerMessageModel {
+    public class QueryMessageModel : EventArgs {
+        /// <summary>
+        /// User
+        /// </summary>
+        public UserModel User { get; }
         /// <summary>
         /// Text
         /// </summary>
         public string Text { get; }
         /// <summary>
-        /// Time stamp
+        /// Timestamp
         /// </summary>
         public DateTime Timestamp { get; }
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="user"></param>
         /// <param name="text"></param>
-        public ServerMessageModel(string text) {
+        public QueryMessageModel(UserModel user, string text) {
+            User = user;
             Text = text;
             Timestamp = DateTime.Now;
         }
     }
-}*/
+}

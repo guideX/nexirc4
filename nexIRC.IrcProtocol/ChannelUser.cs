@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using nexIRC.Model;
+using System.Collections;
 namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Represents a user in a specific channel
@@ -7,7 +8,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// User
         /// </summary>
-        public User User { get; }
+        public UserModel User { get; }
         /// <summary>
         /// Status
         /// </summary>
@@ -21,7 +22,7 @@ namespace nexIRC.IrcProtocol {
         /// </summary>
         /// <param name="user"></param>
         /// <param name="status"></param>
-        public ChannelUser(User user, string status) {
+        public ChannelUser(UserModel user, string status) {
             User = user;
             Status = status;
         }
@@ -29,7 +30,7 @@ namespace nexIRC.IrcProtocol {
         /// Costructor
         /// </summary>
         /// <param name="user"></param>
-        public ChannelUser(User user)
+        public ChannelUser(UserModel user)
             : this(user, string.Empty) {
         }
 

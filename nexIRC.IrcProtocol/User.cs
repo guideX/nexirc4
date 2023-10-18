@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿/*
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 namespace nexIRC.IrcProtocol {
     /// <summary>
@@ -33,4 +34,4 @@ namespace nexIRC.IrcProtocol {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-}
+}*/

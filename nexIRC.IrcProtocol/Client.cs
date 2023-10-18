@@ -2,6 +2,7 @@
 using nexIRC.IrcProtocol.Connection;
 using nexIRC.IrcProtocol.Ctcp;
 using nexIRC.IrcProtocol.Messages;
+using nexIRC.Model;
 using System.Reflection;
 namespace nexIRC.IrcProtocol {
     /// <summary>
@@ -29,7 +30,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Represents the user used to connect to the server
         /// </summary>
-        public User User { get; }
+        public UserModel User { get; }
 
         /// <summary>
         /// An observable collection representing server messages
@@ -93,7 +94,7 @@ namespace nexIRC.IrcProtocol {
         /// </summary>
         /// <param name="user">User who wishes to connect to the server</param>
         /// <param name="connection">IConnection implementation</param>
-        public Client(User user, IConnection connection) {
+        public Client(UserModel user, IConnection connection) {
             User = user;
             this.connection = connection;
 
@@ -110,7 +111,7 @@ namespace nexIRC.IrcProtocol {
         /// <param name="user">User who wishes to connect to the server</param>
         /// <param name="password">Password to use when connecting to the server</param>
         /// <param name="connection">IConnection implementation</param>
-        public Client(User user, string password, IConnection connection)
+        public Client(UserModel user, string password, IConnection connection)
             : this(user, connection) {
             this.password = password;
         }

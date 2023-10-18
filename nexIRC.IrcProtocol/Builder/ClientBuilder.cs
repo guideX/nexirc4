@@ -1,4 +1,6 @@
 ﻿using nexIRC.IrcProtocol.Connection;
+using nexIRC.Model;
+
 namespace nexIRC.IrcProtocol.Builder {
     /// <summary>
     /// Client Builder
@@ -7,7 +9,7 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <summary>
         /// User
         /// </summary>
-        private User? _user;
+        private UserModel? _user;
         /// <summary>
         /// Connection
         /// </summary>
@@ -28,7 +30,7 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <param name="realName">Real name you wish to use</param>
         /// <returns>The ClientBuilder</returns>
         public ClientBuilder WithNick(string nick, string realName = "") {
-            _user = new User(nick, realName);
+            _user = new UserModel(nick, realName);
             return this;
         }
 

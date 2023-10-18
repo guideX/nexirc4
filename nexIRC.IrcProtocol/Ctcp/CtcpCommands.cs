@@ -1,5 +1,6 @@
 ﻿using nexIRC.IrcProtocol.Messages;
 using nexIRC.IrcProtocol.Messages.Handlers;
+using nexIRC.Model;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace nexIRC.IrcProtocol.Ctcp {
             switch (ctcp.CtcpCommand.ToUpper()) {
                 case ACTION:
                     var channel = client.Channels.Where(c => c.Name == ctcp.To).FirstOrDefault();
-                    if (channel != null) channel.Messages.Add(new ChannelMessage(new User(ctcp.From), channel, ctcp.From + ctcp.Message.Remove(0, 7)));
+                    if (channel != null) channel.Messages.Add(new ChannelMessage(new UserModel(ctcp.From), channel, ctcp.From + ctcp.Message.Remove(0, 7)));
                     break;
                 case ERRMSG:
                     break;

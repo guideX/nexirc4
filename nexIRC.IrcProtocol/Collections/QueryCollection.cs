@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using nexIRC.Model;
+using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Query Collection
@@ -9,7 +10,7 @@ namespace nexIRC.IrcProtocol {
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public Query GetQuery(User user) {
+        public Query GetQuery(UserModel user) {
             var query = Items.FirstOrDefault(q => q.User.Nick == user.Nick);
             if (query is null) {
                 query = new Query(user);

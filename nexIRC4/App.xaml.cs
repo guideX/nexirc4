@@ -1,6 +1,7 @@
 ﻿using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Connection;
 using nexIRC.Messages;
+using nexIRC.Model;
 using nexIRC.Properties;
 using System;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace nexIRC {
         public Client CreateClient() {
             if (IsConnected) 
                 return null;
-            var user = new User(Settings.Default.Nick, Settings.Default.RealName);
+            var user = new UserModel(Settings.Default.Nick, Settings.Default.RealName);
             var connection = new TcpClientConnection(Settings.Default.ServerAddress, Convert.ToInt32(Settings.Default.ServerPort));
             connection.Connected += (s, e) => IsConnected = true;
             connection.Disconnected += async (s, e) => await Disconnected();

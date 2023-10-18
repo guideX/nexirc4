@@ -72,7 +72,7 @@ namespace nexIRC.IrcProtocol
 
             if (IsNumericReply(Command))
             {
-                Enum.TryParse(Command, out IRCNumericReply numericReply);
+                System.Enum.TryParse(Command, out IRCNumericReply numericReply);
                 NumericReply = numericReply;
 
                 // If numericReply's value is still considered a numeric reply, then it's unknown
@@ -82,7 +82,7 @@ namespace nexIRC.IrcProtocol
                     NumericReply = IRCNumericReply.UNKNOWN;
                 }
             }
-            else if (Enum.TryParse(Command, out IRCCommand ircCommand))
+            else if (System.Enum.TryParse(Command, out IRCCommand ircCommand))
             {
                 IRCCommand = ircCommand;
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using nexIRC.Model;
+using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Server Message Collection

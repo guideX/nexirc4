@@ -2,6 +2,7 @@
 using nexIRC.Business.Helper;
 using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
+using nexIRC.Model;
 using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace nexIRC.ViewModels {
                 if (string.IsNullOrWhiteSpace(Message)) {
                     return;
                 }
-                Messages.Add(Models.Message.Sent(new QueryMessage(App.Client.User, Message)));
+                Messages.Add(Models.Message.Sent(new QueryMessageModel(App.Client.User, Message)));
                 await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
                 Message = string.Empty;
             } catch (Exception ex) {
@@ -46,7 +47,7 @@ namespace nexIRC.ViewModels {
 
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (QueryMessage message in e.NewItems) {
+                foreach (QueryMessageModel message in e.NewItems) {
                     App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
                 }
             } catch (Exception ex) {

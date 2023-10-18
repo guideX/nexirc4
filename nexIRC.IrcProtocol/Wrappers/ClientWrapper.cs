@@ -1,4 +1,6 @@
 ﻿using nexIRC.IrcProtocol.Messages;
+using nexIRC.Model;
+
 namespace nexIRC.IrcProtocol.Wrappers {
     /// <summary>
     /// Client Wrapper
@@ -100,7 +102,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
             _connection = new IrcProtocol.Connection.TcpClientConnection(host, Convert.ToInt32(port));
             _connection.Disconnected += _connection_Disconnected;
             _connection.Connected += _connection_Connected;
-            _client = new Client(new User(user, realName), _connection);
+            _client = new Client(new UserModel(user, realName), _connection);
             _client.RegistrationCompleted += _client_RegistrationCompleted;
             _messagesToSend = new List<ClientMessageToSend>();
         }

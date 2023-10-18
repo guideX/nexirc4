@@ -5,6 +5,7 @@ using nexIRC.IrcProtocol.Collections;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
+using nexIRC.Model;
 using nexIRC.Olm;
 using nexIRC.Properties;
 using System;
@@ -294,7 +295,7 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        private TabItemViewModel FindQueryTab(User user) {
+        private TabItemViewModel FindQueryTab(UserModel user) {
             try {
                 return Tabs.OfType<QueryViewModel>().FirstOrDefault(q => q.Query.User == user);
             } catch (Exception ex) {

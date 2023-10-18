@@ -1,4 +1,6 @@
-﻿using System;
+﻿/*
+using nexIRC.Model;
+using System;
 
 namespace nexIRC.IrcProtocol
 {
@@ -7,11 +9,11 @@ namespace nexIRC.IrcProtocol
     /// </summary>
     public class QueryMessage : EventArgs
     {
-        public User User { get; }
+        public UserModel User { get; }
         public string Text { get; }
         public DateTime Timestamp { get; }
 
-        public QueryMessage(User user, string text)
+        public QueryMessage(UserModel user, string text)
         {
             User = user;
             Text = text;

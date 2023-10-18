@@ -6,7 +6,6 @@ using nexIRC.Business.Business;
 using nexIRC.Properties;
 using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Model;
-
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Server View Model
@@ -61,7 +60,7 @@ namespace nexIRC.ViewModels {
                         if (tab != null)
                             App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
                                 new UserModel(e.Details.SenderUserID),
-                                new Channel(e.Details.IrcChannel),
+                                new nexIRC.IrcProtocol.Channel(e.Details.IrcChannel),
                                 e.Details.Message
                             ))));
                     }
@@ -137,13 +136,13 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="message"></param>
         public void ShowText(string message) {
-            ShowText(new ServerMessageModel(message));
+            ShowText(new ServerMessageModel(message).Text);
         }
         /// <summary>
         /// Show Text
         /// </summary>
         /// <param name="message"></param>
-        public void ShowText(ServerMessageModel message) {
+        public void ShowText(QueryMessage message) {
             App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
         }
         /// <summary>

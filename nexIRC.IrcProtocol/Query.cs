@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using nexIRC.Model;
+using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Query
@@ -7,7 +8,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// User
         /// </summary>
-        public User User { get; }
+        public UserModel User { get; }
         /// <summary>
         /// Nick
         /// </summary>
@@ -15,14 +16,14 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Messages
         /// </summary>
-        public ObservableCollection<QueryMessage> Messages { get; }
+        public ObservableCollection<QueryMessageModel> Messages { get; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="user"></param>
-        public Query(User user) {
+        public Query(UserModel user) {
             User = user;
-            Messages = new ObservableCollection<QueryMessage>();
+            Messages = new ObservableCollection<QueryMessageModel>();
         }
     }
 }

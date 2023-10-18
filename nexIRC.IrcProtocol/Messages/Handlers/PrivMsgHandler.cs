@@ -1,4 +1,5 @@
 ﻿using nexIRC.IrcProtocol.Ctcp;
+using nexIRC.Model;
 using System.Threading.Tasks;
 
 namespace nexIRC.IrcProtocol.Messages.Handlers
@@ -24,7 +25,7 @@ namespace nexIRC.IrcProtocol.Messages.Handlers
             else
             {
                 var query = client.Queries.GetQuery(user);
-                var message = new QueryMessage(user, serverMessage.Message);
+                var message = new QueryMessageModel(user, serverMessage.Message);
                 Client.DispatcherInvoker.Invoke(() => query.Messages.Add(message));
             }
 
