@@ -3,6 +3,7 @@ using nexIRC.Business.Helper;
 using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.Messages;
+using nexIRC.Model;
 using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace nexIRC.ViewModels {
                 channel.Messages.CollectionChanged += Messages_CollectionChanged;
                 SendMessageCommand = new AsyncCommand(SendChannelMessage);
                 SortUsersCommand = new Command(SortUsers);
-                OpenQueryCommand = new AsyncCommand<ChannelUser>(OpenQuery);
+                OpenQueryCommand = new AsyncCommand<ChannelUserModel>(OpenQuery);
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel", AppPath);
             }
@@ -63,7 +64,7 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="channelUser"></param>
         /// <returns></returns>
-        private async Task OpenQuery(ChannelUser channelUser) {
+        private async Task OpenQuery(ChannelUserModel channelUser) {
             try {
                 await App.EventAggregator.PublishOnUIThreadAsync(new OpenQueryMessage(channelUser.User));
             } catch (Exception ex) {

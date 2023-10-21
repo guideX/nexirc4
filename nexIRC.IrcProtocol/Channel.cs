@@ -12,7 +12,7 @@ namespace nexIRC.IrcProtocol
         public string Name { get; }
         public string Topic { get; private set; }
 
-        public ObservableCollection<ChannelUser> Users { get; }
+        public ObservableCollection<ChannelUserModel> Users { get; }
         public ObservableCollection<ChannelMessage> Messages { get; }
 
         internal static char[] UserStatuses = new[] { '~', '&', '@', '%', '+' };
@@ -20,7 +20,7 @@ namespace nexIRC.IrcProtocol
         public Channel(string name)
         {
             Name = name;
-            Users = new ObservableCollection<ChannelUser>();
+            Users = new ObservableCollection<ChannelUserModel>();
             Messages = new ObservableCollection<ChannelMessage>();
         }
 
@@ -31,7 +31,7 @@ namespace nexIRC.IrcProtocol
 
         internal void AddUser(UserModel user, string status)
         {
-            Client.DispatcherInvoker.Invoke(() => Users.Add(new ChannelUser(user, status)));
+            Client.DispatcherInvoker.Invoke(() => Users.Add(new ChannelUserModel(user, status)));
         }
 
         internal void RemoveUser(string nick)
@@ -48,7 +48,7 @@ namespace nexIRC.IrcProtocol
             Topic = topic;
         }
 
-        public ChannelUser GetUser(string nick)
+        public ChannelUserModel GetUser(string nick)
             => Users.FirstOrDefault(u => string.Equals(u.Nick, nick, StringComparison.InvariantCultureIgnoreCase));
     }
 }

@@ -1,4 +1,5 @@
-﻿using nexIRC.IrcProtocol.Extensions;
+﻿using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol.Extensions;
 using System.Net.Sockets;
 namespace nexIRC.IrcProtocol.Connection {
     /// <summary>
@@ -8,15 +9,15 @@ namespace nexIRC.IrcProtocol.Connection {
         /// <summary>
         /// Tcp Client
         /// </summary>
-        private TcpClient tcpClient;
+        private TcpClient? tcpClient;
         /// <summary>
         /// Stream Reader
         /// </summary>
-        private StreamReader streamReader;
+        private StreamReader? streamReader;
         /// <summary>
         /// Stream Writer
         /// </summary>
-        private StreamWriter streamWriter;
+        private StreamWriter? streamWriter;
         /// <summary>
         /// Disposed
         /// </summary>
@@ -24,15 +25,15 @@ namespace nexIRC.IrcProtocol.Connection {
         /// <summary>
         /// Indicates that data has been received through the connection
         /// </summary>
-        public event EventHandler<DataReceivedEventArgs> DataReceived;
+        public event EventHandler<DataReceivedEventArgs>? DataReceived;
         /// <summary>
         /// Indicates that the TCP connection is completed
         /// </summary>
-        public event EventHandler Connected;
+        public event EventHandler? Connected;
         /// <summary>
         /// Indicates that the TCP connection was closed
         /// </summary>
-        public event EventHandler Disconnected;
+        public event EventHandler? Disconnected;
         /// <summary>
         /// Host
         /// </summary>
@@ -102,8 +103,8 @@ namespace nexIRC.IrcProtocol.Connection {
         /// <param name="data">Data to be sent</param>
         /// <returns>The task object representing the asynchronous operation</returns>
         public async Task SendAsync(string data) {
-            if (!data.EndsWith(Constants.CrLf)) {
-                data += Constants.CrLf;
+            if (!data.EndsWith(ConstantsHelper.CrLf)) {
+                data += ConstantsHelper.CrLf;
             }
 
             await streamWriter.WriteAsync(data)

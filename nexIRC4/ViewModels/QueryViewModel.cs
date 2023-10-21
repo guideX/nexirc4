@@ -14,12 +14,12 @@ namespace nexIRC.ViewModels {
         /// <summary>
         /// Query
         /// </summary>
-        public Query Query { get; }
+        public QueryModel Query { get; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="query"></param>
-        public QueryViewModel(Query query) {
+        public QueryViewModel(QueryModel query) {
             try {
                 Query = query;
                 query.Messages.CollectionChanged += Messages_CollectionChanged;

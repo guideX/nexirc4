@@ -1,6 +1,4 @@
-﻿using nexIRC.IrcProtocol;
-using nexIRC.Model;
-
+﻿using nexIRC.Model;
 namespace nexIRC.Messages {
     /// <summary>
     /// Open Query Message

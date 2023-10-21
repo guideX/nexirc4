@@ -6,7 +6,6 @@ using nexIRC.Business.Business;
 using nexIRC.Properties;
 using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Model;
-
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Server View Model

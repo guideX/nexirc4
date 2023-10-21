@@ -1,4 +1,5 @@
-﻿using nexIRC.Model;
+﻿/*
+using nexIRC.Model;
 using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
@@ -26,4 +27,4 @@ namespace nexIRC.IrcProtocol {
             Messages = new ObservableCollection<QueryMessageModel>();
         }
     }
-}
+}*/

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Messages\**" />
+    <EmbeddedResource Remove="Messages\**" />
+    <None Remove="Messages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
   </ItemGroup>
 

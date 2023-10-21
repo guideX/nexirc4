@@ -273,7 +273,7 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Queries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (Query query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query)));
+                foreach (QueryModel query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query)));
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Queries_CollectionChanged", AppPath);
             }

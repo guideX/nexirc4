@@ -1,51 +1,43 @@
-﻿using System;
+﻿using nexIRC.Business.Helper;
+using System;
 using System.Linq;
 using System.Text;
 
-namespace nexIRC.IrcProtocol.Messages
-{
-    public abstract class IRCMessage
-    {
+namespace nexIRC.IrcProtocol.Messages {
+    public abstract class IRCMessage {
         /// <summary>
         /// When this IRC message was created
         /// </summary>
         public DateTime CreatedDate { get; } = DateTime.Now;
 
-        public override string ToString()
-        {
-            return this switch
-            {
+        public override string ToString() {
+            return this switch {
                 ISplitClientMessage clientMessage => BuildClientMessage(clientMessage),
                 IClientMessage clientMessage => BuildClientMessage(clientMessage),
-                _ => base.ToString(),
+                _ => base.ToString()!,
             };
         }
 
-        private string BuildClientMessage(ISplitClientMessage clientMessage)
-        {
+        private string BuildClientMessage(ISplitClientMessage clientMessage) {
             var sb = new StringBuilder(1024);
 
-            foreach (var tokens in clientMessage.LineSplitTokens)
-            {
-                if (tokens.Length == 0)
-                {
+            foreach (var tokens in clientMessage.LineSplitTokens) {
+                if (tokens.Length == 0) {
                     continue;
                 }
 
                 AppendTokens(sb, tokens);
 
-                sb.Append(Constants.CrLf);
+                sb.Append(ConstantsHelper.CrLf);
             }
 
             return sb.ToString().Trim();
         }
 
-        private string BuildClientMessage(IClientMessage clientMessage)
-        {
+        private string BuildClientMessage(IClientMessage clientMessage) {
             var tokens = clientMessage.Tokens.ToArray();
 
-            if (tokens.Length == 0)
-            {
+            if (tokens.Length == 0) {
                 return string.Empty;
             }
 
@@ -56,8 +48,7 @@ namespace nexIRC.IrcProtocol.Messages
             return sb.ToString().Trim();
         }
 
-        private static void AppendTokens(StringBuilder sb, string[] tokens)
-        {
+        private static void AppendTokens(StringBuilder sb, string[] tokens) {
             var lastIndex = tokens.Length - 1;
 
             try {
@@ -72,7 +63,7 @@ namespace nexIRC.IrcProtocol.Messages
                         sb.Append(' ');
                     }
                 }
-            } catch { 
+            } catch {
 
             }
         }

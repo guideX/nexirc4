@@ -1,6 +1,5 @@
 ﻿using nexIRC.IrcProtocol.Connection;
 using nexIRC.Model;
-
 namespace nexIRC.IrcProtocol.Builder {
     /// <summary>
     /// Client Builder
@@ -33,7 +32,6 @@ namespace nexIRC.IrcProtocol.Builder {
             _user = new UserModel(nick, realName);
             return this;
         }
-
         /// <summary>
         /// 
         /// </summary>

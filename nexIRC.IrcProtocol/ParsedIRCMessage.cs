@@ -1,100 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace nexIRC.IrcProtocol
-{
+﻿namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// Represents a parsed IRC message, providing information about it
+    /// Parsed IRC Message
     /// </summary>
-    public class ParsedIRCMessage
-    {
+    public class ParsedIRCMessage {
         /// <summary>
-        /// The raw message received from the server
+        /// Raw
         /// </summary>
         public string Raw { get; }
-
+        /// <summary>
+        /// Trailing Prefix
+        /// </summary>
         private readonly static char[] TrailingPrefix = { ' ', ':' };
+        /// <summary>
+        /// Space
+        /// </summary>
         private readonly static char[] Space = { ' ' };
-
         /// <summary>
         /// The prefix of the message
         /// </summary>
-        public IRCPrefix Prefix { get; private set; }
-
+        public IRCPrefix? Prefix { get; private set; }
         /// <summary>
-        /// The command received
+        /// Command
         /// </summary>
-        public string Command { get; private set; }
-
+        public string? Command { get; private set; }
         /// <summary>
-        /// Provides all parameters received in the message
+        /// Parameters
         /// </summary>
-        public string[] Parameters { get; private set; }
-
+        public string[]? Parameters { get; private set; }
         /// <summary>
-        /// Represents the last parameters in the message
+        /// Trailing
         /// </summary>
         public string Trailing => Parameters != null ? Parameters[Parameters.Length - 1] : string.Empty;
-
         /// <summary>
-        /// An Enum representing the IRC command
+        /// IRC Command
         /// </summary>
         public IRCCommand IRCCommand { get; private set; }
-
         /// <summary>
-        /// An Enum representing the IRC numeric reply
+        /// Numeric Reply
         /// </summary>
         public IRCNumericReply NumericReply { get; private set; }
-
         /// <summary>
-        /// Provides you a way to quickly check if the message is a numeric reply
+        /// Is Numeric
         /// </summary>
         public bool IsNumeric => NumericReply != IRCNumericReply.UNKNOWN;
-
         /// <summary>
-        /// Initializes a new instance of ParsedIRCMessage, parsing the raw data
+        /// Constructor
         /// </summary>
         /// <param name="rawData">Raw data to be parsed</param>
-        public ParsedIRCMessage(string rawData)
-        {
+        public ParsedIRCMessage(string rawData) {
             Raw = rawData;
             Parse(rawData.AsSpan());
             ParseIRCEnums();
         }
-
-        private void ParseIRCEnums()
-        {
-            if (string.IsNullOrEmpty(Command))
-            {
+        private void ParseIRCEnums() {
+            if (string.IsNullOrEmpty(Command)) {
                 return;
             }
-
-            if (IsNumericReply(Command))
-            {
+            if (IsNumericReply(Command)) {
                 System.Enum.TryParse(Command, out IRCNumericReply numericReply);
                 NumericReply = numericReply;
-
                 // If numericReply's value is still considered a numeric reply, then it's unknown
                 // because at this point it should be something like RPL_WELCOME, or another member of IRCNumericReply
-                if (IsNumericReply(numericReply.ToString()))
-                {
+                if (IsNumericReply(numericReply.ToString())) {
                     NumericReply = IRCNumericReply.UNKNOWN;
                 }
-            }
-            else if (System.Enum.TryParse(Command, out IRCCommand ircCommand))
-            {
+            } else if (System.Enum.TryParse(Command, out IRCCommand ircCommand)) {
                 IRCCommand = ircCommand;
             }
         }
 
-        private void Parse(ReadOnlySpan<char> rawData)
-        {
+        private void Parse(ReadOnlySpan<char> rawData) {
             var trailing = string.Empty;
             var indexOfNextSpace = 0;
 
-            if (RawDataHasPrefix)
-            {
+            if (RawDataHasPrefix) {
                 indexOfNextSpace = rawData.IndexOf(Space);
                 var prefixData = rawData.Slice(1, indexOfNextSpace - 1);
                 Prefix = new IRCPrefix(prefixData.ToString());
@@ -102,18 +81,15 @@ namespace nexIRC.IrcProtocol
             }
 
             var indexOfTrailingStart = rawData.IndexOf(TrailingPrefix);
-            if (indexOfTrailingStart > -1)
-            {
+            if (indexOfTrailingStart > -1) {
                 trailing = rawData.Slice(indexOfTrailingStart + 2).Trim().ToString();
                 rawData = rawData.Slice(0, indexOfTrailingStart);
             }
 
-            if (DataDoesNotContainSpaces(rawData))
-            {
+            if (DataDoesNotContainSpaces(rawData)) {
                 Command = rawData.ToString();
 
-                if (!string.IsNullOrEmpty(trailing))
-                {
+                if (!string.IsNullOrEmpty(trailing)) {
                     Parameters = new[] { trailing };
                 }
 
@@ -126,19 +102,16 @@ namespace nexIRC.IrcProtocol
 
             var parameters = new List<string>();
 
-            while ((indexOfNextSpace = rawData.IndexOf(Space)) > -1)
-            {
+            while ((indexOfNextSpace = rawData.IndexOf(Space)) > -1) {
                 parameters.Add(rawData.Slice(0, indexOfNextSpace).ToString());
                 rawData = rawData.Slice(indexOfNextSpace + 1);
             }
 
-            if (!rawData.IsWhiteSpace())
-            {
+            if (!rawData.IsWhiteSpace()) {
                 parameters.Add(rawData.ToString());
             }
 
-            if (!string.IsNullOrEmpty(trailing))
-            {
+            if (!string.IsNullOrEmpty(trailing)) {
                 parameters.Add(trailing);
             }
 
@@ -148,15 +121,17 @@ namespace nexIRC.IrcProtocol
         private bool RawDataHasPrefix => Raw.StartsWith(":");
 
         private bool DataDoesNotContainSpaces(ReadOnlySpan<char> data) => !data.Contains(Space, StringComparison.InvariantCultureIgnoreCase);
-
+        /// <summary>
+        /// Is Numeric Reply
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         private bool IsNumericReply(string command) => command.Length == 3 && command.ToCharArray().All(char.IsDigit);
-
         /// <summary>
         /// Returns a string that represents the parsed IRC message
         /// </summary>
         /// <returns>String that represents the parsed IRC message</returns>
-        public override string ToString()
-        {
+        public override string ToString() {
             var paramsDescription = Parameters != null ? "{ " + string.Join(", ", Parameters) + " }" : string.Empty;
             return $"Prefix: {Prefix}, Command: {Command}, Params: {paramsDescription}, Trailing: {Trailing}";
         }

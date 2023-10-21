@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Constants.cs" />
+    <Compile Remove="Query.cs" />
     <Compile Remove="QueryMessage.cs" />
     <Compile Remove="ServerMessageModel.cs" />
     <Compile Remove="User.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
     <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
   </ItemGroup>
 
