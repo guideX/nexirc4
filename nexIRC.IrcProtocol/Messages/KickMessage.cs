@@ -9,8 +9,8 @@
 
         public KickMessage(ParsedIRCMessage parsedMessage)
         {
-            KickedBy = parsedMessage.Prefix.From;
-            Channel = parsedMessage.Parameters[0];
+            KickedBy = parsedMessage.Prefix!.From;
+            Channel = parsedMessage.Parameters![0];
             Nick = parsedMessage.Parameters[1];
             Comment = parsedMessage.Trailing;
         }

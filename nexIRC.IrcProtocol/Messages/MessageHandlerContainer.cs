@@ -82,7 +82,7 @@ namespace nexIRC.IrcProtocol.Messages
         {
             var handlers = assembly
                 .GetExportedTypes()
-                .Where(t => !t.IsInterface && !t.IsAbstract && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(MessageHandler<>))
+                .Where(t => !t.IsInterface && !t.IsAbstract && t.BaseType!.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(MessageHandler<>))
                 .SelectMany(t => t.GetInterfaces(), (parent, child) => new MessageHandler(parent, child.GetGenericArguments().First()))
                 .ToArray();
 
@@ -96,7 +96,7 @@ namespace nexIRC.IrcProtocol.Messages
 
         private bool IsCustomMessageHandler(Type t)
         {
-            return !t.IsInterface && !t.IsAbstract && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(CustomMessageHandler<>);
+            return !t.IsInterface && !t.IsAbstract && t.BaseType!.IsGenericType && t.BaseType.GetGenericTypeDefinition() == typeof(CustomMessageHandler<>);
         }
 
         private string GetCommand(MessageHandler handler)
@@ -130,7 +130,7 @@ namespace nexIRC.IrcProtocol.Messages
 
             if (!defaultMessageHandlers.TryGetValue(parsedIRCMessage.Command, out var messageHandler))
             {
-                return null;
+                return null!;
             }
 
             return await InvokeHandler<object>(parsedIRCMessage, messageHandler)
@@ -144,10 +144,10 @@ namespace nexIRC.IrcProtocol.Messages
             var handler = Activator.CreateInstance(messageHandler.HandlerType);
 
             messageHandler.HandlerType
-                .GetProperty("Message")
+                .GetProperty("Message")!
                 .SetValue(handler, message);
 
-            await ((Task)messageHandler.HandleMethod.Invoke(handler, new object[] { message, client }))
+            await ((Task)messageHandler.HandleMethod.Invoke(handler, new object[] { message!, client })!)
                 .ConfigureAwait(false);
 
             return handler as T;

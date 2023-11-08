@@ -152,12 +152,15 @@ namespace nexIRC.ViewModels {
                         switch (e.Algorithm) {
                             // THIS DOESN'T WORK YET !!!
                             case "m.megolm.v1.aes-sha2":
+                                e.Message = "Warning: Decryption Failure";
+                                /*
                                 var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
                                 if (decryptionResult.Success && decryptionResult.Bytes != null) {
                                     e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
                                 } else {
                                     e.Message = "Warning: Decryption Failure";
                                 }
+                                */
                                 /*
                                 var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
                                 */

@@ -9,7 +9,7 @@
         {
             Nicks = new Dictionary<string, string>();
 
-            Channel = parsedMessage.Parameters[2];
+            Channel = parsedMessage.Parameters![2];
             var nicks = parsedMessage.Trailing.Split(' ');
 
             foreach (var nick in nicks)

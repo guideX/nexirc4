@@ -12,8 +12,8 @@ namespace nexIRC.IrcProtocol.Messages
 
         public ModeMessage(ParsedIRCMessage parsedMessage)
         {
-            Prefix = parsedMessage.Prefix;
-            Target = parsedMessage.Parameters[0];
+            Prefix = parsedMessage.Prefix!;
+            Target = parsedMessage.Parameters![0];
             Modes = parsedMessage.Parameters[1] ?? parsedMessage.Trailing;
             if (parsedMessage.Parameters.Length > 2)
             {

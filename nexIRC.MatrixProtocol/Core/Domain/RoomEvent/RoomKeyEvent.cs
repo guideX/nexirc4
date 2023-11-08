@@ -24,7 +24,7 @@
             public static bool TryCreateFrom(RoomEvent roomEvent, string roomId, out RoomKeyEvent roomKeyEvent) {
                 var content = roomEvent.Content.ToObject<RoomKeyContent>();
                 if (roomEvent.EventType == EventType.RoomKey) {
-                    roomKeyEvent = new RoomKeyEvent(roomId, roomEvent.SenderUserId, content.session_id, content.session_key);
+                    roomKeyEvent = new RoomKeyEvent(roomId, roomEvent.SenderUserId, content!.session_id, content.session_key);
                     return true;
                 }
                 roomKeyEvent = new RoomKeyEvent("", "", "", "");
@@ -40,7 +40,7 @@
             public static bool TryCreateFromStrippedState(RoomStrippedState roomStrippedState, string roomId, out RoomKeyEvent roomKeyEvent) {
                 var content = roomStrippedState.Content.ToObject<RoomKeyContent>();
                 if (roomStrippedState.EventType == EventType.RoomKey) {
-                    roomKeyEvent = new RoomKeyEvent(roomId, roomStrippedState.SenderUserId, content.session_id, content.session_key);
+                    roomKeyEvent = new RoomKeyEvent(roomId, roomStrippedState.SenderUserId, content!.session_id, content.session_key);
                     return true;
                 }
                 roomKeyEvent = new RoomKeyEvent("", "", "", "");

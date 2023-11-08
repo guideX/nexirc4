@@ -9,8 +9,8 @@ namespace nexIRC.IrcProtocol.Messages
 
         public NickMessage(ParsedIRCMessage parsedMessage)
         {
-            OldNick = parsedMessage.Prefix.From;
-            NewNick = parsedMessage.Parameters[0];
+            OldNick = parsedMessage.Prefix!.From;
+            NewNick = parsedMessage.Parameters![0];
         }
 
         public NickMessage(string newNick)

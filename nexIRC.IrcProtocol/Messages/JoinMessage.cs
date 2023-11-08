@@ -1,38 +1,86 @@
-﻿using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public class JoinMessage : IRCMessage, IServerMessage, IClientMessage
-    {
-        private readonly string channels;
-        private readonly string keys = string.Empty;
-
-        public string Nick { get; }
-        public string Channel { get; }
-
-        public JoinMessage(ParsedIRCMessage parsedMessage)
-        {
-            Nick = parsedMessage.Prefix.From;
-            Channel = parsedMessage.Parameters[0];
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Join Message
+    /// </summary>
+    public class JoinMessage : IRCMessage, IServerMessage, IClientMessage {
+        #region "private variables"
+        /// <summary>
+        /// Nick
+        /// </summary>
+        private readonly string _nick;
+        /// <summary>
+        /// Channels
+        /// </summary>
+        private readonly string _channels;
+        /// <summary>
+        /// Channel
+        /// </summary>
+        private readonly string _channel;
+        /// <summary>
+        /// Keys
+        /// </summary>
+        private readonly string _keys;
+        #endregion
+        /// <summary>
+        /// Nick
+        /// </summary>
+        public string Nick {
+            get {
+                return _nick;
+            }
         }
-
-        public JoinMessage(string channels, string keys = "")
-        {
-            this.channels = channels;
-            this.keys = keys;
+        /// <summary>
+        /// Channel
+        /// </summary>
+        public string Channel {
+            get {
+                return _channel;
+            }
         }
-
-        public JoinMessage(params string[] channels)
-        {
-            this.channels = string.Join(",", channels);
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parsedMessage"></param>
+        public JoinMessage(ParsedIRCMessage parsedMessage) {
+            _nick = parsedMessage.Prefix!.From;
+            _channel = parsedMessage.Parameters![0];
+            _channels = "";
+            _keys = "";
         }
-
-        public JoinMessage(Dictionary<string, string> channelsWithKeys)
-        {
-            channels = string.Join(",", channelsWithKeys.Keys);
-            keys = string.Join(",", channelsWithKeys.Values);
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channels"></param>
+        /// <param name="keys"></param>
+        public JoinMessage(string channels, string keys = "") {
+            _channels = channels;
+            _keys = keys;
+            _nick = "";
+            _channel = "";
         }
-
-        public IEnumerable<string> Tokens => new[] { "JOIN", channels, keys };
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channels"></param>
+        public JoinMessage(params string[] channels) {
+            _channels = string.Join(",", channels);
+            _nick = "";
+            _channel = "";
+            _keys = "";
+        }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channelsWithKeys"></param>
+        public JoinMessage(Dictionary<string, string> channelsWithKeys) {
+            _channels = string.Join(",", channelsWithKeys.Keys);
+            _keys = string.Join(",", channelsWithKeys.Values);
+            _nick = "";
+            _channel = "";
+        }
+        /// <summary>
+        /// Tokens
+        /// </summary>
+        public IEnumerable<string> Tokens => new[] { "JOIN", _channels, _keys };
     }
 }

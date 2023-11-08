@@ -102,7 +102,7 @@ namespace nexIRC.IrcProtocol {
 
             _messageHandlerContainer = new MessageHandlerContainer(this);
 
-            this.connection.DataReceived += Connection_DataReceived;
+            this.connection.DataReceived += Connection_DataReceived!;
         }
 
         /// <summary>
@@ -221,12 +221,12 @@ namespace nexIRC.IrcProtocol {
             switch (parsedIRCMessage.NumericReply) {
                 case IRCNumericReply.RPL_MYINFO:
                 case IRCNumericReply.RPL_ISUPPORT:
-                    text = string.Join(" ", parsedIRCMessage.Parameters.Skip(1));
+                    text = string.Join(" ", parsedIRCMessage.Parameters!.Skip(1));
                     break;
                 case IRCNumericReply.RPL_LUSEROP:
                 case IRCNumericReply.RPL_LUSERUNKNOWN:
                 case IRCNumericReply.RPL_LUSERCHANNELS:
-                    text = $"{parsedIRCMessage.Parameters[1]} {parsedIRCMessage.Trailing}";
+                    text = $"{parsedIRCMessage.Parameters![1]} {parsedIRCMessage.Trailing}";
                     break;
                 case IRCNumericReply.RPL_NAMREPLY:
                 case IRCNumericReply.RPL_ENDOFNAMES:

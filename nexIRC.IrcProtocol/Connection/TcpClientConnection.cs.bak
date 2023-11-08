@@ -89,6 +89,7 @@ namespace nexIRC.IrcProtocol.Connection {
 
         private async Task RunDataReceiver() {
             string? line;
+
             while ((line = await streamReader!.ReadLineAsync().ConfigureAwait(false)) != null) {
                 DataReceived?.Invoke(this, new DataReceivedEventArgs(line));
             }

@@ -9,7 +9,7 @@ namespace nexIRC.IrcProtocol.Messages
 
         public QuitMessage(ParsedIRCMessage parsedMessage)
         {
-            Nick = parsedMessage.Prefix.From;
+            Nick = parsedMessage.Prefix!.From;
             Message = parsedMessage.Trailing;
         }
 

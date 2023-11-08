@@ -39,7 +39,7 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <param name="port">The port of the server (Default port is usually 6667)</param>
         /// <param name="password">Password, in case the server requires it (optional)</param>
         /// <returns>The ClientBuilder</returns>
-        public ClientBuilder WithServer(string host, int port, string password = null) {
+        public ClientBuilder WithServer(string host, int port, string password = "") {
             _connection = new TcpClientConnection(host, port);
             _password = password;
             return this;

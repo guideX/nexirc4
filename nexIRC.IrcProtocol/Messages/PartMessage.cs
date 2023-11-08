@@ -11,8 +11,8 @@ namespace nexIRC.IrcProtocol.Messages
 
         public PartMessage(ParsedIRCMessage parsedMessage)
         {
-            Nick = parsedMessage.Prefix.From;
-            Channel = parsedMessage.Parameters[0];
+            Nick = parsedMessage.Prefix!.From;
+            Channel = parsedMessage.Parameters![0];
         }
 
         public PartMessage(string channels)

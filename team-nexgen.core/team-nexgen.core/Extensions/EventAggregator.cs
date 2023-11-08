@@ -127,10 +127,10 @@ public class EventAggregator : IEventAggregator {
                 var tasks = _supportedHandlers
                     .Where(handler => handler.Key.GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()))
                     .Select(pair => pair.Value.Invoke(target, new[] { message, cancellationToken }))
-                    .Select(result => (Task)result)
+                    .Select(result => (Task)result!)
                     .ToList();
 
-                return Task.WhenAll(tasks);
+                return Task.WhenAll(tasks!);
             });
         }
         /// <summary>

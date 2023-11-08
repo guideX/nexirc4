@@ -17,7 +17,7 @@ namespace nexIRC.Business.Business {
         /// <summary>
         /// Input
         /// </summary>
-        private string _input;
+        private readonly string _input;
         /// <summary>
         /// Last PrivMsg
         /// </summary>
@@ -29,7 +29,7 @@ namespace nexIRC.Business.Business {
         /// <summary>
         /// App Path
         /// </summary>
-        private string _appPath;
+        private readonly string _appPath;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -73,7 +73,7 @@ namespace nexIRC.Business.Business {
                                     break;
                                 case "msg":
                                     _lastOutputEvent = OutputEventEnum.SendMessageMatrix;
-                                    _matrixSendMessage = new MatrixSendMessageModel();
+                                    _matrixSendMessage = new();
                                     _matrixSendMessage.ChannelName = splt[2];
                                     _matrixSendMessage.Message = _input.Substring(12 + _matrixSendMessage.ChannelName.Length);
                                     break;

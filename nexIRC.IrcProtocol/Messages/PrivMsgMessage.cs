@@ -43,7 +43,7 @@ namespace nexIRC.IrcProtocol.Messages
         {
             using var reader = new StringReader(Message);
             string line;
-            while ((line = reader.ReadLine()) != null)
+            while ((line = reader.ReadLine()!) != null)
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
