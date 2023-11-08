@@ -41,13 +41,13 @@ namespace nexIRC.IrcProtocol {
         }
 
         internal void AddUser(UserModel user, string status) {
-            Client.DispatcherInvoker.Invoke(() => Users.Add(new ChannelUserModel(user, status)));
+            Client.DispatcherInvoker?.Invoke(() => Users.Add(new ChannelUserModel(user, status)));
         }
 
         internal void RemoveUser(string nick) {
             var user = GetUser(nick);
             if (user != null) {
-                Client.DispatcherInvoker.Invoke(() => Users.Remove(user));
+                Client.DispatcherInvoker?.Invoke(() => Users.Remove(user));
             }
         }
 

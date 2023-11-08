@@ -114,7 +114,7 @@ namespace nexIRC.IrcProtocol.Messages
 
         internal async Task<object> HandleAsync(ParsedIRCMessage parsedIRCMessage)
         {
-            if (customMessageHandlers.TryGetValue(parsedIRCMessage.Command, out var customMessageHandler))
+            if (customMessageHandlers.TryGetValue(parsedIRCMessage.Command!, out var customMessageHandler))
             {
                 var result = await InvokeHandler<ICustomHandler>(parsedIRCMessage, customMessageHandler)
                     .ConfigureAwait(false);
@@ -128,7 +128,7 @@ namespace nexIRC.IrcProtocol.Messages
                 }
             }
 
-            if (!defaultMessageHandlers.TryGetValue(parsedIRCMessage.Command, out var messageHandler))
+            if (!defaultMessageHandlers.TryGetValue(parsedIRCMessage.Command!, out var messageHandler))
             {
                 return null!;
             }

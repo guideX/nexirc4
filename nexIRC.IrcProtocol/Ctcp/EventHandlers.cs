@@ -13,7 +13,7 @@ namespace nexIRC.IrcProtocol.Ctcp
         public string Message { get; }
 
         public string CtcpCommand { get; }
-        public string CtcpMessage { get; }
+        public string? CtcpMessage { get; }
 
         internal CtcpEventArgs(PrivMsgMessage privMsgMessage)
         {

@@ -13,7 +13,7 @@ namespace nexIRC.IrcProtocol {
             var channel = Items.FirstOrDefault(c => c.Name == name);
             if (channel is null) {
                 channel = new Channel(name);
-                Client.DispatcherInvoker.Invoke(() => Add(channel));
+                Client.DispatcherInvoker?.Invoke(() => Add(channel));
             }
             return channel;
         }

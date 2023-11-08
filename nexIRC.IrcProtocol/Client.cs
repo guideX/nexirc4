@@ -24,7 +24,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Enables a custom dispatcher to be used if necessary. For example, WPF Dispatcher, to make sure collections are manipulated in the UI thread
         /// </summary>
-        internal static Action<Action> DispatcherInvoker;
+        internal static Action<Action>? DispatcherInvoker;
         /// <summary>
         /// User
         /// </summary>
@@ -211,7 +211,7 @@ namespace nexIRC.IrcProtocol {
                     text = parsedIRCMessage.Trailing;
                     break;
             }
-            if (!string.IsNullOrEmpty(text)) DispatcherInvoker.Invoke(() => ServerMessages.Add(new ServerMessageModel(text)));
+            if (!string.IsNullOrEmpty(text)) DispatcherInvoker?.Invoke(() => ServerMessages.Add(new ServerMessageModel(text)));
             return Task.CompletedTask;
         }
     }
