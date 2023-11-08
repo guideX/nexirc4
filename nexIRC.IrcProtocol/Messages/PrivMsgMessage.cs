@@ -33,6 +33,8 @@ namespace nexIRC.IrcProtocol.Messages
         {
             To = target;
             Message = !text.Contains(" ") ? $":{text}" : text;
+            From = "";
+            Prefix = new IRCPrefix("");
         }
 
         public IEnumerable<string> Tokens => Enumerable.Empty<string>();

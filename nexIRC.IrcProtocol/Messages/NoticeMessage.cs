@@ -19,6 +19,7 @@ namespace nexIRC.IrcProtocol.Messages
         {
             Target = target;
             Message = text;
+            From = "";
         }
 
         public bool IsChannelMessage => Target[0] == '#';

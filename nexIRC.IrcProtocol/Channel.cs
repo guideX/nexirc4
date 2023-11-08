@@ -1,50 +1,57 @@
 ﻿using nexIRC.Model;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-namespace nexIRC.IrcProtocol
-{
+namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// Represents an IRC channel with its users and messages.
+    /// Channel
     /// </summary>
-    public class Channel
-    {
+    public class Channel {
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// Topic
+        /// </summary>
         public string Topic { get; private set; }
-
+        /// <summary>
+        /// Users
+        /// </summary>
         public ObservableCollection<ChannelUserModel> Users { get; }
+        /// <summary>
+        /// Messages
+        /// </summary>
         public ObservableCollection<ChannelMessage> Messages { get; }
-
+        /// <summary>
+        /// User Statuses
+        /// </summary>
         internal static char[] UserStatuses = new[] { '~', '&', '@', '%', '+' };
-
-        public Channel(string name)
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name"></param>
+        public Channel(string name) {
             Name = name;
             Users = new ObservableCollection<ChannelUserModel>();
             Messages = new ObservableCollection<ChannelMessage>();
+            Topic = "";
         }
 
-        internal void AddUser(UserModel user)
-        {
+        internal void AddUser(UserModel user) {
             AddUser(user, string.Empty);
         }
 
-        internal void AddUser(UserModel user, string status)
-        {
+        internal void AddUser(UserModel user, string status) {
             Client.DispatcherInvoker.Invoke(() => Users.Add(new ChannelUserModel(user, status)));
         }
 
-        internal void RemoveUser(string nick)
-        {
+        internal void RemoveUser(string nick) {
             var user = GetUser(nick);
-            if (user != null)
-            {
+            if (user != null) {
                 Client.DispatcherInvoker.Invoke(() => Users.Remove(user));
             }
         }
 
-        internal void SetTopic(string topic)
-        {
+        internal void SetTopic(string topic) {
             Topic = topic;
         }
 

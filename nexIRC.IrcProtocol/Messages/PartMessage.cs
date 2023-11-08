@@ -1,30 +1,61 @@
-﻿using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public class PartMessage : IRCMessage, IServerMessage, IClientMessage
-    {
-        private readonly string channels;
-
-        public string Nick { get; }
-        public string Channel { get; }
-
-        public PartMessage(ParsedIRCMessage parsedMessage)
-        {
-            Nick = parsedMessage.Prefix!.From;
-            Channel = parsedMessage.Parameters![0];
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Part Message
+    /// </summary>
+    public class PartMessage : IRCMessage, IServerMessage, IClientMessage {
+        #region "PRIVATE VARIABLES"
+        /// <summary>
+        /// Channels
+        /// </summary>
+        private readonly string _channels;
+        /// <summary>
+        /// Nick
+        /// </summary>
+        private readonly string _nick;
+        /// <summary>
+        /// Channel
+        /// </summary>
+        private readonly string _channel;
+        #endregion
+        #region "PUBLIC VARIABLES"
+        /// <summary>
+        /// Nick
+        /// </summary>
+        public string Nick { get { return _nick; } }
+        /// <summary>
+        /// Channel
+        /// </summary>
+        public string Channel { get { return _channel; } }
+        #endregion
+        #region "PUBLIC METHODS"
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parsedMessage"></param>
+        public PartMessage(ParsedIRCMessage parsedMessage) {
+            _channels = "";
+            _nick = parsedMessage.Prefix!.From;
+            _channel = parsedMessage.Parameters![0];
         }
-
-        public PartMessage(string channels)
-        {
-            this.channels = channels;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channels"></param>
+        public PartMessage(string channels) {
+            _nick = "";
+            _channel = "";
+            _channels = channels;
         }
-
-        public PartMessage(params string[] channels)
-            : this(string.Join(",", channels))
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channels"></param>
+        public PartMessage(params string[] channels) : this(string.Join(",", channels)) {
         }
-
-        public IEnumerable<string> Tokens => new[] { "PART", channels };
+        /// <summary>
+        /// Tokens
+        /// </summary>
+        public IEnumerable<string> Tokens => new[] { "PART", _channels };
+        #endregion 
     }
 }

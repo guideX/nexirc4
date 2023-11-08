@@ -1,23 +1,35 @@
-﻿using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public class NickMessage : IRCMessage, IServerMessage, IClientMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Nick Message
+    /// </summary>
+    public class NickMessage : IRCMessage, IServerMessage, IClientMessage {
+        /// <summary>
+        /// Old Nick
+        /// </summary>
         public string OldNick { get; }
+        /// <summary>
+        /// New Nick
+        /// </summary>
         public string NewNick { get; }
-
-        public NickMessage(ParsedIRCMessage parsedMessage)
-        {
+        /// <summary>
+        /// Nick Message
+        /// </summary>
+        /// <param name="parsedMessage"></param>
+        public NickMessage(ParsedIRCMessage parsedMessage) {
             OldNick = parsedMessage.Prefix!.From;
             NewNick = parsedMessage.Parameters![0];
         }
-
-        public NickMessage(string newNick)
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="newNick"></param>
+        public NickMessage(string newNick) {
             NewNick = newNick;
+            OldNick = "";
         }
-
+        /// <summary>
+        /// Tokens
+        /// </summary>
         public IEnumerable<string> Tokens => new[] { "NICK", NewNick };
     }
 }

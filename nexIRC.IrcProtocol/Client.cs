@@ -16,7 +16,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Password
         /// </summary>
-        private readonly string password;
+        private readonly string _password;
         /// <summary>
         /// Message Handler Container
         /// </summary>
@@ -48,15 +48,15 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Raw Data Received
         /// </summary>
-        public event IRCRawDataHandler RawDataReceived;
+        public event IRCRawDataHandler? RawDataReceived;
         /// <summary>
         /// IRC Message Parsed
         /// </summary>
-        public event ParsedIRCMessageHandler IRCMessageParsed;
+        public event ParsedIRCMessageHandler? IRCMessageParsed;
         /// <summary>
         /// Registration Completed
         /// </summary>
-        public event EventHandler RegistrationCompleted;
+        public event EventHandler? RegistrationCompleted;
         /// <summary>
         /// On Registration Completed
         /// </summary>
@@ -66,7 +66,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Ctcp Received
         /// </summary>
-        public event CtcpHandler CtcpReceived;
+        public event CtcpHandler? CtcpReceived;
         /// <summary>
         /// On Ctcp Received
         /// </summary>
@@ -86,6 +86,7 @@ namespace nexIRC.IrcProtocol {
         /// <param name="user"></param>
         /// <param name="connection"></param>
         public Client(UserModel user, IConnection connection) {
+            _password = "";
             User = user;
             this.connection = connection;
             DispatcherInvoker = a => a.Invoke();
@@ -99,7 +100,7 @@ namespace nexIRC.IrcProtocol {
         /// <param name="password"></param>
         /// <param name="connection"></param>
         public Client(UserModel user, string password, IConnection connection) : this(user, connection) {
-            this.password = password;
+            _password = password;
         }
         /// <summary>
         /// Connection Data Received
@@ -123,8 +124,8 @@ namespace nexIRC.IrcProtocol {
         /// <returns></returns>
         public async Task ConnectAsync() {
             await connection.ConnectAsync() .ConfigureAwait(false);
-            if (!string.IsNullOrWhiteSpace(password)) {
-                await SendAsync(new PassMessage(password)).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(_password)) {
+                await SendAsync(new PassMessage(_password)).ConfigureAwait(false);
             }
             await SendAsync(new NickMessage(User.Nick)).ConfigureAwait(false);
             await SendAsync(new UserMessage(User.Nick, User.RealName)).ConfigureAwait(false);

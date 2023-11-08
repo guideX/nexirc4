@@ -1,34 +1,56 @@
-﻿namespace nexIRC.IrcProtocol
-{
-    public class IRCPrefix
-    {
-        public string Raw { get; }
+﻿namespace nexIRC.IrcProtocol {
+    /// <summary>
+    /// IRC Prefix
+    /// </summary>
+    public class IRCPrefix {
+        /// <summary>
+        /// Raw
+        /// </summary>
+        private readonly string _raw;
+        /// <summary>
+        /// Raw
+        /// </summary>
+        public string Raw {
+            get {
+                return _raw;
+            }
+        }
+        /// <summary>
+        /// From
+        /// </summary>
         public string From { get; }
+        /// <summary>
+        /// User
+        /// </summary>
         public string User { get; }
+        /// <summary>
+        /// Host
+        /// </summary>
         public string Host { get; }
-
-        public IRCPrefix(string prefixData)
-        {
-            Raw = prefixData;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="prefixData"></param>
+        public IRCPrefix(string prefixData) {
+            _raw = prefixData;
             From = prefixData;
 
-            if (prefixData.Contains("@"))
-            {
+            if (prefixData.Contains("@")) {
                 var splitedPrefix = prefixData.Split('@');
                 From = splitedPrefix[0];
                 Host = splitedPrefix[1];
+            } else {
+                Host = "";
             }
 
-            if (From.Contains("!"))
-            {
+            if (From.Contains("!")) {
                 var splittedFrom = From.Split('!');
                 From = splittedFrom[0];
                 User = splittedFrom[1];
             }
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Raw;
         }
     }
