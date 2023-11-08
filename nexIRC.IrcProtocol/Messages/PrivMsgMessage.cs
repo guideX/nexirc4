@@ -20,9 +20,9 @@ namespace nexIRC.IrcProtocol.Messages
 
         public PrivMsgMessage(ParsedIRCMessage parsedMessage)
         {
-            From = parsedMessage.Prefix.From;
+            From = parsedMessage.Prefix!.From;
             Prefix = parsedMessage.Prefix;
-            To = parsedMessage.Parameters[0];
+            To = parsedMessage.Parameters![0];
             Message = parsedMessage.Trailing;
 
             IsChannelMessage = To[0] == '#';

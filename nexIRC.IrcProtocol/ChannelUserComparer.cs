@@ -24,7 +24,7 @@ namespace nexIRC.IrcProtocol {
             return u1.Nick.CompareTo(u2.Nick);
         }
 
-        public int Compare(object x, object y) {
+        public int Compare(object? x, object? y) {
             if (x is not ChannelUserModel u1 || y is not ChannelUserModel u2)
                 return 0;
             return Compare(u1, u2);

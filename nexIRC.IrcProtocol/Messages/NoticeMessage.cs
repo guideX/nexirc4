@@ -10,8 +10,8 @@ namespace nexIRC.IrcProtocol.Messages
 
         public NoticeMessage(ParsedIRCMessage parsedMessage)
         {
-            From = parsedMessage.Prefix.From;
-            Target = parsedMessage.Parameters[0];
+            From = parsedMessage.Prefix!.From;
+            Target = parsedMessage.Parameters![0];
             Message = parsedMessage.Trailing;
         }
 

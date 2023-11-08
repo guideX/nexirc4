@@ -106,7 +106,7 @@ namespace nexIRC.IrcProtocol.Connection {
                 data += ConstantsHelper.CrLf;
             }
 
-            await streamWriter.WriteAsync(data)
+            await streamWriter!.WriteAsync(data)
                 .ConfigureAwait(false);
             await streamWriter.FlushAsync()
                 .ConfigureAwait(false);
@@ -128,7 +128,7 @@ namespace nexIRC.IrcProtocol.Connection {
             if (disposing) {
                 streamReader?.Dispose();
                 streamWriter?.Dispose();
-                tcpClient.Dispose();
+                tcpClient!.Dispose();
             }
 
             disposed = true;

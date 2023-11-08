@@ -49,6 +49,6 @@ namespace nexIRC.IrcProtocol
         }
 
         public ChannelUserModel GetUser(string nick)
-            => Users.FirstOrDefault(u => string.Equals(u.Nick, nick, StringComparison.InvariantCultureIgnoreCase));
+            => Users.FirstOrDefault(u => string.Equals(u.Nick, nick, StringComparison.InvariantCultureIgnoreCase))!;
     }
 }
