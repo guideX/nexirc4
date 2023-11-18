@@ -35,6 +35,5 @@
         /// Auto Join Matrix
         /// </summary>
         AutoJoinMatrix = 8
-
     }
 }
