@@ -1,11 +1,17 @@
-﻿namespace nexIRC.IrcProtocol.Messages
-{
-    public class PingMessage : IRCMessage, IServerMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Ping Message
+    /// </summary>
+    public class PingMessage : IRCMessage, IServerMessage {
+        /// <summary>
+        /// Target
+        /// </summary>
         public string Target { get; }
-
-        public PingMessage(ParsedIRCMessage parsedMessage)
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parsedMessage"></param>
+        public PingMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
             Target = parsedMessage.Trailing;
         }
     }

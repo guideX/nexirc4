@@ -1,6 +1,5 @@
 ﻿using MvvmHelpers.Commands;
 using nexIRC.Business.Helper;
-using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.Model;
 using System;
@@ -12,6 +11,10 @@ namespace nexIRC.ViewModels {
     /// </summary>
     public class QueryViewModel : TabItemViewModel {
         /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
         /// Query
         /// </summary>
         public QueryModel Query { get; }
@@ -19,7 +22,8 @@ namespace nexIRC.ViewModels {
         /// Constructor
         /// </summary>
         /// <param name="query"></param>
-        public QueryViewModel(QueryModel query) {
+        public QueryViewModel(QueryModel query, string appPath) {
+            _appPath = appPath;
             try {
                 Query = query;
                 query.Messages.CollectionChanged += Messages_CollectionChanged;
@@ -38,20 +42,19 @@ namespace nexIRC.ViewModels {
                     return;
                 }
                 Messages.Add(Models.Message.Sent(new QueryMessageModel(App.Client.User, Message)));
-                await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
+                await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message, _appPath));
                 Message = string.Empty;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage", _appPath);
             }
         }
 
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (QueryMessageModel message in e.NewItems) {
+                foreach (QueryMessageModel message in e.NewItems)
                     App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
-                }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.Messages_CollectionChanged", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.Messages_CollectionChanged", _appPath);
             }
         }
         /// <summary>

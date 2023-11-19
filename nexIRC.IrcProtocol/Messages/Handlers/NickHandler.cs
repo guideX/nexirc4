@@ -1,14 +1,17 @@
-﻿using System.Threading.Tasks;
-
-namespace nexIRC.IrcProtocol.Messages.Handlers
-{
-    public class NickHandler : MessageHandler<NickMessage>
-    {
-        public override Task HandleAsync(NickMessage serverMessage, Client client)
-        {
+﻿namespace nexIRC.IrcProtocol.Messages.Handlers {
+    /// <summary>
+    /// Nick Handler
+    /// </summary>
+    public class NickHandler : MessageHandler<NickMessage> {
+        /// <summary>
+        /// Handle Async
+        /// </summary>
+        /// <param name="serverMessage"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public override Task HandleAsync(NickMessage serverMessage, Client client) {
             var user = client.Peers.GetUser(serverMessage.OldNick);
-            user.Nick = serverMessage.NewNick;
-
+            if (user != null) user.Nick = serverMessage.NewNick;
             return Task.CompletedTask;
         }
     }

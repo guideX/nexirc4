@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public class PongMessage : IRCMessage, IClientMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Pong Message
+    /// </summary>
+    public class PongMessage : IRCMessage, IClientMessage {
+        /// <summary>
+        /// Target
+        /// </summary>
         public string Target { get; }
-
-        public PongMessage(string target)
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="target"></param>
+        public PongMessage(string target, string appPath) : base(appPath) {
             Target = target;
         }
-
+        /// <summary>
+        /// Tokens
+        /// </summary>
         public IEnumerable<string> Tokens => new[] { "PONG", Target };
     }
 }

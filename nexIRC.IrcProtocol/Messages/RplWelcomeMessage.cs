@@ -1,11 +1,17 @@
-﻿namespace nexIRC.IrcProtocol.Messages
-{
-    public class RplWelcomeMessage : IRCMessage, IServerMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Rpl Welcome Message
+    /// </summary>
+    public class RplWelcomeMessage : IRCMessage, IServerMessage {
+        /// <summary>
+        /// Text
+        /// </summary>
         public string Text { get; }
-
-        public RplWelcomeMessage(ParsedIRCMessage parsedMessage)
-        {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parsedMessage"></param>
+        public RplWelcomeMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
             Text = parsedMessage.Trailing;
         }
     }

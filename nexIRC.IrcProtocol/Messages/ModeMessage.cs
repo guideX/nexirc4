@@ -23,7 +23,7 @@
         /// Mode Message
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public ModeMessage(ParsedIRCMessage parsedMessage) {
+        public ModeMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
             Parameters = new string[0];
             Prefix = parsedMessage.Prefix!;
             Target = parsedMessage.Parameters![0];
@@ -39,7 +39,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <param name="modes"></param>
-        public ModeMessage(string target, string modes) {
+        public ModeMessage(string target, string modes, string appPath) : base(appPath) {
             Target = target;
             Modes = modes;
             Parameters = new string[0];

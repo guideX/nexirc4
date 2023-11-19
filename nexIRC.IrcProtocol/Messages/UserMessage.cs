@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="realName"></param>
-        public UserMessage(string userName, string realName) {
+        public UserMessage(string userName, string realName, string appPath) : base(appPath) {
             UserName = userName;
             RealName = realName;
         }

@@ -1,4 +1,5 @@
-﻿using nexIRC.IrcProtocol.Connection;
+﻿using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol.Connection;
 using nexIRC.Model;
 namespace nexIRC.IrcProtocol.Builder {
     /// <summary>
@@ -29,37 +30,44 @@ namespace nexIRC.IrcProtocol.Builder {
             _password = string.Empty;
         }
         /// <summary>
-        /// Configures the nick and real name you wish to use when joining the server
+        /// With Nick
         /// </summary>
-        /// <param name="nick">Nick you wish to use</param>
-        /// <param name="realName">Real name you wish to use</param>
-        /// <returns>The ClientBuilder</returns>
+        /// <param name="nick"></param>
+        /// <param name="realName"></param>
+        /// <returns></returns>
         public ClientBuilder WithNick(string nick, string realName = "") {
-            _user = new UserModel(nick, realName);
+            try {
+                _user = new UserModel(nick, realName);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithNick", _appPath);
+            }
             return this;
         }
         /// <summary>
-        /// 
+        /// With Server
         /// </summary>
-        /// <param name="host">The host of the server you wish to connect to</param>
-        /// <param name="port">The port of the server (Default port is usually 6667)</param>
-        /// <param name="password">Password, in case the server requires it (optional)</param>
-        /// <returns>The ClientBuilder</returns>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public ClientBuilder WithServer(string host, int port, string password = "") {
-            _connection = new TcpClientConnection(host, port, _appPath);
-            _password = password;
+            try {
+                _connection = new TcpClientConnection(host, port, _appPath);
+                _password = password;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithServer", _appPath);
+            }
             return this;
         }
-
         /// <summary>
-        /// Builds the Client
+        /// Build
         /// </summary>
-        /// <returns>A configured Client</returns>
-        /// <exception cref="InvalidOperationException">Nick and connection must be defined using the ClientBuilder.</exception>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public Client Build() {
             _ = _user ?? throw new InvalidOperationException("Nick must be defined. Please use the WithNick method before building the client.");
             _ = _connection ?? throw new InvalidOperationException("Connection must be defined. Please use the WithServer method before building the client.");
-            return new Client(_user, _password, _connection);
+            return new Client(_user, _password, _connection, _appPath);
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public interface IClientMessage
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Client Message
+    /// </summary>
+    public interface IClientMessage {
+        /// <summary>
+        /// Tokens
+        /// </summary>
         IEnumerable<string> Tokens { get; }
     }
 }

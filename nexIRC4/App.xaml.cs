@@ -1,11 +1,11 @@
-﻿using nexIRC.IrcProtocol;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
+using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Connection;
 using nexIRC.Messages;
 using nexIRC.Model;
 using nexIRC.Properties;
-using System;
-using System.Threading.Tasks;
-using System.Windows;
 namespace nexIRC {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -28,13 +28,14 @@ namespace nexIRC {
         /// </summary>
         /// <returns></returns>
         public Client CreateClient() {
+            var appPath = System.AppDomain.CurrentDomain.BaseDirectory;
             if (IsConnected) 
                 return null;
             var user = new UserModel(Settings.Default.Nick, Settings.Default.RealName);
-            var connection = new TcpClientConnection(Settings.Default.ServerAddress, Convert.ToInt32(Settings.Default.ServerPort));
+            var connection = new TcpClientConnection(Settings.Default.ServerAddress, Convert.ToInt32(Settings.Default.ServerPort), appPath);
             connection.Connected += (s, e) => IsConnected = true;
             connection.Disconnected += async (s, e) => await Disconnected();
-            Client = new Client(user, connection);
+            Client = new Client(user, connection, appPath);
             Client.SetDispatcherInvoker(Dispatcher.Invoke);
             return Client;
         }

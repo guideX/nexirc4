@@ -86,7 +86,7 @@ namespace nexIRC.ViewModels {
                 _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
                 _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
                 if (Settings.Default.UseMultipleNicknames) {
-                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort, AppPath);
                 }
                 _matrixDelay = new DispatcherTimer();
                 _matrixDelay.Tick += _matrixDelay_Tick;
@@ -274,7 +274,7 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Queries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (QueryModel query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query)));
+                foreach (QueryModel query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query, AppPath)));
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Queries_CollectionChanged", AppPath);
             }
@@ -286,7 +286,7 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Channels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (Channel channel in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient)));
+                foreach (Channel channel in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient, AppPath)));
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Channels_CollectionChanged", AppPath);
             }

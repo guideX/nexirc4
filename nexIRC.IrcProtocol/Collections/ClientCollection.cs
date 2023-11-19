@@ -1,4 +1,5 @@
-﻿using nexIRC.IrcProtocol.Wrappers;
+﻿using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol.Wrappers;
 namespace nexIRC.IrcProtocol.Collections {
     /// <summary>
     /// Client Collection
@@ -17,12 +18,17 @@ namespace nexIRC.IrcProtocol.Collections {
         /// Port
         /// </summary>
         private string _port;
+        /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
         #endregion
         #region "public methods"
         /// <summary>
         /// Constructor
         /// </summary>
-        public ClientCollection(string server, string port) {
+        public ClientCollection(string server, string port, string appPath) {
+            _appPath = appPath;
             _server = server;
             _port = port;
             _clients = new List<ClientWrapper>();
@@ -36,20 +42,24 @@ namespace nexIRC.IrcProtocol.Collections {
         /// <param name="user"></param>
         /// <param name="message"></param>
         public bool SendMessageAsUser(string channel, string user, string message) {
-            var clientsFound = _clients.Where(c => c.User == user);
-            var clientMessage = new ClientMessageToSend(channel, message);
-            if (clientsFound.Any()) {
-                var client = clientsFound.FirstOrDefault();
-                if (client != null) {
+            try {
+                var clientsFound = _clients.Where(c => c.User == user);
+                var clientMessage = new ClientMessageToSend(channel, message);
+                if (clientsFound.Any()) {
+                    var client = clientsFound.FirstOrDefault();
+                    if (client != null) {
+                        client.Send(clientMessage);
+                        return true;
+                    }
+                } else {
+                    var client = new ClientWrapper(_server, _port, user, user, "", channel, _appPath);
                     client.Send(clientMessage);
+                    client.Connect();
+                    _clients.Add(client);
                     return true;
                 }
-            } else {
-                var client = new ClientWrapper(_server, _port, user, user, "", channel);
-                client.Send(clientMessage);
-                client.Connect();
-                _clients.Add(client);
-                return true;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.SendMessageAsUser", _appPath);
             }
             return false;
         }

@@ -1,12 +1,16 @@
-﻿using nexIRC.IrcProtocol.Messages;
+﻿using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol.Messages;
 using nexIRC.Model;
-
 namespace nexIRC.IrcProtocol.Wrappers {
     /// <summary>
     /// Client Wrapper
     /// </summary>
     public class ClientWrapper {
         #region "private variables"
+        /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
         /// <summary>
         /// Messages To Send
         /// </summary>
@@ -96,21 +100,31 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <param name="channel"></param>
-        public ClientWrapper(string host, string port, string user, string realName, string password, string channel) {
+        public ClientWrapper(string host, string port, string user, string realName, string password, string channel, string appPath) {
+            _appPath = appPath;
             _channel = channel;
             _user = user;
-            _connection = new IrcProtocol.Connection.TcpClientConnection(host, Convert.ToInt32(port));
-            _connection.Disconnected += _connection_Disconnected;
-            _connection.Connected += _connection_Connected;
-            _client = new Client(new UserModel(user, realName), _connection);
-            _client.RegistrationCompleted += _client_RegistrationCompleted;
             _messagesToSend = new List<ClientMessageToSend>();
+            try {
+                _connection = new IrcProtocol.Connection.TcpClientConnection(host, Convert.ToInt32(port), _appPath);
+                _connection.Disconnected += _connection_Disconnected;
+                _connection.Connected += _connection_Connected;
+                _client = new Client(new UserModel(user, realName), _connection, _appPath);
+                _client.RegistrationCompleted += _client_RegistrationCompleted;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientWrapper.Constructor", _appPath);
+                throw;
+            }
         }
         /// <summary>
         /// Connect
         /// </summary>
         public async void Connect() {
-            await _client.ConnectAsync();
+            try {
+                await _client.ConnectAsync();
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connect", _appPath);
+            }
         }
         /// <summary>
         /// Connected
@@ -133,8 +147,12 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// </summary>
         /// <param name="msg"></param>
         public void Send(ClientMessageToSend msg) {
-            _messagesToSend.Add(msg);
-            if (Connected) SendMessages();
+            try {
+                _messagesToSend.Add(msg);
+                if (Connected) SendMessages();
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientWrapper.Send", _appPath);
+            }
         }
         #endregion
     }

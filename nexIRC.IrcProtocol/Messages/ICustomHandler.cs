@@ -1,7 +1,11 @@
-﻿namespace nexIRC.IrcProtocol.Messages
-{
-    public interface ICustomHandler
-    {
+﻿namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Custom Handler
+    /// </summary>
+    public interface ICustomHandler {
+        /// <summary>
+        /// Handled
+        /// </summary>
         bool Handled { get; }
     }
 }

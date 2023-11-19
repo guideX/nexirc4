@@ -1,16 +1,22 @@
-using System.Collections.Generic;
-
-namespace nexIRC.IrcProtocol.Messages
-{
-    public class PassMessage : IRCMessage, IClientMessage
-    {
-        private readonly string password;
-
-        public PassMessage(string password)
-        {
-            this.password = password;
+namespace nexIRC.IrcProtocol.Messages {
+    /// <summary>
+    /// Pass Message
+    /// </summary>
+    public class PassMessage : IRCMessage, IClientMessage {
+        /// <summary>
+        /// Password
+        /// </summary>
+        private readonly string _password;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="password"></param>
+        public PassMessage(string password, string appPath) : base(appPath) {
+            _password = password;
         }
-
-        public IEnumerable<string> Tokens => new[] { "PASS", password };
+        /// <summary>
+        /// Tokens
+        /// </summary>
+        public IEnumerable<string> Tokens => new[] { "PASS", _password };
     }
 }
