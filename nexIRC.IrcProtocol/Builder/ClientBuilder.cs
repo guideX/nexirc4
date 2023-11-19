@@ -16,11 +16,17 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <summary>
         /// Password
         /// </summary>
-        private string _password = "";
+        private string _password;
+        /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
         /// <summary>
         /// Client Builder
         /// </summary>
-        internal ClientBuilder() {
+        internal ClientBuilder(string appPath) {
+            _appPath = appPath;
+            _password = string.Empty;
         }
         /// <summary>
         /// Configures the nick and real name you wish to use when joining the server
@@ -40,7 +46,7 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <param name="password">Password, in case the server requires it (optional)</param>
         /// <returns>The ClientBuilder</returns>
         public ClientBuilder WithServer(string host, int port, string password = "") {
-            _connection = new TcpClientConnection(host, port);
+            _connection = new TcpClientConnection(host, port, _appPath);
             _password = password;
             return this;
         }

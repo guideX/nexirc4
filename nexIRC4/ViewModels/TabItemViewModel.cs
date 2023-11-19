@@ -9,7 +9,9 @@ namespace nexIRC.ViewModels {
         /// <summary>
         /// Message
         /// </summary>
-        public ObservableCollection<Message> Messages { get; } = new ObservableCollection<Message>();
+        public ObservableCollection<Message> Messages { 
+            get; 
+        } = new ObservableCollection<Message>();
         /// <summary>
         /// Mesage
         /// </summary>
@@ -17,7 +19,10 @@ namespace nexIRC.ViewModels {
         /// <summary>
         /// Message
         /// </summary>
-        public string Message { get => message; set => SetProperty(ref message, value); }
+        public string Message { 
+            get => message; 
+            set => SetProperty(ref message, value); 
+        }
         /// <summary>
         /// Send Message Command
         /// </summary>

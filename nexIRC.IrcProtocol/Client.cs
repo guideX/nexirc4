@@ -10,6 +10,10 @@ namespace nexIRC.IrcProtocol {
     /// </summary>
     public class Client : IDisposable {
         /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
         /// Connection
         /// </summary>
         private readonly IConnection connection;
@@ -36,15 +40,15 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Channels
         /// </summary>
-        public ChannelCollection Channels { get; } = new ChannelCollection();
+        public ChannelCollection Channels { get; }
         /// <summary>
         /// Queries
         /// </summary>
-        public QueryCollection Queries { get; } = new QueryCollection();
+        public QueryCollection Queries { get; }
         /// <summary>
         /// Peers
         /// </summary>
-        public UserCollection Peers { get; } = new UserCollection();
+        public UserCollection Peers { get; }
         /// <summary>
         /// Raw Data Received
         /// </summary>
@@ -79,19 +83,23 @@ namespace nexIRC.IrcProtocol {
         /// Create Builder
         /// </summary>
         /// <returns></returns>
-        public static ClientBuilder CreateBuilder() => new();
+        public static ClientBuilder CreateBuilder(string appPath) => new(appPath);
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="user"></param>
         /// <param name="connection"></param>
-        public Client(UserModel user, IConnection connection) {
+        public Client(UserModel user, IConnection connection, string appPath) {
             _password = "";
             User = user;
             this.connection = connection;
             DispatcherInvoker = a => a.Invoke();
             _messageHandlerContainer = new MessageHandlerContainer(this);
             this.connection.DataReceived += Connection_DataReceived!;
+            _appPath = appPath;
+            Channels = new ChannelCollection(_appPath);
+            Peers = new UserCollection(_appPath);
+            Queries = new QueryCollection(_appPath);
         }
         /// <summary>
         /// Client
@@ -99,8 +107,12 @@ namespace nexIRC.IrcProtocol {
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <param name="connection"></param>
-        public Client(UserModel user, string password, IConnection connection) : this(user, connection) {
+        public Client(UserModel user, string password, IConnection connection, string appPath) : this(user, connection, appPath) {
             _password = password;
+            _appPath = appPath;
+            Channels = new ChannelCollection(_appPath);
+            Peers = new UserCollection(_appPath);
+            Queries = new QueryCollection(_appPath);
         }
         /// <summary>
         /// Connection Data Received
@@ -195,17 +207,17 @@ namespace nexIRC.IrcProtocol {
         private Task HandleNumericReply(ParsedIRCMessage parsedIRCMessage) {
             string text = string.Empty;
             switch (parsedIRCMessage.NumericReply) {
-                case IRCNumericReply.RPL_MYINFO:
-                case IRCNumericReply.RPL_ISUPPORT:
+                case IrcNumericReplyEnum.RPL_MYINFO:
+                case IrcNumericReplyEnum.RPL_ISUPPORT:
                     text = string.Join(" ", parsedIRCMessage.Parameters!.Skip(1));
                     break;
-                case IRCNumericReply.RPL_LUSEROP:
-                case IRCNumericReply.RPL_LUSERUNKNOWN:
-                case IRCNumericReply.RPL_LUSERCHANNELS:
+                case IrcNumericReplyEnum.RPL_LUSEROP:
+                case IrcNumericReplyEnum.RPL_LUSERUNKNOWN:
+                case IrcNumericReplyEnum.RPL_LUSERCHANNELS:
                     text = $"{parsedIRCMessage.Parameters![1]} {parsedIRCMessage.Trailing}";
                     break;
-                case IRCNumericReply.RPL_NAMREPLY:
-                case IRCNumericReply.RPL_ENDOFNAMES:
+                case IrcNumericReplyEnum.RPL_NAMREPLY:
+                case IrcNumericReplyEnum.RPL_ENDOFNAMES:
                     return Task.CompletedTask;
                 default:
                     text = parsedIRCMessage.Trailing;

@@ -5,7 +5,17 @@ namespace nexIRC.Business.Helper {
     /// <summary>
     /// Ini File Helper
     /// </summary>
-    public static class IniFileHelper {
+    public class IniFileHelper {
+        /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
+        /// Ini File Helper
+        /// </summary>
+        public IniFileHelper(string appPath) {
+            _appPath = appPath;
+        }
         /// <summary>
         /// Read Ini
         /// </summary>
@@ -14,12 +24,15 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="_default"></param>
         /// <returns></returns>
-        public static string ReadIni(string file, string section, string key, string _default = "") {
-            var msg = new StringBuilder(500);
-            if (NativeMethods.GetPrivateProfileStringA(section, key, "", msg, msg.Capacity, file) == 0) {
-                return _default;
-            } else {
-                return msg.ToString().Trim();
+        public string? ReadIni(string file, string section, string key, string? _default = null) {
+            try {
+                var sb = new StringBuilder(500);
+                return NativeMethods.GetPrivateProfileStringA(section, key, "", sb, sb.Capacity, file) == 0 ?
+                    _default :
+                    sb.ToString().Trim();
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.Readini", _appPath);
+                return null;
             }
         }
         /// <summary>
@@ -29,8 +42,12 @@ namespace nexIRC.Business.Helper {
         /// <param name="section"></param>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public static void WriteIni(string file, string section, string key, string value) {
-            NativeMethods.WritePrivateProfileStringA(section, key, value, file);
+        public void WriteIni(string file, string section, string key, string value) {
+            try {
+                NativeMethods.WritePrivateProfileStringA(section, key, value, file);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni", _appPath);
+            }
         }
         /// <summary>
         /// Read Ini Int
@@ -40,12 +57,12 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static int ReadIniInt(string file, string section, string key, int def = 0) {
-            int n;
-            if (int.TryParse(ReadIni(file, section, key, def.ToString()), out n)) {
-                return n;
-            } else {
-                return def;
+        public int? ReadIniInt(string file, string section, string key, int? def = null) {
+            try {
+                return int.TryParse(ReadIni(file, section, key, def.ToString()!), out int n) ? n : def;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni", _appPath);
+                return null;
             }
         }
         /// <summary>
@@ -56,12 +73,12 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static DateTime? ReadIniDateTime(string file, string section, string key, DateTime? def = null) {
-            DateTime dt;
-            if (DateTime.TryParse(ReadIni(file, section, key, def.ToString()), out dt)) {
-                return dt;
-            } else {
-                return def;
+        public DateTime? ReadIniDateTime(string file, string section, string key, DateTime? def = null) {
+            try {
+                return DateTime.TryParse(ReadIni(file, section, key, def.ToString()!), out DateTime dt) ? dt : def;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDateTime", _appPath);
+                return null;
             }
         }
         /// <summary>
@@ -72,12 +89,12 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static decimal ReadIniDecimal(string file, string section, string key, decimal def = decimal.Zero) {
-            decimal d;
-            if (decimal.TryParse(ReadIni(file, section, key, def.ToString(CultureInfo.InvariantCulture)), out d)) {
-                return d;
-            } else {
-                return def;
+        public decimal? ReadIniDecimal(string file, string section, string key, decimal? def = null) {
+            try {
+                return decimal.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)!), out decimal d) ? d : def;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDecimal", _appPath);
+                return null;
             }
         }
         /// <summary>
@@ -88,12 +105,12 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static bool ReadIniBool(string file, string section, string key, bool def = false) {
-            bool b;
-            if (bool.TryParse(ReadIni(file, section, key, def.ToString()), out b)) {
-                return b;
-            } else {
-                return def;
+        public bool? ReadIniBool(string file, string section, string key, bool? def = null) {
+            try {
+                return bool.TryParse(ReadIni(file, section, key, def.ToString()), out bool b) ? b : def;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniBool", _appPath);
+                return null;
             }
         }
         /// <summary>
@@ -104,11 +121,13 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static double ReadIniDouble(string file, string section, string key, double def = 0.0) {
-            var msg = ReadIni(file, section, key, def.ToString(CultureInfo.InvariantCulture));
-            double result;
-            double.TryParse(msg, out result);
-            return result;
+        public double? ReadIniDouble(string file, string section, string key, double? def = 0.0) {
+            try {
+                return double.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)), out double res) ? res : null;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat", _appPath);
+                return null;
+            }
         }
         /// <summary>
         /// Read From Ini Float
@@ -118,11 +137,13 @@ namespace nexIRC.Business.Helper {
         /// <param name="key"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static float ReadIniFloat(string file, string section, string key, float def = 0.0f) {
-            var msg = ReadIni(file, section, key, def.ToString(CultureInfo.InvariantCulture));
-            float result;
-            float.TryParse(msg, out result);
-            return result;
+        public float? ReadIniFloat(string file, string section, string key, float? def = null) {
+            try {
+                return float.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)), out float res) ? res : null;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat", _appPath);
+                return null;
+            }
         }
     }
 }

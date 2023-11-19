@@ -38,11 +38,11 @@
         /// <summary>
         /// Numeric Reply
         /// </summary>
-        public IRCNumericReply NumericReply { get; private set; }
+        public IrcNumericReplyEnum NumericReply { get; private set; }
         /// <summary>
         /// Is Numeric
         /// </summary>
-        public bool IsNumeric => NumericReply != IRCNumericReply.UNKNOWN;
+        public bool IsNumeric => NumericReply != IrcNumericReplyEnum.UNKNOWN;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -50,20 +50,19 @@
         public ParsedIRCMessage(string rawData) {
             Raw = rawData;
             Parse(rawData.AsSpan());
-            ParseIRCEnums();
+            ParseIrcEnums();
         }
-        private void ParseIRCEnums() {
+        /// <summary>
+        /// Parse Irc Enums
+        /// </summary>
+        private void ParseIrcEnums() {
             if (string.IsNullOrEmpty(Command)) {
                 return;
             }
             if (IsNumericReply(Command)) {
-                System.Enum.TryParse(Command, out IRCNumericReply numericReply);
+                System.Enum.TryParse(Command, out IrcNumericReplyEnum numericReply);
                 NumericReply = numericReply;
-                // If numericReply's value is still considered a numeric reply, then it's unknown
-                // because at this point it should be something like RPL_WELCOME, or another member of IRCNumericReply
-                if (IsNumericReply(numericReply.ToString())) {
-                    NumericReply = IRCNumericReply.UNKNOWN;
-                }
+                if (IsNumericReply(numericReply.ToString())) NumericReply = IrcNumericReplyEnum.UNKNOWN;
             } else if (System.Enum.TryParse(Command, out IRCCommand ircCommand)) {
                 IRCCommand = ircCommand;
             }

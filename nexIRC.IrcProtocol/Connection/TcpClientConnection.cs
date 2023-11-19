@@ -7,6 +7,18 @@ namespace nexIRC.IrcProtocol.Connection {
     /// </summary>
     public class TcpClientConnection : IConnection {
         /// <summary>
+        /// Host
+        /// </summary>
+        private readonly string _host;
+        /// <summary>
+        /// Port
+        /// </summary>
+        private readonly int _port;
+        /// <summary>
+        /// App Path
+        /// </summary>
+        private string _appPath;
+        /// <summary>
         /// Tcp Client
         /// </summary>
         private TcpClient? tcpClient;
@@ -23,117 +35,100 @@ namespace nexIRC.IrcProtocol.Connection {
         /// </summary>
         private bool disposed;
         /// <summary>
-        /// Indicates that data has been received through the connection
+        /// Data Received
         /// </summary>
         public event EventHandler<DataReceivedEventArgs>? DataReceived;
         /// <summary>
-        /// Indicates that the TCP connection is completed
+        /// Connected
         /// </summary>
         public event EventHandler? Connected;
         /// <summary>
-        /// Indicates that the TCP connection was closed
+        /// Disconnected
         /// </summary>
         public event EventHandler? Disconnected;
         /// <summary>
-        /// Host
-        /// </summary>
-        private readonly string host;
-        /// <summary>
-        /// Port
-        /// </summary>
-        private readonly int port;
-        /// <summary>
-        /// Tcp Client Connection
+        /// Constructor
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
+        /// <param name="appPath"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public TcpClientConnection(string host, int port = 6667) {
-            if (string.IsNullOrWhiteSpace(host)) {
-                throw new ArgumentNullException(nameof(host));
+        public TcpClientConnection(string host, int port, string appPath) {
+            _port = port == 0 ? 6667 : port;
+            _host = host;
+            _appPath = appPath;
+            try {
+                if (string.IsNullOrWhiteSpace(host)) throw new ArgumentNullException(nameof(host));
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.TcpClientConnection", _appPath);
             }
-
-            if (port <= 0) {
-                throw new ArgumentException($"Port {port} is invalid.", nameof(port));
-            }
-
-            this.host = host;
-            this.port = port;
         }
-
         /// <summary>
-        /// Connects the client to an IRC server using the specified host and port number
-        /// as an asynchronous operation
+        /// Connect Async
         /// </summary>
-        /// <param name="host">The host of the IRC server</param>
-        /// <param name="port">The port number</param>
-        /// <returns>The task object representing the asynchronous operation</returns>
+        /// <returns></returns>
         public async Task ConnectAsync() {
-            tcpClient?.Dispose();
-            tcpClient = new TcpClient();
-
-            await tcpClient.ConnectAsync(host, port)
-                .ConfigureAwait(false);
-
-            streamReader = new StreamReader(tcpClient.GetStream());
-            streamWriter = new StreamWriter(tcpClient.GetStream());
-
-            Connected?.Invoke(this, EventArgs.Empty);
-
-            RunDataReceiver()
-                .SafeFireAndForget(
-                    continueOnCapturedContext: false,
-                    onException: ex => Disconnected?.Invoke(this, EventArgs.Empty));
-        }
-
-        private async Task RunDataReceiver() {
-            string? line;
-            while ((line = await streamReader!.ReadLineAsync().ConfigureAwait(false)) != null) {
-                DataReceived?.Invoke(this, new DataReceivedEventArgs(line));
+            try {
+                tcpClient?.Dispose();
+                tcpClient = new TcpClient();
+                await tcpClient.ConnectAsync(_host, _port).ConfigureAwait(false);
+                streamReader = new StreamReader(tcpClient.GetStream());
+                streamWriter = new StreamWriter(tcpClient.GetStream());
+                Connected?.Invoke(this, EventArgs.Empty);
+                RunDataReceiver().SafeFireAndForget(continueOnCapturedContext: false, onException: ex => Disconnected?.Invoke(this, EventArgs.Empty));
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ConnectAsync", _appPath);
             }
-
-            Disconnected?.Invoke(this, EventArgs.Empty);
         }
-
         /// <summary>
-        /// Sends raw data to the IRC server
+        /// Run Data Receiver
         /// </summary>
-        /// <param name="data">Data to be sent</param>
-        /// <returns>The task object representing the asynchronous operation</returns>
-        public async Task SendAsync(string data) {
-            if (!data.EndsWith(ConstantsHelper.CrLf)) {
-                data += ConstantsHelper.CrLf;
+        /// <returns></returns>
+        private async Task RunDataReceiver() {
+            try {
+                string? line;
+                while ((line = await streamReader!.ReadLineAsync().ConfigureAwait(false)) != null) {
+                    DataReceived?.Invoke(this, new DataReceivedEventArgs(line));
+                }
+                Disconnected?.Invoke(this, EventArgs.Empty);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.RunDataReceiver", _appPath);
             }
-
-            await streamWriter!.WriteAsync(data)
-                .ConfigureAwait(false);
-            await streamWriter.FlushAsync()
-                .ConfigureAwait(false);
         }
-
         /// <summary>
-        /// Disposes streams and the TcpClient
+        /// Send Async
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task SendAsync(string data) {
+            try {
+                if (!data.EndsWith(ConstantsHelper.CrLf)) data += ConstantsHelper.CrLf;
+                await streamWriter!.WriteAsync(data).ConfigureAwait(false);
+                await streamWriter.FlushAsync().ConfigureAwait(false);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.SendAsync", _appPath);
+            }
+        }
+        /// <summary>
+        /// Dispose
         /// </summary>
         public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
         private void Dispose(bool disposing) {
-            if (disposed) {
-                return;
-            }
-
+            if (disposed) return;
             if (disposing) {
                 streamReader?.Dispose();
                 streamWriter?.Dispose();
                 tcpClient!.Dispose();
             }
-
             disposed = true;
         }
-
         ~TcpClientConnection() => Dispose(false);
     }
 }

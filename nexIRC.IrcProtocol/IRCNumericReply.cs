@@ -1,7 +1,11 @@
-﻿namespace nexIRC.IrcProtocol
-{
-    public enum IRCNumericReply
-    {
+﻿namespace nexIRC.IrcProtocol {
+    /// <summary>
+    /// Irc Numeric Reply Enum
+    /// </summary>
+    public enum IrcNumericReplyEnum {
+        /// <summary>
+        /// Irc Numeric Reply Enum
+        /// </summary>
         UNKNOWN,
         RPL_WELCOME = 001,
         RPL_YOURHOST = 002,
