@@ -5,10 +5,6 @@ namespace nexIRC.IrcProtocol.Messages {
     /// </summary>
     public class RplNamReplyMessage : IRCMessage, IServerMessage {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Channel
         /// </summary>
         public string Channel { get; }
@@ -20,8 +16,7 @@ namespace nexIRC.IrcProtocol.Messages {
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public RplNamReplyMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
-            //_appPath = appPath;
+        public RplNamReplyMessage(ParsedIRCMessage parsedMessage) {
             Nicks = new Dictionary<string, string>();
             Channel = parsedMessage.Parameters![2];
             try {
@@ -32,7 +27,7 @@ namespace nexIRC.IrcProtocol.Messages {
                         Nicks.Add(nick, string.Empty);
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.RplNamReplyMessage.Constructor", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.RplNamReplyMessage.Constructor");
             }
         }
     }

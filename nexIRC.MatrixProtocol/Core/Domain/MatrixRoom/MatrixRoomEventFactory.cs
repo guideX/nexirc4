@@ -1,5 +1,5 @@
+using nexIRC.Business.Helper;
 namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
-    using System.Collections.Generic;
     using Infrastructure.Dto.Sync;
     using Infrastructure.Dto.Sync.Event.Room;
     using RoomEvent;
@@ -15,24 +15,28 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromJoined(string roomId, JoinedRoom joinedRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomEvent timelineEvent in joinedRoom.Timeline.Events) {
-                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
-                    roomEvents.Add(joinRoomEvent);
-                } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
-                    roomEvents.Add(createRoomEvent);
-                } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
-                    roomEvents.Add(inviteToRoomEvent);
-                } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
-                    roomEvents.Add(textMessageEvent);
-                } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
-                    roomEvents.Add(encryptedEvent);
-                } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
-                    roomEvents.Add(encryptionEvent);
-                } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
-                    roomEvents.Add(roomKeyEvent);
-                } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
-                    roomEvents.Add(unknownEvent);
+            try {
+                foreach (RoomEvent timelineEvent in joinedRoom.Timeline.Events) {
+                    if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
+                        roomEvents.Add(joinRoomEvent);
+                    } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
+                        roomEvents.Add(createRoomEvent);
+                    } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
+                        roomEvents.Add(inviteToRoomEvent);
+                    } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
+                        roomEvents.Add(textMessageEvent);
+                    } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
+                        roomEvents.Add(encryptedEvent);
+                    } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
+                        roomEvents.Add(encryptionEvent);
+                    } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                        roomEvents.Add(roomKeyEvent);
+                    } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
+                        roomEvents.Add(unknownEvent);
+                    }
                 }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Core.Domain.MatrixRoom.CreateFromJoined");
             }
             return roomEvents;
         }
@@ -44,24 +48,28 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromInvited(string roomId, InvitedRoom invitedRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomStrippedState inviteStateEvent in invitedRoom.InviteState.Events) {
-                if (JoinRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
-                    roomEvents.Add(joinRoomEvent!);
-                } else if (CreateRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out CreateRoomEvent createRoomEvent)) {
-                    roomEvents.Add(createRoomEvent!);
-                } else if (InviteToRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
-                    roomEvents.Add(inviteToRoomEvent!);
-                } else if (TextMessageEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out TextMessageEvent textMessageEvent)) {
-                    roomEvents.Add(textMessageEvent);
-                } else if (EncryptionEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptionEvent encryptionEvent)) {
-                    roomEvents.Add(encryptionEvent);
-                } else if (EncryptedEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptedEvent encryptedEvent)) {
-                    roomEvents.Add(encryptedEvent);
-                } else if (RoomKeyEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
-                    roomEvents.Add(roomKeyEvent);
-                } else if (UnknownEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out UnknownEvent unknownEvent)) {
-                    roomEvents.Add(roomKeyEvent);
+            try {
+                foreach (RoomStrippedState inviteStateEvent in invitedRoom.InviteState.Events) {
+                    if (JoinRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
+                        roomEvents.Add(joinRoomEvent!);
+                    } else if (CreateRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out CreateRoomEvent createRoomEvent)) {
+                        roomEvents.Add(createRoomEvent!);
+                    } else if (InviteToRoomEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
+                        roomEvents.Add(inviteToRoomEvent!);
+                    } else if (TextMessageEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out TextMessageEvent textMessageEvent)) {
+                        roomEvents.Add(textMessageEvent);
+                    } else if (EncryptionEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptionEvent encryptionEvent)) {
+                        roomEvents.Add(encryptionEvent);
+                    } else if (EncryptedEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptedEvent encryptedEvent)) {
+                        roomEvents.Add(encryptedEvent);
+                    } else if (RoomKeyEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                        roomEvents.Add(roomKeyEvent);
+                    } else if (UnknownEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out UnknownEvent unknownEvent)) {
+                        roomEvents.Add(roomKeyEvent);
+                    }
                 }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Core.Domain.MatrixRoom.CreateFromInvited");
             }
             return roomEvents;
         }
@@ -73,24 +81,28 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// <returns></returns>
         public List<BaseRoomEvent> CreateFromLeft(string roomId, LeftRoom leftRoom) {
             var roomEvents = new List<BaseRoomEvent>();
-            foreach (RoomEvent timelineEvent in leftRoom.Timeline.Events) {
-                if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
-                    roomEvents.Add(joinRoomEvent);
-                } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
-                    roomEvents.Add(createRoomEvent);
-                } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
-                    roomEvents.Add(inviteToRoomEvent);
-                } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
-                    roomEvents.Add(textMessageEvent);
-                } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
-                    roomEvents.Add(encryptionEvent);
-                } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
-                    roomEvents.Add(encryptedEvent);
-                } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
-                    roomEvents.Add(roomKeyEvent);
-                } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
-                    roomEvents.Add(unknownEvent);
+            try {
+                foreach (RoomEvent timelineEvent in leftRoom.Timeline.Events) {
+                    if (JoinRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out JoinRoomEvent joinRoomEvent)) {
+                        roomEvents.Add(joinRoomEvent);
+                    } else if (CreateRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out CreateRoomEvent createRoomEvent)) {
+                        roomEvents.Add(createRoomEvent);
+                    } else if (InviteToRoomEvent.Factory.TryCreateFrom(timelineEvent, roomId, out InviteToRoomEvent inviteToRoomEvent)) {
+                        roomEvents.Add(inviteToRoomEvent);
+                    } else if (TextMessageEvent.Factory.TryCreateFrom(timelineEvent, roomId, out TextMessageEvent textMessageEvent)) {
+                        roomEvents.Add(textMessageEvent);
+                    } else if (EncryptionEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptionEvent encryptionEvent)) {
+                        roomEvents.Add(encryptionEvent);
+                    } else if (EncryptedEvent.Factory.TryCreateFrom(timelineEvent, roomId, out EncryptedEvent encryptedEvent)) {
+                        roomEvents.Add(encryptedEvent);
+                    } else if (RoomKeyEvent.Factory.TryCreateFrom(timelineEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
+                        roomEvents.Add(roomKeyEvent);
+                    } else if (UnknownEvent.Factory.TryCreateFrom(timelineEvent, roomId, out UnknownEvent unknownEvent)) {
+                        roomEvents.Add(unknownEvent);
+                    }
                 }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Core.Domain.MatrixRoom.CreateFromLeft");
             }
             return roomEvents;
         }

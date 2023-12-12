@@ -1,8 +1,5 @@
-﻿namespace nexIRC.MatrixProtocol {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using nexIRC.Enum;
+namespace nexIRC.MatrixProtocol {
     using Core.Domain;
     using Core.Domain.MatrixRoom;
     using Core.Domain.Services;
@@ -12,7 +9,7 @@
     using Core.Infrastructure.Dto.Room.Join;
     using Core.Infrastructure.Dto.Room.Joined;
     using Core.Infrastructure.Services;
-    using nexIRC.Enum;
+    using nexIRC.Business.Helper;
 
     /// <summary>
     /// Matrix Client
@@ -104,15 +101,19 @@
         /// <param name="deviceId"></param>
         /// <returns></returns>
         public async Task LoginAsync(Uri baseAddress, string user, string password, string deviceId) {
-            _userService.BaseAddress = baseAddress;
-            _roomService.BaseAddress = baseAddress;
-            _eventService.BaseAddress = baseAddress;
-            BaseAddress = baseAddress;
-            LoginResponse response = await _userService.LoginAsync(user, password, deviceId, _cts.Token);
-            UserId = response.UserId;
-            _accessToken = response.AccessToken;
-            _pollingService.Init(baseAddress, _accessToken);
-            IsLoggedIn = true;
+            try {
+                _userService.BaseAddress = baseAddress;
+                _roomService.BaseAddress = baseAddress;
+                _eventService.BaseAddress = baseAddress;
+                BaseAddress = baseAddress;
+                LoginResponse response = await _userService.LoginAsync(user, password, deviceId, _cts.Token);
+                UserId = response.UserId;
+                _accessToken = response.AccessToken;
+                _pollingService.Init(baseAddress, _accessToken);
+                IsLoggedIn = true;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient");
+            }
         }
         /// <summary>
         /// Start
@@ -120,27 +121,34 @@
         /// <param name="nextBatch"></param>
         /// <exception cref="Exception"></exception>
         public void Start(string? nextBatch = null) {
-            if (!IsLoggedIn)
-                throw new Exception("Call LoginAsync first");
-            _pollingService.OnSyncBatchReceived += OnSyncBatchReceived;
-            _pollingService.Start(nextBatch);
-            IsSyncing = _pollingService.IsSyncing;
+            try {
+                if (!IsLoggedIn)
+                    throw new Exception("Call LoginAsync first");
+                _pollingService.OnSyncBatchReceived += OnSyncBatchReceived;
+                _pollingService.Start(nextBatch);
+                IsSyncing = _pollingService.IsSyncing;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Start");
+            }
         }
         /// <summary>
         /// Stop
         /// </summary>
         public void Stop() {
-            _pollingService.Stop();
-            _pollingService.OnSyncBatchReceived -= OnSyncBatchReceived;
-            IsSyncing = _pollingService.IsSyncing;
+            try {
+                _pollingService.Stop();
+                _pollingService.OnSyncBatchReceived -= OnSyncBatchReceived;
+                IsSyncing = _pollingService.IsSyncing;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Stop");
+            }
         }
         /// <summary>
         /// Create Trusted Private Room Async
         /// </summary>
         /// <param name="invitedUserIds"></param>
         /// <returns></returns>
-        public async Task<CreateRoomResponse> CreateTrustedPrivateRoomAsync(string[] invitedUserIds) =>
-            await _roomService.CreateRoomAsync(_accessToken!, invitedUserIds, _cts.Token);
+        public async Task<CreateRoomResponse> CreateTrustedPrivateRoomAsync(string[] invitedUserIds) => await _roomService.CreateRoomAsync(_accessToken!, invitedUserIds, _cts.Token);
         /// <summary>
         /// Join Trusted Private Room Async
         /// </summary>

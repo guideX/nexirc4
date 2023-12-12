@@ -1,12 +1,4 @@
 ﻿using MvvmHelpers.Commands;
-using nexIRC.Business.Helper;
-using nexIRC.IrcProtocol;
-using nexIRC.IrcProtocol.Collections;
-using nexIRC.IrcProtocol.Messages;
-using nexIRC.MatrixProtocol.Wrapper;
-using nexIRC.Messages;
-using nexIRC.Model;
-using nexIRC.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -16,6 +8,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol;
+using nexIRC.IrcProtocol.Collections;
+using nexIRC.IrcProtocol.Messages;
+using nexIRC.MatrixProtocol.Wrapper;
+using nexIRC.Messages;
+using nexIRC.Model;
+using nexIRC.Properties;
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Main View Model
@@ -86,7 +86,7 @@ namespace nexIRC.ViewModels {
                 _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
                 _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
                 if (Settings.Default.UseMultipleNicknames) {
-                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort, AppPath);
+                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort);
                 }
                 _matrixDelay = new DispatcherTimer();
                 _matrixDelay.Tick += _matrixDelay_Tick;
@@ -95,7 +95,7 @@ namespace nexIRC.ViewModels {
                 if (Settings.Default.AutoReconnect && _ircClient != null)
                     Connect();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.MainViewModel", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.MainViewModel");
             }
 
         }
@@ -106,7 +106,7 @@ namespace nexIRC.ViewModels {
             try {
                 await App.EventAggregator.PublishOnUIThreadAsync(new ConnectMessage());
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Connect", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Connect");
             }
         }
         /// <summary>
@@ -119,7 +119,7 @@ namespace nexIRC.ViewModels {
             try {
                 _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixConnected", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixConnected");
             }
         }
         /// <summary>
@@ -135,7 +135,7 @@ namespace nexIRC.ViewModels {
                     _sendMatrixMessages = true;
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixDelay_Tick", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixDelay_Tick");
             }
         }
         /// <summary>
@@ -197,7 +197,7 @@ namespace nexIRC.ViewModels {
                         break;
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixRoomEvent", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixRoomEvent");
             }
         }
         /// <summary>
@@ -217,7 +217,7 @@ namespace nexIRC.ViewModels {
                 SelectedTab = serverTab;
                 await _ircClient.ConnectAsync();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync");
             }
         }
         /// <summary>
@@ -234,7 +234,7 @@ namespace nexIRC.ViewModels {
                     SelectedTab = tab;
                 return Task.CompletedTask;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync");
             }
             return new Task(null);
         }
@@ -248,7 +248,7 @@ namespace nexIRC.ViewModels {
             try {
                 return Task.CompletedTask;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync");
             }
             return new(null);
         }
@@ -264,7 +264,7 @@ namespace nexIRC.ViewModels {
                 await App.Client.SendAsync(new JoinMessage(channel));
                 _matrixClient.Login();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Client_RegistrationCompleted", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Client_RegistrationCompleted");
             }
         }
         /// <summary>
@@ -274,9 +274,9 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Queries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (QueryModel query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query, AppPath)));
+                foreach (QueryModel query in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new QueryViewModel(query)));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Queries_CollectionChanged", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Queries_CollectionChanged");
             }
         }
         /// <summary>
@@ -286,9 +286,9 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Channels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (Channel channel in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient, AppPath)));
+                foreach (Channel channel in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient)));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Channels_CollectionChanged", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Channels_CollectionChanged");
             }
         }
         /// <summary>
@@ -300,7 +300,7 @@ namespace nexIRC.ViewModels {
             try {
                 return Tabs.OfType<QueryViewModel>().FirstOrDefault(q => q.Query.User == user);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.FindQueryTab", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.FindQueryTab");
                 return null;
             }
         }
@@ -313,7 +313,7 @@ namespace nexIRC.ViewModels {
             try {
                 return Tabs.OfType<ChannelViewModel>().FirstOrDefault(q => q.Channel.Name == channel);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.FindChannelTab", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.FindChannelTab");
             }
             return null;
         }

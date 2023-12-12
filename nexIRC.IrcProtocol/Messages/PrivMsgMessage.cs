@@ -7,10 +7,6 @@ namespace nexIRC.IrcProtocol.Messages {
     /// </summary>
     public class PrivMsgMessage : IRCMessage, IServerMessage, IClientMessage, ISplitClientMessage {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Max Message Byte Size
         /// </summary>
         public const int MaxMessageByteSize = 400;
@@ -42,7 +38,7 @@ namespace nexIRC.IrcProtocol.Messages {
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public PrivMsgMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
+        public PrivMsgMessage(ParsedIRCMessage parsedMessage) {
             //_appPath = appPath;
             From = parsedMessage.Prefix!.From;
             Prefix = parsedMessage.Prefix;
@@ -56,7 +52,7 @@ namespace nexIRC.IrcProtocol.Messages {
         /// </summary>
         /// <param name="target"></param>
         /// <param name="text"></param>
-        public PrivMsgMessage(string target, string text/*, string appPath) : base(appPath*/) {
+        public PrivMsgMessage(string target, string text) {
             //_appPath = appPath;
             To = target;
             Message = !text.Contains(" ") ? $":{text}" : text;

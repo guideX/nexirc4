@@ -34,16 +34,11 @@ namespace nexIRC.IrcProtocol.Connection {
         /// </summary>
         private readonly string _address;
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="address"></param>
         public WebSocketClientConnection(string address, string appPath) {
             _address = address;
-            _appPath = appPath;
         }
         /// <summary>
         /// Connect Async
@@ -58,7 +53,7 @@ namespace nexIRC.IrcProtocol.Connection {
                 Connected?.Invoke(this, EventArgs.Empty);
                 RunDataReceiver().SafeFireAndForget(continueOnCapturedContext: false, onException: ex => Disconnected?.Invoke(this, EventArgs.Empty));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connection.ConnectAsync", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connection.ConnectAsync");
             }
         }
         /// <summary>

@@ -41,7 +41,7 @@ namespace nexIRC.Models {
                 Timestamp = timestamp;
                 IsSentByClient = isSentByClient;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Messages.Message", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Messages.Message");
             }
         }
         /// <summary>

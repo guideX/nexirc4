@@ -5,10 +5,6 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
     /// </summary>
     public class QuitHandler : MessageHandler<QuitMessage> {
         /// <summary>
-        /// App Path
-        /// </summary>
-        //private string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="appPath"></param>

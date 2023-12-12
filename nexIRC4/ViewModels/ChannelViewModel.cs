@@ -39,7 +39,7 @@ namespace nexIRC.ViewModels {
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="matrixClient"></param>
-        public ChannelViewModel(Channel channel, MatrixProtocol.Wrapper.MatrixWrapper matrixClient, string appPath) {
+        public ChannelViewModel(Channel channel, MatrixProtocol.Wrapper.MatrixWrapper matrixClient) {
             try {
                 _appPath = AppPath;
                 _matrixClient = matrixClient;
@@ -49,7 +49,7 @@ namespace nexIRC.ViewModels {
                 SortUsersCommand = new Command(SortUsers);
                 OpenQueryCommand = new AsyncCommand<ChannelUserModel>(OpenQuery);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.Constructor", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.Constructor");
             }
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace nexIRC.ViewModels {
                 var view = CollectionViewSource.GetDefaultView(items) as ListCollectionView;
                 view.CustomSort = new ChannelUserComparer();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SortUsers", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SortUsers");
             }
         }
         /// <summary>
@@ -73,7 +73,7 @@ namespace nexIRC.ViewModels {
             try {
                 await App.EventAggregator.PublishOnUIThreadAsync(new OpenQueryMessage(channelUser.User));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.OpenQuery", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.OpenQuery");
             }
         }
         /// <summary>
@@ -87,7 +87,7 @@ namespace nexIRC.ViewModels {
                 await App.Client.SendAsync(new PrivMsgMessage(Channel.Name, Message));
                 Message = string.Empty;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SendChannelMessage", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SendChannelMessage");
             }
         }
         /// <summary>
@@ -102,7 +102,7 @@ namespace nexIRC.ViewModels {
                     _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {\r\n", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {\r\n");
             }
         }
         /// <summary>

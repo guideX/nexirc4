@@ -9,10 +9,6 @@ namespace nexIRC.Views {
     /// </summary>
     public partial class SettingsWindow : MetroWindow {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Themese
         /// </summary>
         private readonly string[] themes = new[] { "Light", "Dark" };
@@ -24,7 +20,6 @@ namespace nexIRC.Views {
         /// Constructor
         /// </summary>
         private SettingsWindow() {
-            _appPath = System.AppDomain.CurrentDomain.BaseDirectory;
             InitializeComponent();
         }
         /// <summary>
@@ -45,7 +40,7 @@ namespace nexIRC.Views {
                 };
                 CancelButton.Click += (s, e) => Close();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Constructor", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Constructor");
             }
         }
         /// <summary>
@@ -71,7 +66,7 @@ namespace nexIRC.Views {
                 Settings.Default.Save();
                 //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Save", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Save");
             }
         }
     }

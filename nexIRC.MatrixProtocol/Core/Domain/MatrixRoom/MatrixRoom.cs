@@ -1,23 +1,24 @@
+using nexIRC.Enum;
+using nexIRC.Model.Matrix.Room;
 namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
-    using nexIRC.Enum;
-    using nexIRC.Model.Matrix.Room;
-    using System.Collections.Generic;
     /// <summary>
     /// Matrix Room
     /// </summary>
     public record MatrixRoom {
+        #region "private variables"
         /// <summary>
         /// Input
         /// </summary>
         private MatrixRoomInputModel _input;
+        #endregion
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="id"></param>
         /// <param name="status"></param>
         /// <param name="joinedUserIds"></param>
-        public MatrixRoom(MatrixRoomInputModel obj) {
-            _input = obj;
+        public MatrixRoom(MatrixRoomInputModel input) {
+            _input = input;
         }
         /// <summary>
         /// Constructor
@@ -49,7 +50,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
         /// </summary>
         public string Id {
             get {
-                return _input.Id!;
+                return _input.Id != null ? _input.Id : string.Empty;
             }
         }
         /// <summary>

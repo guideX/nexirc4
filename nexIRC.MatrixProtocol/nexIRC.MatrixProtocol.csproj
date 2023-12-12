@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
     <ProjectReference Include="..\nexIRC.Enum\nexIRC.Enum.csproj" />
     <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
     <ProjectReference Include="..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />

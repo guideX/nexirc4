@@ -1,3 +1,4 @@
+using nexIRC.Business.Helper;
 namespace nexIRC.MatrixProtocol.Core.Domain.RoomEvent {
     using Infrastructure.Dto.Sync.Event;
     using Infrastructure.Dto.Sync.Event.Room;
@@ -19,13 +20,16 @@ namespace nexIRC.MatrixProtocol.Core.Domain.RoomEvent {
             /// <param name="roomId"></param>
             /// <param name="inviteToRoomEvent"></param>
             /// <returns></returns>
-            public static bool TryCreateFrom(RoomEvent roomEvent, string roomId,
-                out InviteToRoomEvent inviteToRoomEvent) {
-                var content = roomEvent.Content.ToObject<RoomMemberContent>();
-                if (roomEvent.EventType == EventType.Member &&
-                    content?.UserMembershipState == UserMembershipState.Invite) {
-                    inviteToRoomEvent = new InviteToRoomEvent(roomId, roomEvent.SenderUserId);
-                    return true;
+            public static bool TryCreateFrom(RoomEvent roomEvent, string roomId, out InviteToRoomEvent inviteToRoomEvent) {
+                try {
+                    var content = roomEvent.Content.ToObject<RoomMemberContent>();
+                    if (roomEvent.EventType == EventType.Member &&
+                        content?.UserMembershipState == UserMembershipState.Invite) {
+                        inviteToRoomEvent = new InviteToRoomEvent(roomId, roomEvent.SenderUserId);
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Core.Domain.RoomEvent.TryCreateFrom");
                 }
                 inviteToRoomEvent = new InviteToRoomEvent(string.Empty, string.Empty);
                 return false;
@@ -37,13 +41,16 @@ namespace nexIRC.MatrixProtocol.Core.Domain.RoomEvent {
             /// <param name="roomId"></param>
             /// <param name="inviteToRoomEvent"></param>
             /// <returns></returns>
-            public static bool TryCreateFromStrippedState(RoomStrippedState roomStrippedState, string roomId,
-                out InviteToRoomEvent inviteToRoomEvent) {
-                var content = roomStrippedState.Content.ToObject<RoomMemberContent>();
-                if (roomStrippedState.EventType == EventType.Member &&
-                    content?.UserMembershipState == UserMembershipState.Invite) {
-                    inviteToRoomEvent = new InviteToRoomEvent(roomId, roomStrippedState.SenderUserId);
-                    return true;
+            public static bool TryCreateFromStrippedState(RoomStrippedState roomStrippedState, string roomId, out InviteToRoomEvent inviteToRoomEvent) {
+                try {
+                    var content = roomStrippedState.Content.ToObject<RoomMemberContent>();
+                    if (roomStrippedState.EventType == EventType.Member &&
+                        content?.UserMembershipState == UserMembershipState.Invite) {
+                        inviteToRoomEvent = new InviteToRoomEvent(roomId, roomStrippedState.SenderUserId);
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Core.Domain.RoomEvent.TryCreateFromStrippedState");
                 }
                 inviteToRoomEvent = new InviteToRoomEvent(string.Empty, string.Empty);
                 return false;

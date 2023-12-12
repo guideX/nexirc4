@@ -38,7 +38,7 @@ namespace nexIRC.ViewModels {
                     return true;
                 }
             } catch (Exception ex) { 
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.SetProperty", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.SetProperty");
             } 
             return false;
         }

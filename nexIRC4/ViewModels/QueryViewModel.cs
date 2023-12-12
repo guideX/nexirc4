@@ -11,10 +11,6 @@ namespace nexIRC.ViewModels {
     /// </summary>
     public class QueryViewModel : TabItemViewModel {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Query
         /// </summary>
         public QueryModel Query { get; }
@@ -22,14 +18,13 @@ namespace nexIRC.ViewModels {
         /// Constructor
         /// </summary>
         /// <param name="query"></param>
-        public QueryViewModel(QueryModel query, string appPath) {
-            _appPath = appPath;
+        public QueryViewModel(QueryModel query) {
             try {
                 Query = query;
                 query.Messages.CollectionChanged += Messages_CollectionChanged;
                 SendMessageCommand = new AsyncCommand(SendQueryMessage);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.QueryViewModel", AppPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.QueryViewModel");
             }
         }
         /// <summary>
@@ -45,7 +40,7 @@ namespace nexIRC.ViewModels {
                 await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
                 Message = string.Empty;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage");
             }
         }
 
@@ -54,7 +49,7 @@ namespace nexIRC.ViewModels {
                 foreach (QueryMessageModel message in e.NewItems)
                     App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.Messages_CollectionChanged", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.Messages_CollectionChanged");
             }
         }
         /// <summary>
