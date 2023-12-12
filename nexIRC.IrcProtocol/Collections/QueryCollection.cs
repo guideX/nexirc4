@@ -7,15 +7,9 @@ namespace nexIRC.IrcProtocol {
     /// </summary>
     public class QueryCollection : ObservableCollection<QueryModel> {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Query Collection
         /// </summary>
-        /// <param name="appPath"></param>
-        public QueryCollection(string appPath) { 
-            _appPath = appPath;
+        public QueryCollection() { 
         }
         /// <summary>
         /// Get Query
@@ -31,7 +25,7 @@ namespace nexIRC.IrcProtocol {
                     Client.DispatcherInvoker?.Invoke(() => Add(result));
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.GetQuery", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.GetQuery");
             }
             return result;
         }

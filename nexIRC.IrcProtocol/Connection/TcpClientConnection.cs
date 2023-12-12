@@ -15,10 +15,6 @@ namespace nexIRC.IrcProtocol.Connection {
         /// </summary>
         private readonly int _port;
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Tcp Client
         /// </summary>
         private TcpClient? tcpClient;
@@ -53,14 +49,13 @@ namespace nexIRC.IrcProtocol.Connection {
         /// <param name="port"></param>
         /// <param name="appPath"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public TcpClientConnection(string host, int port, string appPath) {
+        public TcpClientConnection(string host, int port) {
             _port = port == 0 ? 6667 : port;
             _host = host;
-            _appPath = appPath;
             try {
                 if (string.IsNullOrWhiteSpace(host)) throw new ArgumentNullException(nameof(host));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.TcpClientConnection", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.TcpClientConnection");
             }
         }
         /// <summary>
@@ -77,7 +72,7 @@ namespace nexIRC.IrcProtocol.Connection {
                 Connected?.Invoke(this, EventArgs.Empty);
                 RunDataReceiver().SafeFireAndForget(continueOnCapturedContext: false, onException: ex => Disconnected?.Invoke(this, EventArgs.Empty));
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ConnectAsync", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ConnectAsync");
             }
         }
         /// <summary>
@@ -92,7 +87,7 @@ namespace nexIRC.IrcProtocol.Connection {
                 }
                 Disconnected?.Invoke(this, EventArgs.Empty);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.RunDataReceiver", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.RunDataReceiver");
             }
         }
         /// <summary>
@@ -106,7 +101,7 @@ namespace nexIRC.IrcProtocol.Connection {
                 await streamWriter!.WriteAsync(data).ConfigureAwait(false);
                 await streamWriter.FlushAsync().ConfigureAwait(false);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.SendAsync", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.SendAsync");
             }
         }
         /// <summary>

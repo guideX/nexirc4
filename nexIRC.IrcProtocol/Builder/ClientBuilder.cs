@@ -19,14 +19,9 @@ namespace nexIRC.IrcProtocol.Builder {
         /// </summary>
         private string _password;
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Client Builder
         /// </summary>
-        internal ClientBuilder(string appPath) {
-            _appPath = appPath;
+        internal ClientBuilder() {
             _password = string.Empty;
         }
         /// <summary>
@@ -39,7 +34,7 @@ namespace nexIRC.IrcProtocol.Builder {
             try {
                 _user = new UserModel(nick, realName);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithNick", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithNick");
             }
             return this;
         }
@@ -52,10 +47,10 @@ namespace nexIRC.IrcProtocol.Builder {
         /// <returns></returns>
         public ClientBuilder WithServer(string host, int port, string password = "") {
             try {
-                _connection = new TcpClientConnection(host, port, _appPath);
+                _connection = new TcpClientConnection(host, port);
                 _password = password;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithServer", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Builder.WithServer");
             }
             return this;
         }
@@ -67,7 +62,7 @@ namespace nexIRC.IrcProtocol.Builder {
         public Client Build() {
             _ = _user ?? throw new InvalidOperationException("Nick must be defined. Please use the WithNick method before building the client.");
             _ = _connection ?? throw new InvalidOperationException("Connection must be defined. Please use the WithServer method before building the client.");
-            return new Client(_user, _password, _connection, _appPath);
+            return new Client(_user, _password, _connection);
         }
     }
 }

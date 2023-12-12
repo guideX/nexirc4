@@ -1,6 +1,4 @@
-﻿using nexIRC.Business.Helper;
-
-namespace nexIRC.IrcProtocol.Messages.Handlers {
+﻿namespace nexIRC.IrcProtocol.Messages.Handlers {
     /// <summary>
     /// Join Handler
     /// </summary>

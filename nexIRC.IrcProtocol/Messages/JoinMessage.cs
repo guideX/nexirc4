@@ -41,7 +41,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public JoinMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
+        public JoinMessage(ParsedIRCMessage parsedMessage) {
             _nick = parsedMessage.Prefix!.From;
             _channel = parsedMessage.Parameters![0];
             _channels = "";
@@ -52,7 +52,7 @@
         /// </summary>
         /// <param name="channels"></param>
         /// <param name="keys"></param>
-        public JoinMessage(string channels, string keys/*, string appPath) : base(appPath*/) {
+        public JoinMessage(string channels, string keys) {
             _channels = channels;
             _keys = keys;
             _nick = "";
@@ -62,7 +62,7 @@
         /// Constructor
         /// </summary>
         /// <param name="channels"></param>
-        public JoinMessage(params string[] channels) /*: base(appPath*/ {
+        public JoinMessage(params string[] channels)  {
             _channels = string.Join(",", channels);
             _nick = "";
             _channel = "";
@@ -72,7 +72,7 @@
         /// Constructor
         /// </summary>
         /// <param name="channelsWithKeys"></param>
-        public JoinMessage(Dictionary<string, string> channelsWithKeys/*, string appPath) : base(appPath*/) {
+        public JoinMessage(Dictionary<string, string> channelsWithKeys) {
             _channels = string.Join(",", channelsWithKeys.Keys);
             _keys = string.Join(",", channelsWithKeys.Values);
             _nick = "";

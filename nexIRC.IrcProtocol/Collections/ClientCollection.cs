@@ -18,17 +18,12 @@ namespace nexIRC.IrcProtocol.Collections {
         /// Port
         /// </summary>
         private string _port;
-        /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
         #endregion
         #region "public methods"
         /// <summary>
         /// Constructor
         /// </summary>
-        public ClientCollection(string server, string port, string appPath) {
-            _appPath = appPath;
+        public ClientCollection(string server, string port) {
             _server = server;
             _port = port;
             _clients = new List<ClientWrapper>();
@@ -52,14 +47,14 @@ namespace nexIRC.IrcProtocol.Collections {
                         return true;
                     }
                 } else {
-                    var client = new ClientWrapper(_server, _port, user, user, "", channel, _appPath);
+                    var client = new ClientWrapper(_server, _port, user, user, "", channel);
                     client.Send(clientMessage);
                     client.Connect();
                     _clients.Add(client);
                     return true;
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.SendMessageAsUser", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.SendMessageAsUser");
             }
             return false;
         }

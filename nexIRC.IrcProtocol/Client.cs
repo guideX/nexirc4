@@ -10,10 +10,6 @@ namespace nexIRC.IrcProtocol {
     /// </summary>
     public class Client : IDisposable {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Connection
         /// </summary>
         private readonly IConnection connection;
@@ -83,23 +79,22 @@ namespace nexIRC.IrcProtocol {
         /// Create Builder
         /// </summary>
         /// <returns></returns>
-        public static ClientBuilder CreateBuilder(string appPath) => new(appPath);
+        public static ClientBuilder CreateBuilder() => new();
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="user"></param>
         /// <param name="connection"></param>
-        public Client(UserModel user, IConnection connection, string appPath) {
+        public Client(UserModel user, IConnection connection) {
             _password = "";
             User = user;
             this.connection = connection;
             DispatcherInvoker = a => a.Invoke();
             _messageHandlerContainer = new MessageHandlerContainer(this);
             this.connection.DataReceived += Connection_DataReceived!;
-            _appPath = appPath;
-            Channels = new ChannelCollection(_appPath);
-            Peers = new UserCollection(_appPath);
-            Queries = new QueryCollection(_appPath);
+            Channels = new ChannelCollection();
+            Peers = new UserCollection();
+            Queries = new QueryCollection();
         }
         /// <summary>
         /// Client
@@ -107,12 +102,11 @@ namespace nexIRC.IrcProtocol {
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <param name="connection"></param>
-        public Client(UserModel user, string password, IConnection connection, string appPath) : this(user, connection, appPath) {
+        public Client(UserModel user, string password, IConnection connection) : this(user, connection) {
             _password = password;
-            _appPath = appPath;
-            Channels = new ChannelCollection(_appPath);
-            Peers = new UserCollection(_appPath);
-            Queries = new QueryCollection(_appPath);
+            Channels = new ChannelCollection();
+            Peers = new UserCollection();
+            Queries = new QueryCollection();
         }
         /// <summary>
         /// Connection Data Received

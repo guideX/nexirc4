@@ -12,8 +12,7 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
         /// Constructor
         /// </summary>
         /// <param name="appPath"></param>
-        public QuitHandler(/*string appPath*/) { 
-            //_appPath = appPath;
+        public QuitHandler() {
         }
         /// <summary>
         /// Handle Async
@@ -22,11 +21,11 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
         /// <param name="client"></param>
         /// <returns></returns>
         public override Task HandleAsync(QuitMessage serverMessage, Client client) {
-            //try {
+            try {
                 foreach (var channel in client.Channels) channel.RemoveUser(serverMessage.Nick);
-            //} catch (Exception ex) {
-            //ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.Handlers.HandleAsync", _appPath);
-            //}
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.Handlers.HandleAsync");
+            }
             return Task.CompletedTask;
         }
     }

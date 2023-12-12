@@ -15,7 +15,7 @@
         /// Nick Message
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public NickMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
+        public NickMessage(ParsedIRCMessage parsedMessage) {
             OldNick = parsedMessage.Prefix!.From;
             NewNick = parsedMessage.Parameters![0];
         }
@@ -23,7 +23,7 @@
         /// Constructor
         /// </summary>
         /// <param name="newNick"></param>
-        public NickMessage(string newNick/*, string appPath) : base(appPath*/) {
+        public NickMessage(string newNick) {
             NewNick = newNick;
             OldNick = "";
         }

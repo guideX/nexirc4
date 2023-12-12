@@ -32,7 +32,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public PartMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
+        public PartMessage(ParsedIRCMessage parsedMessage) {
             _channels = "";
             _nick = parsedMessage.Prefix!.From;
             _channel = parsedMessage.Parameters![0];
@@ -41,7 +41,7 @@
         /// Constructor
         /// </summary>
         /// <param name="channels"></param>
-        public PartMessage(string channels/*, string appPath) : base(appPath*/) {
+        public PartMessage(string channels) {
             _nick = "";
             _channel = "";
             _channels = channels;
@@ -50,7 +50,7 @@
         /// Constructor
         /// </summary>
         /// <param name="channels"></param>
-        public PartMessage(string appPath, params string[] channels) : this(string.Join(",", channels/*), appPath*/)) {
+        public PartMessage(params string[] channels) : this(string.Join(",", channels)) {
         }
         /// <summary>
         /// Tokens

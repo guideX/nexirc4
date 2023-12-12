@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 namespace nexIRC.Business.Helper {
     /// <summary>
     /// Exception Helper
@@ -8,7 +9,13 @@ namespace nexIRC.Business.Helper {
         /// Handle Exception
         /// </summary>
         /// <param name="exception"></param>
-        public static void HandleException(Exception exception, string? methodName, string? appPath) {
+        public static void HandleException(Exception exception, string? methodName) {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                using (var eventLog = new EventLog("Application")) {
+                    eventLog.Source = "Application";
+                    eventLog.WriteEntry(exception.Message, EventLogEntryType.Error , 2278, 1);
+                }
+            /*
             if (appPath != null) {
                 var iniFileHelper = new IniFileHelper(appPath);
                 var msg = appPath + "exceptionlog.ini";
@@ -22,6 +29,7 @@ namespace nexIRC.Business.Helper {
                     iniFileHelper.WriteIni(msg, n.Value.ToString(), "Exception", JsonConvert.SerializeObject(exception));
                 }
             }
+            */
         }
     }
 }

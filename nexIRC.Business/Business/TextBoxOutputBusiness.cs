@@ -27,14 +27,9 @@ namespace nexIRC.Business.Business {
         /// </summary>
         private OutputEventEnum? _lastOutputEvent;
         /// <summary>
-        /// App Path
-        /// </summary>
-        private readonly string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
-        public TextBoxOutputBusiness(string input, string appPath) {
-            _appPath = appPath;
+        public TextBoxOutputBusiness(string input) {
             _input = input;
         }
         /// <summary>
@@ -97,7 +92,7 @@ namespace nexIRC.Business.Business {
                 _lastPrivMsg = new PrivMsgParamModel() { 
                     Message = ex.Message
                 };
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Business.TextBoxOutputBusiness.Process", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Business.TextBoxOutputBusiness.Process");
             }
         }
         /// <summary>

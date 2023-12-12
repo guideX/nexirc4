@@ -3,19 +3,14 @@ using nexIRC.Model;
 using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
-    /// An observable collection that represents all users the client knows about
+    /// User Collection
     /// </summary>
     public class UserCollection : ObservableCollection<UserModel> {
-        /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="appPath"></param>
-        public UserCollection(string appPath) {
-            _appPath = appPath;
+        public UserCollection() {
         }
         /// <summary>
         /// Get User
@@ -31,7 +26,7 @@ namespace nexIRC.IrcProtocol {
                 }
                 return user;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.GetUser", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.GetUser");
                 return null;
             }
         }

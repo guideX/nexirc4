@@ -4,14 +4,9 @@
     /// </summary>
     public class PingHandler : MessageHandler<PingMessage> {
         /// <summary>
-        /// App Path
-        /// </summary>
-        //private string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
-        public PingHandler(/*string appPath*/) {
-            //_appPath = appPath;
+        public PingHandler() {
         }
         /// <summary>
         /// Handler Async
@@ -20,7 +15,7 @@
         /// <param name="client"></param>
         /// <returns></returns>
         public override Task HandleAsync(PingMessage serverMessage, Client client) {
-            return client.SendAsync(new PongMessage(serverMessage.Target/*, _appPath*/));
+            return client.SendAsync(new PongMessage(serverMessage.Target));
         }
     }
 }

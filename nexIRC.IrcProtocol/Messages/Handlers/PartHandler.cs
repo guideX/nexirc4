@@ -5,10 +5,6 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
     /// </summary>
     public class PartHandler : MessageHandler<PartMessage> {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Part Handler
         /// </summary>
         public PartHandler() {

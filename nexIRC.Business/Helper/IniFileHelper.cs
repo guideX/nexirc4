@@ -1,20 +1,15 @@
-﻿using nexIRC.Business.Methods;
+﻿using System.Text;
 using System.Globalization;
-using System.Text;
+using nexIRC.Business.Methods;
 namespace nexIRC.Business.Helper {
     /// <summary>
     /// Ini File Helper
     /// </summary>
     public class IniFileHelper {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Ini File Helper
         /// </summary>
-        public IniFileHelper(string appPath) {
-            _appPath = appPath;
+        public IniFileHelper() {
         }
         /// <summary>
         /// Read Ini
@@ -31,7 +26,7 @@ namespace nexIRC.Business.Helper {
                     _default :
                     sb.ToString().Trim();
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.Readini", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.Readini");
                 return null;
             }
         }
@@ -46,7 +41,7 @@ namespace nexIRC.Business.Helper {
             try {
                 NativeMethods.WritePrivateProfileStringA(section, key, value, file);
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni");
             }
         }
         /// <summary>
@@ -61,7 +56,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return int.TryParse(ReadIni(file, section, key, def.ToString()!), out int n) ? n : def;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.WriteIni");
                 return null;
             }
         }
@@ -77,7 +72,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return DateTime.TryParse(ReadIni(file, section, key, def.ToString()!), out DateTime dt) ? dt : def;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDateTime", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDateTime");
                 return null;
             }
         }
@@ -93,7 +88,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return decimal.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)!), out decimal d) ? d : def;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDecimal", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniDecimal");
                 return null;
             }
         }
@@ -109,7 +104,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return bool.TryParse(ReadIni(file, section, key, def.ToString()), out bool b) ? b : def;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniBool", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniBool");
                 return null;
             }
         }
@@ -125,7 +120,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return double.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)), out double res) ? res : null;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat");
                 return null;
             }
         }
@@ -141,7 +136,7 @@ namespace nexIRC.Business.Helper {
             try {
                 return float.TryParse(ReadIni(file, section, key, def?.ToString(CultureInfo.InvariantCulture)), out float res) ? res : null;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.Business.Helper.IniFileHelper.ReadIniFloat");
                 return null;
             }
         }

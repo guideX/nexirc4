@@ -6,15 +6,9 @@ namespace nexIRC.IrcProtocol {
     /// </summary>
     public class ChannelCollection : ObservableCollection<Channel> {
         /// <summary>
-        /// AppPath
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="appPath"></param>
-        public ChannelCollection(string appPath) {
-            _appPath = appPath;
+        public ChannelCollection() {
         }
         /// <summary>
         /// Get Channel
@@ -30,7 +24,7 @@ namespace nexIRC.IrcProtocol {
                 }
                 return channel;
             } catch(Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ChannelCollection", _appPath);
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ChannelCollection");
                 return null;
             }
         }

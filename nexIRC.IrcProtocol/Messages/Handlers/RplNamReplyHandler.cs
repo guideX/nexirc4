@@ -6,15 +6,10 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
     [Command("353")]
     public class RplNamReplyHandler : MessageHandler<RplNamReplyMessage> {
         /// <summary>
-        /// App Path
-        /// </summary>
-        //private string _appPath;
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="appPath"></param>
-        public RplNamReplyHandler(/*string appPath*/) { 
-            //_appPath = appPath;
+        public RplNamReplyHandler() {
         }
         /// <summary>
         /// Handle Async
@@ -23,7 +18,7 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
         /// <param name="client"></param>
         /// <returns></returns>
         public override Task HandleAsync(RplNamReplyMessage serverMessage, Client client) {
-            //try {
+            try {
                 var channel = client.Channels.GetChannel(serverMessage.Channel);
                 if (channel != null) {
                     foreach (var nick in serverMessage.Nicks) {
@@ -32,9 +27,9 @@ namespace nexIRC.IrcProtocol.Messages.Handlers {
                             channel.AddUser(user, nick.Value);
                     }
                 }
-            //} catch (Exception ex) {
-                //ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.Handlers.HandleAsync", _appPath);
-            //}
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.Handlers.HandleAsync");
+            }
             return Task.CompletedTask;
         }
     }
