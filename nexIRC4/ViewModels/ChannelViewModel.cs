@@ -84,7 +84,7 @@ namespace nexIRC.ViewModels {
             try {
                 if (string.IsNullOrWhiteSpace(Message)) return;
                 Messages.Add(Models.Message.Sent(new ChannelMessage(App.Client.User, Channel, Message)));
-                await App.Client.SendAsync(new PrivMsgMessage(Channel.Name, Message, _appPath));
+                await App.Client.SendAsync(new PrivMsgMessage(Channel.Name, Message));
                 Message = string.Empty;
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SendChannelMessage", _appPath);

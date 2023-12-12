@@ -19,7 +19,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public NoticeMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
+        public NoticeMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
             From = parsedMessage.Prefix!.From;
             Target = parsedMessage.Parameters![0];
             Message = parsedMessage.Trailing;
@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="target"></param>
         /// <param name="text"></param>
-        public NoticeMessage(string target, string text, string appPath) : base(appPath) {
+        public NoticeMessage(string target, string text/*, string appPath) : base(appPath*/) {
             Target = target;
             Message = text;
             From = "";

@@ -11,7 +11,7 @@
         /// Constructor
         /// </summary>
         /// <param name="target"></param>
-        public PongMessage(string target, string appPath) : base(appPath) {
+        public PongMessage(string target/*, string appPath) : base(appPath*/) {
             Target = target;
         }
         /// <summary>

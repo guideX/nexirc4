@@ -42,7 +42,7 @@ namespace nexIRC.ViewModels {
                     return;
                 }
                 Messages.Add(Models.Message.Sent(new QueryMessageModel(App.Client.User, Message)));
-                await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message, _appPath));
+                await App.Client.SendAsync(new PrivMsgMessage(Query.Nick, Message));
                 Message = string.Empty;
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.QueryViewModel.SendQueryMessage", _appPath);

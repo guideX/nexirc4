@@ -11,7 +11,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public RplWelcomeMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
+        public RplWelcomeMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
             Text = parsedMessage.Trailing;
         }
     }

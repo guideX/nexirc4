@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="PresentationFramework" Version="4.6.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
   </ItemGroup>
 

@@ -28,7 +28,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public QuitMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
+        public QuitMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
             _nick = parsedMessage.Prefix!.From;
             _message = parsedMessage.Trailing;
         }
@@ -36,7 +36,7 @@
         /// Quit Message
         /// </summary>
         /// <param name="message"></param>
-        public QuitMessage(string message, string appPath) : base(appPath) {
+        public QuitMessage(string message/*, string appPath) : base(appPath*/) {
             _message = message;
             _nick = "";
         }

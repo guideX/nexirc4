@@ -8,13 +8,13 @@ namespace nexIRC.IrcProtocol.Messages {
         /// <summary>
         /// App Path
         /// </summary>
-        private string _appPath;
+        //private string _appPath;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="appPath"></param>
-        public IRCMessage(string appPath) {
-            _appPath = appPath;
+        public IRCMessage(/*string appPath*/) {
+            //_appPath = appPath;
         }
         /// <summary>
         /// When this IRC message was created
@@ -40,7 +40,7 @@ namespace nexIRC.IrcProtocol.Messages {
             var sb = new StringBuilder(1024);
             foreach (var tokens in clientMessage.LineSplitTokens) {
                 if (tokens.Length == 0) continue;
-                AppendTokens(sb, tokens, _appPath);
+                AppendTokens(sb, tokens/*, _appPath*/);
                 sb.Append(ConstantsHelper.CrLf);
             }
             return sb.ToString().Trim();
@@ -54,7 +54,7 @@ namespace nexIRC.IrcProtocol.Messages {
             var tokens = clientMessage.Tokens.ToArray();
             if (tokens.Length == 0) return string.Empty;
             var sb = new StringBuilder(256);
-            AppendTokens(sb, tokens, _appPath);
+            AppendTokens(sb, tokens/*, _appPath*/);
             return sb.ToString().Trim();
         }
         /// <summary>
@@ -62,21 +62,21 @@ namespace nexIRC.IrcProtocol.Messages {
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="tokens"></param>
-        private static void AppendTokens(StringBuilder sb, string[] tokens, string appPath) {
+        private static void AppendTokens(StringBuilder sb, string[] tokens) {
             var lastIndex = tokens.Length - 1;
-            try {
-                for (int i = 0; i < tokens.Length; i++) {
-                    if (i == lastIndex && tokens[i].Contains(' ')) {
-                        sb.Append(':');
-                    }
-                    sb.Append(tokens[i]);
-                    if (i < lastIndex) {
-                        sb.Append(' ');
-                    }
+            //try {
+            for (int i = 0; i < tokens.Length; i++) {
+                if (i == lastIndex && tokens[i].Contains(' ')) {
+                    sb.Append(':');
                 }
-            } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.IRCMessage.AppendTokens", appPath);
+                sb.Append(tokens[i]);
+                if (i < lastIndex) {
+                    sb.Append(' ');
+                }
             }
+            //} catch (Exception ex) {
+            //ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.IRCMessage.AppendTokens", appPath);
+            //}
         }
     }
 }

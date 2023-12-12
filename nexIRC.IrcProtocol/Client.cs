@@ -137,10 +137,10 @@ namespace nexIRC.IrcProtocol {
         public async Task ConnectAsync() {
             await connection.ConnectAsync() .ConfigureAwait(false);
             if (!string.IsNullOrWhiteSpace(_password)) {
-                await SendAsync(new PassMessage(_password, _appPath)).ConfigureAwait(false);
+                await SendAsync(new PassMessage(_password)).ConfigureAwait(false);
             }
-            await SendAsync(new NickMessage(User.Nick, _appPath)).ConfigureAwait(false);
-            await SendAsync(new UserMessage(User.Nick, User.RealName, _appPath)).ConfigureAwait(false);
+            await SendAsync(new NickMessage(User.Nick)).ConfigureAwait(false);
+            await SendAsync(new UserMessage(User.Nick, User.RealName)).ConfigureAwait(false);
         }
         /// <summary>
         /// Send Raw

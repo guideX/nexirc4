@@ -20,8 +20,8 @@ namespace nexIRC.IrcProtocol.Messages {
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public RplNamReplyMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
-            _appPath = appPath;
+        public RplNamReplyMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
+            //_appPath = appPath;
             Nicks = new Dictionary<string, string>();
             Channel = parsedMessage.Parameters![2];
             try {

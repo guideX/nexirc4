@@ -15,7 +15,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public TopicMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
+        public TopicMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
             Channel = parsedMessage.Parameters![0];
             Topic = parsedMessage.Trailing;
         }
@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="topic"></param>
-        public TopicMessage(string channel, string topic, string appPath) : base(appPath) {
+        public TopicMessage(string channel, string topic/*, string appPath) : base(appPath*/) {
             Channel = channel;
             Topic = topic;
         }

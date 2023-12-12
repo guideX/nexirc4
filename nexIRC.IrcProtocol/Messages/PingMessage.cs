@@ -11,7 +11,7 @@
         /// Constructor
         /// </summary>
         /// <param name="parsedMessage"></param>
-        public PingMessage(ParsedIRCMessage parsedMessage, string appPath) : base(appPath) {
+        public PingMessage(ParsedIRCMessage parsedMessage/*, string appPath) : base(appPath*/) {
             Target = parsedMessage.Trailing;
         }
     }

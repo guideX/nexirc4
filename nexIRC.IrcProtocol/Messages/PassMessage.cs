@@ -11,7 +11,7 @@ namespace nexIRC.IrcProtocol.Messages {
         /// Constructor
         /// </summary>
         /// <param name="password"></param>
-        public PassMessage(string password, string appPath) : base(appPath) {
+        public PassMessage(string password/*, string appPath) : base(appPath*/) {
             _password = password;
         }
         /// <summary>

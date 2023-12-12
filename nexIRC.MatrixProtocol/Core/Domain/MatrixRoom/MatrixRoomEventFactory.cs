@@ -56,7 +56,7 @@ namespace nexIRC.MatrixProtocol.Core.Domain.MatrixRoom {
                 } else if (EncryptionEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptionEvent encryptionEvent)) {
                     roomEvents.Add(encryptionEvent);
                 } else if (EncryptedEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out EncryptedEvent encryptedEvent)) {
-                    roomEvents.Add(encryptionEvent);
+                    roomEvents.Add(encryptedEvent);
                 } else if (RoomKeyEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out RoomKeyEvent roomKeyEvent)) {
                     roomEvents.Add(roomKeyEvent);
                 } else if (UnknownEvent.Factory.TryCreateFromStrippedState(inviteStateEvent, roomId, out UnknownEvent unknownEvent)) {
