@@ -3,6 +3,8 @@ namespace nexIRC.MatrixProtocol {
     using Core.Domain.Services;
     using Core.Infrastructure.Services;
     using Microsoft.Extensions.Logging;
+    using nexIRC.Business.Helper;
+
     /// <summary>
     /// Singleton Http Factory
     /// </summary>
@@ -43,18 +45,23 @@ namespace nexIRC.MatrixProtocol {
         /// <param name="logger"></param>
         /// <returns></returns>
         public IMatrixClient Create(ILogger<PollingService>? logger = null) {
-            if (_client != null)
+            try {
+                if (_client != null)
+                    return _client;
+                var eventService = new EventService(_httpClientFactory);
+                var userService = new UserService(_httpClientFactory);
+                var roomService = new RoomService(_httpClientFactory);
+                var pollingService = new PollingService(eventService, logger!);
+                _client = new MatrixClient(
+                    pollingService,
+                    userService,
+                    roomService,
+                    eventService);
                 return _client;
-            var eventService = new EventService(_httpClientFactory);
-            var userService = new UserService(_httpClientFactory);
-            var roomService = new RoomService(_httpClientFactory);
-            var pollingService = new PollingService(eventService, logger);
-            _client = new MatrixClient(
-                pollingService,
-                userService,
-                roomService,
-                eventService);
-            return _client;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Create");
+                throw;
+            }
         }
     }
 }

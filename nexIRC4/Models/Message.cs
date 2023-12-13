@@ -24,10 +24,6 @@ namespace nexIRC.Models {
         /// </summary>
         public bool IsSentByClient { get; }
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath = System.AppDomain.CurrentDomain.BaseDirectory;
-        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="from"></param>

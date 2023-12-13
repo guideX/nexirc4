@@ -35,7 +35,7 @@ namespace nexIRC.IrcProtocol.Messages {
             var sb = new StringBuilder(1024);
             foreach (var tokens in clientMessage.LineSplitTokens) {
                 if (tokens.Length == 0) continue;
-                AppendTokens(sb, tokens/*, _appPath*/);
+                AppendTokens(sb, tokens);
                 sb.Append(ConstantsHelper.CrLf);
             }
             return sb.ToString().Trim();
@@ -50,7 +50,7 @@ namespace nexIRC.IrcProtocol.Messages {
                 var tokens = clientMessage.Tokens.ToArray();
                 if (tokens.Length == 0) return string.Empty;
                 var sb = new StringBuilder(256);
-                AppendTokens(sb, tokens/*, _appPath*/);
+                AppendTokens(sb, tokens);
                 return sb.ToString().Trim();
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Messages.IRCMessage.BuildClientMessage");

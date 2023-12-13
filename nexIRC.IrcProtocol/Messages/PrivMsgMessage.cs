@@ -39,7 +39,6 @@ namespace nexIRC.IrcProtocol.Messages {
         /// </summary>
         /// <param name="parsedMessage"></param>
         public PrivMsgMessage(ParsedIRCMessage parsedMessage) {
-            //_appPath = appPath;
             From = parsedMessage.Prefix!.From;
             Prefix = parsedMessage.Prefix;
             To = parsedMessage.Parameters![0];
@@ -53,7 +52,6 @@ namespace nexIRC.IrcProtocol.Messages {
         /// <param name="target"></param>
         /// <param name="text"></param>
         public PrivMsgMessage(string target, string text) {
-            //_appPath = appPath;
             To = target;
             Message = !text.Contains(" ") ? $":{text}" : text;
             From = "";

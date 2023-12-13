@@ -49,7 +49,7 @@ namespace nexIRC.MatrixProtocol.Wrapper {
         /// <summary>
         /// Matrix Client
         /// </summary>
-        private IMatrixClient? _matrixClient;
+        private IMatrixClient _matrixClient;
         /// <summary>
         /// Joined Channels
         /// </summary>

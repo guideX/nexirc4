@@ -15,10 +15,6 @@ namespace nexIRC.ViewModels {
     /// </summary>
     public class ChannelViewModel : TabItemViewModel {
         /// <summary>
-        /// App Path
-        /// </summary>
-        private string _appPath;
-        /// <summary>
         /// Channel
         /// </summary>
         public Channel Channel { get; }
@@ -41,7 +37,6 @@ namespace nexIRC.ViewModels {
         /// <param name="matrixClient"></param>
         public ChannelViewModel(Channel channel, MatrixProtocol.Wrapper.MatrixWrapper matrixClient) {
             try {
-                _appPath = AppPath;
                 _matrixClient = matrixClient;
                 Channel = channel;
                 channel.Messages.CollectionChanged += Messages_CollectionChanged;
@@ -102,7 +97,7 @@ namespace nexIRC.ViewModels {
                     _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
                 }
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {\r\n");
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel");
             }
         }
         /// <summary>

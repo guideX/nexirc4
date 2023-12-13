@@ -1,6 +1,4 @@
 namespace nexIRC.MatrixProtocol {
-    using System;
-    using System.Collections.Generic;
     using Core.Domain.RoomEvent;
     /// <summary>
     /// Matrix Room Events Event Args

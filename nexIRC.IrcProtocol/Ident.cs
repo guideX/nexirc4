@@ -60,7 +60,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Start
         /// </summary>
-        public async void Start() {
+        public /* async*/void Start() {
             Thread socketThread = new(new ThreadStart(listen));
         }
         /// <summary>

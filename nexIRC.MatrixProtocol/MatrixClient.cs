@@ -10,7 +10,6 @@ namespace nexIRC.MatrixProtocol {
     using Core.Infrastructure.Dto.Room.Joined;
     using Core.Infrastructure.Services;
     using nexIRC.Business.Helper;
-
     /// <summary>
     /// Matrix Client
     /// </summary>
@@ -112,7 +111,7 @@ namespace nexIRC.MatrixProtocol {
                 _pollingService.Init(baseAddress, _accessToken);
                 IsLoggedIn = true;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient");
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.LoginAsync");
             }
         }
         /// <summary>
@@ -128,7 +127,7 @@ namespace nexIRC.MatrixProtocol {
                 _pollingService.Start(nextBatch);
                 IsSyncing = _pollingService.IsSyncing;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Start");
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.Start");
             }
         }
         /// <summary>
@@ -140,7 +139,7 @@ namespace nexIRC.MatrixProtocol {
                 _pollingService.OnSyncBatchReceived -= OnSyncBatchReceived;
                 IsSyncing = _pollingService.IsSyncing;
             } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.Stop");
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.Stop");
             }
         }
         /// <summary>
@@ -155,10 +154,14 @@ namespace nexIRC.MatrixProtocol {
         /// <param name="roomId"></param>
         /// <returns></returns>
         public async Task<JoinRoomResponse> JoinTrustedPrivateRoomAsync(string roomId) {
-            MatrixRoom? matrixRoom = _pollingService.GetMatrixRoom(roomId);
-            if (matrixRoom != null && matrixRoom.Status != MatrixRoomStatusEnum.Invited)
-                return new JoinRoomResponse(matrixRoom.Id);
-            return await _roomService.JoinRoomAsync(_accessToken!, roomId, _cts.Token);
+            try {
+                MatrixRoom? matrixRoom = _pollingService.GetMatrixRoom(roomId);
+                if (matrixRoom != null && matrixRoom.Status != MatrixRoomStatusEnum.Invited) return new JoinRoomResponse(matrixRoom.Id);
+                return await _roomService.JoinRoomAsync(_accessToken!, roomId, _cts.Token);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.JoinTrustedPrivateRoomAsync");
+                throw;
+            }
         }
         /// <summary>
         /// Send Message Async
@@ -168,20 +171,29 @@ namespace nexIRC.MatrixProtocol {
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
         public async Task<string> SendMessageAsync(string roomId, string message) {
-            string transactionId = CreateTransactionId();
-            EventResponse eventResponse = await _eventService.SendMessageAsync(_accessToken!, roomId, transactionId, message, _cts.Token);
-            if (eventResponse.EventId == null)
-                throw new NullReferenceException(nameof(eventResponse.EventId));
-            return eventResponse.EventId;
+            try {
+                string transactionId = CreateTransactionId();
+                EventResponse eventResponse = await _eventService.SendMessageAsync(_accessToken!, roomId, transactionId, message, _cts.Token);
+                if (eventResponse.EventId == null)
+                    throw new NullReferenceException(nameof(eventResponse.EventId));
+                return eventResponse.EventId;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.SendMessageAsync");
+                throw;
+            }
         }
         /// <summary>
         /// Get Joined Rooms IDS Async
         /// </summary>
         /// <returns></returns>
         public async Task<List<string>> GetJoinedRoomsIdsAsync() {
-            JoinedRoomsResponse response =
-                await _roomService.GetJoinedRoomsAsync(_accessToken!, _cts.Token);
-            return response.JoinedRoomIds;
+            try {
+                JoinedRoomsResponse response = await _roomService.GetJoinedRoomsAsync(_accessToken!, _cts.Token);
+                return response.JoinedRoomIds;
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.GetJoinedRoomsIdsAsync");
+                throw;
+            }
         }
         /// <summary>
         /// Leave Room Async
@@ -197,20 +209,29 @@ namespace nexIRC.MatrixProtocol {
         /// <param name="syncBatchEventArgs"></param>
         /// <exception cref="ArgumentException"></exception>
         private void OnSyncBatchReceived(object? sender, SyncBatchEventArgs syncBatchEventArgs) {
-            if (sender is not IPollingService)
-                throw new ArgumentException("sender is not polling service");
-            SyncBatch batch = syncBatchEventArgs.SyncBatch;
-            OnMatrixRoomEventsReceived?.Invoke(this, new MatrixRoomEventsEventArgs(batch.MatrixRoomEvents, batch.NextBatch));
+            try {
+                if (sender is not IPollingService) throw new ArgumentException("sender is not polling service");
+                SyncBatch batch = syncBatchEventArgs.SyncBatch;
+                OnMatrixRoomEventsReceived?.Invoke(this, new MatrixRoomEventsEventArgs(batch.MatrixRoomEvents, batch.NextBatch));
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.OnSyncBatchReceived");
+            }
         }
         /// <summary>
         /// Create TransactionID
         /// </summary>
         /// <returns></returns>
         private string CreateTransactionId() {
-            long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            ulong counter = _transactionNumber;
-            _transactionNumber += 1;
-            return $"m{timestamp}.{counter}";
+            try {
+                long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                ulong counter = _transactionNumber;
+                _transactionNumber += 1;
+                return $"m{timestamp}.{counter}";
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.MatrixProtocol.MatrixClient.CreateTransactionId");
+                return string.Empty;
+            }
+            
         }
     }
 }
