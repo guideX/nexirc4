@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ChannelUser.cs" />
+    <Compile Remove="Constants.cs" />
+    <Compile Remove="Ident.cs" />
+    <Compile Remove="Query.cs" />
+    <Compile Remove="QueryMessage.cs" />
+    <Compile Remove="ServerMessageModel.cs" />
+    <Compile Remove="User.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
+    <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Messages\**" />
+    <EmbeddedResource Remove="Messages\**" />
+    <None Remove="Messages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PresentationFramework" Version="4.6.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="7.0.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
+  </ItemGroup>
+
+</Project>

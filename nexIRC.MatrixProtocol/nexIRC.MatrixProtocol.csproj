@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Olm.cs" />
+    <Compile Remove="Wrapper\MatrixResult.cs" />
+    <Compile Remove="Wrapper\MatrixResultModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\nexIRC.Business\nexIRC.Business.csproj" />
+    <ProjectReference Include="..\nexIRC.Enum\nexIRC.Enum.csproj" />
+    <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
+    <ProjectReference Include="..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+/nexIRC4/bin
+/nexIRC.Model/obj
+/nexIRC.Model/bin
+/nexIRC4/obj
+/nexIRC.Business/bin
+/nexIRC.Business/obj
+/nexIRC.IrcProtocol/bin
+/nexIRC.IrcProtocol/obj
+/nexIRC.MatrixProtocol/bin
+/nexIRC.MatrixProtocol/obj
+/nexIRC.Olm/obj
+/nexIRC.Olm/bin
+/nexIRC.Enum/obj
+/nexIRC.Enum/bin
+/team-nexgen.core/team-nexgen.core/obj
+/team-nexgen.core/team-nexgen.core/bin
