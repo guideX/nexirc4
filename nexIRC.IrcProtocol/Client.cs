@@ -24,7 +24,7 @@ namespace nexIRC.IrcProtocol {
         /// <summary>
         /// Enables a custom dispatcher to be used if necessary. For example, WPF Dispatcher, to make sure collections are manipulated in the UI thread
         /// </summary>
-        internal static Action<Action>? DispatcherInvoker;
+        public static Action<Action>? DispatcherInvoker;
         /// <summary>
         /// User
         /// </summary>

@@ -1,5 +1,4 @@
 ﻿using nexIRC.Business.Helper;
-using nexIRC.IrcProtocol.Messages;
 using nexIRC.Model;
 namespace nexIRC.IrcProtocol.Wrappers {
     /// <summary>
@@ -43,9 +42,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _client_RegistrationCompleted(object? sender, EventArgs e) {
-            if (!_autoJoinedChannel) 
-                AutoJoinChannel(); 
-            System.Threading.Thread.Sleep(1000);
+            if (!_autoJoinedChannel) AutoJoinChannel(); 
         }
         /// <summary>
         /// Auto Join Channel
@@ -53,8 +50,8 @@ namespace nexIRC.IrcProtocol.Wrappers {
         private async void AutoJoinChannel() {
             if (string.IsNullOrWhiteSpace(_channel)) return;
             _autoJoinedChannel = true;
-            System.Threading.Thread.Sleep(1000);
-            await _client.SendRaw("JOIN :" + _channel);
+            await _client.SendRaw("JOIN :" + _channel + Environment.NewLine);
+            LogActivity("JOIN :" + _channel + Environment.NewLine);
         }
         /// <summary>
         /// Connected
@@ -63,7 +60,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="e"></param>
         private void _connection_Connected(object? sender, EventArgs e) {
             _connected = true;
-            if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
+            //if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
         }
         /// <summary>
         /// Disconnected
@@ -88,13 +85,31 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="channel"></param>
         /// <param name="message"></param>
         private void SendMessages() {
-            if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
-            if (_connected && _autoJoinedChannel) {
-                foreach (var item in _messagesToSend.Where(i => !i.Sent).ToList()) {
-                    _client.SendRaw("PRIVMSG " + item.Channel + " :" + item.Message);
-                    item.Sent = true;
+            //if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
+            if (_autoJoinedChannel) {
+                if (_connected && _autoJoinedChannel) {
+                    foreach (var item in _messagesToSend.Where(i => !i.Sent).ToList()) {
+                        SendRaw("PRIVMSG " + item.Channel + " :" + item.Message + Environment.NewLine);
+                        item.Sent = true;
+                    }
                 }
             }
+        }
+        /// <summary>
+        /// Send Raw
+        /// </summary>
+        /// <param name="raw"></param>
+        private void SendRaw(string raw) {
+            _client.SendRaw(raw);
+            LogActivity("Sent: " + raw);
+        }
+        /// <summary>
+        /// Send Raw
+        /// </summary>
+        /// <param name="raw"></param>
+        private async void SendRawAsync(string raw) {
+            await _client.SendRaw(raw);
+            LogActivity("Sent: " + raw);
         }
         #endregion
         #region "public methods"
@@ -128,8 +143,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _connection_DataReceived(object? sender, Connection.DataReceivedEventArgs e) {
-            var msg = System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt";
-            System.IO.File.AppendAllText(msg, e.Data + Environment.NewLine);
+            LogActivity(e.Data + Environment.NewLine);
         }
         /// <summary>
         /// Connect
@@ -139,11 +153,19 @@ namespace nexIRC.IrcProtocol.Wrappers {
                 await _client.ConnectAsync();
                 _connected = true;
                 System.Threading.Thread.Sleep(2000);
-                if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
+                //if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
                 SendMessages();
+                LogActivity("Now Connected");
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connect");
             }
+        }
+        /// <summary>
+        /// Log Activity
+        /// </summary>
+        /// <param name="activity"></param>
+        private void LogActivity(string activity) {
+            System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
         }
         /// <summary>
         /// Connected
@@ -169,6 +191,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
             try {
                 _messagesToSend.Add(msg);
                 SendMessages();
+                LogActivity("Sent: " + msg.Message + ", to :" + msg.Channel);
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientWrapper.Send");
             }
