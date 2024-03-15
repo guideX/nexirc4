@@ -53,7 +53,8 @@ namespace nexIRC.IrcProtocol.Wrappers {
         private async void AutoJoinChannel() {
             if (string.IsNullOrWhiteSpace(_channel)) return;
             _autoJoinedChannel = true;
-            await _client.SendAsync(new JoinMessage(_channel));
+            System.Threading.Thread.Sleep(1000);
+            await _client.SendRaw("JOIN :" + _channel);
         }
         /// <summary>
         /// Connected
@@ -128,7 +129,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="e"></param>
         private void _connection_DataReceived(object? sender, Connection.DataReceivedEventArgs e) {
             var msg = System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt";
-            System.IO.File.AppendAllText(msg, e.Data + Environment.NewLine );
+            System.IO.File.AppendAllText(msg, e.Data + Environment.NewLine);
         }
         /// <summary>
         /// Connect

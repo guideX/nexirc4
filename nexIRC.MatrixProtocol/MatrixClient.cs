@@ -1,6 +1,5 @@
 ﻿using nexIRC.Enum;
-namespace nexIRC.MatrixProtocol
-{
+namespace nexIRC.MatrixProtocol {
     using Core.Domain;
     using Core.Domain.MatrixRoom;
     using Core.Domain.Services;
@@ -12,7 +11,6 @@ namespace nexIRC.MatrixProtocol
     using Core.Infrastructure.Services;
     using nexIRC.Business.Helper;
     using nexIRC.MatrixProtocol.Interfaces;
-
     /// <summary>
     /// Matrix Client
     /// </summary>

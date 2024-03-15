@@ -32,7 +32,7 @@ namespace nexIRC.ViewModels {
         /// <summary>
         /// Ident
         /// </summary>
-        //private readonly Ident _ident;
+        private Ident _ident;
         /// <summary>
         /// Tabs
         /// </summary>
@@ -79,7 +79,7 @@ namespace nexIRC.ViewModels {
         /// <param name="showAboutAction"></param>
         public MainViewModel(Action showSettingsAction, Action showAboutAction) {
             try {
-                //_ident = new Ident("guideX");
+                IdentListen(Settings.Default.Nick);
                 ShowSettingsWindow = new Command(showSettingsAction);
                 ShowAboutWindow = new Command(showAboutAction);
                 App.EventAggregator.SubscribeOnPublishedThread(this);
@@ -90,9 +90,8 @@ namespace nexIRC.ViewModels {
                 _ircClient.RegistrationCompleted += Client_RegistrationCompleted;
                 _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
                 _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
-                if (Settings.Default.UseMultipleNicknames) {
-                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort);
-                }
+                if (Settings.Default.UseMultipleNicknames)
+                    _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort, _ident);
                 _matrixDelay = new DispatcherTimer();
                 _matrixDelay.Tick += _matrixDelay_Tick;
                 _matrixDelay.Interval = new TimeSpan(0, 0, 10);
@@ -102,7 +101,14 @@ namespace nexIRC.ViewModels {
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.MainViewModel");
             }
-
+        }
+        /// <summary>
+        /// Ident Listen
+        /// </summary>
+        /// <param name="userName"></param>
+        public void IdentListen(string userName) {
+            if(_ident != null) _ident.Close();
+            _ident = new Ident(113, "UNIX", userName);
         }
         /// <summary>
         /// Connect
@@ -151,28 +157,15 @@ namespace nexIRC.ViewModels {
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             try {
                 switch (e.EventType) {
-                    case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
-                        switch (e.Algorithm) {
-                            // THIS DOESN'T WORK YET !!!
-                            case "m.megolm.v1.aes-sha2":
-                                e.Message = "Warning: Decryption Failure";
-                                /*
-                                var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
-                                if (decryptionResult.Success && decryptionResult.Bytes != null) {
-                                    e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
-                                } else {
-                                    e.Message = "Warning: Decryption Failure";
-                                }
-                                */
-                                /*
-                                var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
-                                */
-                                break;
-                        }
-                        break;
                     case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
                         if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
                             if (Settings.Default.UseMultipleNicknames) {
+                                if (!_clientCollection.IsUserInCollection(e.Details.IrcChannel, e.Details.SenderUserID)) {
+                                    var linkedUserTab = new ServerViewModel(_ircClient, _matrixClient, this);
+                                    App.Dispatcher.Invoke(() => Tabs.Add(linkedUserTab));
+                                    //Tabs.Add(linkedUserTab);
+                                    SelectedTab = linkedUserTab;
+                                }
                                 _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
                             } else {
                                 if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
@@ -199,6 +192,25 @@ namespace nexIRC.ViewModels {
                                     _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
                                 }
                             }
+                        break;
+                    case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
+                        switch (e.Algorithm) {
+                            // THIS DOESN'T WORK YET !!!
+                            case "m.megolm.v1.aes-sha2":
+                                e.Message = "Warning: Decryption Failure";
+                                /*
+                                var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
+                                if (decryptionResult.Success && decryptionResult.Bytes != null) {
+                                    e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
+                                } else {
+                                    e.Message = "Warning: Decryption Failure";
+                                }
+                                */
+                                /*
+                                var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
+                                */
+                                break;
+                        }
                         break;
                 }
             } catch (Exception ex) {

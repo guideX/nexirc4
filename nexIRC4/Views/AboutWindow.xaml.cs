@@ -15,8 +15,6 @@ namespace nexIRC.Views {
             InitializeComponent();
             DataContext = new AboutWindowViewModel(Close);
             try {
-                var msg = "a";
-                var i = int.Parse(msg);
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "AboutWindow");
             }

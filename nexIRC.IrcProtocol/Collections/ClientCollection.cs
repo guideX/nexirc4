@@ -7,6 +7,10 @@ namespace nexIRC.IrcProtocol.Collections {
     public class ClientCollection {
         #region "private variables"
         /// <summary>
+        /// Ident Protocol
+        /// </summary>
+        private nexIRC.IrcProtocol.Ident _ident;
+        /// <summary>
         /// Clients
         /// </summary>
         private List<ClientWrapper> _clients;
@@ -23,7 +27,8 @@ namespace nexIRC.IrcProtocol.Collections {
         /// <summary>
         /// Constructor
         /// </summary>
-        public ClientCollection(string server, string port) {
+        public ClientCollection(string server, string port, nexIRC.IrcProtocol.Ident ident) {
+            _ident = ident;
             _server = server;
             _port = port;
             _clients = new List<ClientWrapper>();
@@ -47,6 +52,7 @@ namespace nexIRC.IrcProtocol.Collections {
                         return true;
                     }
                 } else {
+                    _ident.ChangeSettings(113, "UNIX", user);
                     var client = new ClientWrapper(_server, _port, user, user, "", channel);
                     client.Send(clientMessage);
                     client.Connect();
@@ -55,6 +61,23 @@ namespace nexIRC.IrcProtocol.Collections {
                 }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.SendMessageAsUser");
+            }
+            return false;
+        }
+        /// <summary>
+        /// Is User In Collection
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUserInCollection(string channel, string user) {
+            try {
+                var clientsFound = _clients.Where(c => c.User == user);
+                if (clientsFound.Any()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.IsUserInCollection");
             }
             return false;
         }

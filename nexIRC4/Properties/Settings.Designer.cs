@@ -214,5 +214,17 @@ namespace nexIRC.Properties {
                 this["AutoReconnect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GUIDEX")]
+        public string IdentUsername {
+            get {
+                return ((string)(this["IdentUsername"]));
+            }
+            set {
+                this["IdentUsername"] = value;
+            }
+        }
     }
 }

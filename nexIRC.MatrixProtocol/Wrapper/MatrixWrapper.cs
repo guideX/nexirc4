@@ -1,7 +1,6 @@
 ﻿using nexIRC.Business.Helper;
 using nexIRC.MatrixProtocol.Core.Domain.RoomEvent;
 using nexIRC.MatrixProtocol.Interfaces;
-
 namespace nexIRC.MatrixProtocol.Wrapper
 {
     /// <summary>

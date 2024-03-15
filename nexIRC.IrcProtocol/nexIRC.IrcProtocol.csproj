@@ -9,7 +9,6 @@
   <ItemGroup>
     <Compile Remove="ChannelUser.cs" />
     <Compile Remove="Constants.cs" />
-    <Compile Remove="Ident.cs" />
     <Compile Remove="Query.cs" />
     <Compile Remove="QueryMessage.cs" />
     <Compile Remove="ServerMessageModel.cs" />
