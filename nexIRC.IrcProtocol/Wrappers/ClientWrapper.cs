@@ -10,7 +10,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <summary>
         /// Send Message Timer
         /// </summary>
-        private static System.Timers.Timer SendMessageTimer;
+        private static System.Timers.Timer? SendMessageTimer;
         /// <summary>
         /// Messages To Send
         /// </summary>

@@ -49,6 +49,13 @@ namespace nexIRC.IrcProtocol {
             _userName = userName;
         }
         /// <summary>
+        /// Log Activity
+        /// </summary>
+        /// <param name="activity"></param>
+        private void LogActivity(string activity) {
+            System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
+        }
+        /// <summary>
         /// Change Settings
         /// </summary>
         /// <param name="port"></param>
@@ -83,10 +90,12 @@ namespace nexIRC.IrcProtocol {
                     int received = 0;
                     received = await handler.ReceiveAsync(buffer, SocketFlags.None);
                     var response = Encoding.UTF8.GetString(buffer, 0, received);
+                    LogActivity(response);
                     if (!string.IsNullOrEmpty(response)) {
                         var splt = response.Split(',');
                         if (splt.Length > 0) {
                             var message = splt[0].Replace("\r\n", "").Trim() + ", " + splt[1].Replace("\r\n", "").Trim() + " : USERID : " + _system + " : " + _userName + "\r\n";
+                            LogActivity(message);
                             await handler.SendAsync(Encoding.UTF8.GetBytes(message), 0);
                             b = false;
                         }
