@@ -1,11 +1,16 @@
 ﻿using nexIRC.Business.Helper;
 using nexIRC.Model;
+using System.Timers;
 namespace nexIRC.IrcProtocol.Wrappers {
     /// <summary>
     /// Client Wrapper
     /// </summary>
     public class ClientWrapper {
         #region "private variables"
+        /// <summary>
+        /// Send Message Timer
+        /// </summary>
+        private static System.Timers.Timer SendMessageTimer;
         /// <summary>
         /// Messages To Send
         /// </summary>
@@ -43,6 +48,23 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="e"></param>
         private void _client_RegistrationCompleted(object? sender, EventArgs e) {
             if (!_autoJoinedChannel) AutoJoinChannel(); 
+        }
+        /// <summary>
+        /// Set Timer
+        /// </summary>
+        private void SetTimer() {
+            SendMessageTimer = new System.Timers.Timer(10000);
+            SendMessageTimer.Elapsed += OnTimedEvent;
+            SendMessageTimer.AutoReset = true;
+            SendMessageTimer.Enabled = true;
+        }
+        /// <summary>
+        /// On Timed Event
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private void OnTimedEvent(Object? source, ElapsedEventArgs e) {
+            SendMessages();
         }
         /// <summary>
         /// Auto Join Channel
@@ -126,6 +148,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
             _user = user;
             _messagesToSend = new List<ClientMessageToSend>();
             try {
+                SetTimer();
                 _connection = new IrcProtocol.Connection.TcpClientConnection(host, Convert.ToInt32(port));
                 _connection.DataReceived += _connection_DataReceived;
                 _connection.Disconnected += _connection_Disconnected;

@@ -56,5 +56,14 @@ namespace nexIRC.Views {
                 ExceptionHelper.HandleException(ex, "nexIRC.Views.ShowAboutWindowDialog");
             }
         }
+        /// <summary>
+        /// Is User In Client Collection
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public bool IsUserInClientCollection(string user, string channel) {
+            return _mainViewModel.IsUserInClientCollection(user, channel);
+        }
     }
 }

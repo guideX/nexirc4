@@ -92,7 +92,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Matrix" Background="#3A3B3C" FontFamily="Tahoma">
+            <TabItem Header="Matrix" Background="#3A3B3C" FontFamily="Tahoma" Margin="5,0,-5,0">
                 <Grid Height="300">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32*"/>

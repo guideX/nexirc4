@@ -64,12 +64,15 @@ namespace nexIRC.ViewModels {
                     case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
                         if (!e.Details.DoubleRelayDetected && e.Details.SendMessage) {
                             var tab = _mainViewModel.FindChannelTab(e.Details.IrcChannel);
-                            if (tab != null)
-                                App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
-                                    new UserModel(e.Details.SenderUserID),
-                                    new Channel(e.Details.IrcChannel),
-                                    e.Details.Message
-                                ))));
+                            if (tab != null) {
+                                if (!Settings.Default.UseMultipleNicknames) {
+                                    App.Dispatcher.Invoke(() => tab.Messages.Add(Models.Message.Sent(new ChannelMessage(
+                                        new UserModel(e.Details.SenderUserID),
+                                        new Channel(e.Details.IrcChannel),
+                                        e.Details.Message
+                                    ))));
+                                }
+                            }
                         }
                         break;
                 }

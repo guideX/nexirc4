@@ -21,6 +21,7 @@ namespace nexIRC.ViewModels {
     /// Main View Model
     /// </summary>
     public class MainViewModel : BaseViewModel, IHandle<ConnectMessage>, IHandle<OpenQueryMessage>, IHandle<ClientDisconnectedMessage> {
+        #region "variables"
         /// <summary>
         /// Matrix Client
         /// </summary>
@@ -72,6 +73,8 @@ namespace nexIRC.ViewModels {
         /// Client Collection
         /// </summary>
         private ClientCollection _clientCollection;
+        #endregion
+        #region "methods"
         /// <summary>
         /// Constructor
         /// </summary>
@@ -101,6 +104,15 @@ namespace nexIRC.ViewModels {
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.MainViewModel");
             }
+        }
+        /// <summary>
+        /// Is User In Client Collection
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public bool IsUserInClientCollection(string user, string channel) { 
+            return _clientCollection.IsUserInCollection(channel, user);
         }
         /// <summary>
         /// Ident Listen
@@ -160,12 +172,13 @@ namespace nexIRC.ViewModels {
                     case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
                         if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
                             if (Settings.Default.UseMultipleNicknames) {
+                                /*
                                 if (!_clientCollection.IsUserInCollection(e.Details.IrcChannel, e.Details.SenderUserID)) {
                                     var linkedUserTab = new ServerViewModel(_ircClient, _matrixClient, this);
                                     App.Dispatcher.Invoke(() => Tabs.Add(linkedUserTab));
                                     //Tabs.Add(linkedUserTab);
                                     SelectedTab = linkedUserTab;
-                                }
+                                }*/
                                 _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
                             } else {
                                 if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
@@ -334,5 +347,6 @@ namespace nexIRC.ViewModels {
             }
             return null;
         }
+        #endregion
     }
 }

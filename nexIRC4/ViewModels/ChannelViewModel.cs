@@ -4,6 +4,8 @@ using nexIRC.IrcProtocol;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.Messages;
 using nexIRC.Model;
+using nexIRC.Models;
+using nexIRC.Properties;
 using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -92,9 +94,13 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
+                nexIRC.Views.MainWindow main = null;
+                App.Dispatcher.Invoke(() => { main = (nexIRC.Views.MainWindow)App.MainWindow; });
                 foreach (ChannelMessage message in e.NewItems) {
-                    App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
-                    _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
+                    if (!main.IsUserInClientCollection(message.User.Nick, message.Channel.Name)) {
+                        App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
+                        _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
+                    }
                 }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel");
