@@ -62,7 +62,6 @@ namespace nexIRC.IrcProtocol {
         /// <param name="system"></param>
         /// <param name="userName"></param>
         public void ChangeSettings(int port, string system, string userName) {
-            Close();
             _port = port;
             _system = system;
             _userName = userName;
@@ -90,12 +89,12 @@ namespace nexIRC.IrcProtocol {
                     int received = 0;
                     received = await handler.ReceiveAsync(buffer, SocketFlags.None);
                     var response = Encoding.UTF8.GetString(buffer, 0, received);
-                    LogActivity(response);
+                    LogActivity("IDENT: " + response);
                     if (!string.IsNullOrEmpty(response)) {
                         var splt = response.Split(',');
                         if (splt.Length > 0) {
                             var message = splt[0].Replace("\r\n", "").Trim() + ", " + splt[1].Replace("\r\n", "").Trim() + " : USERID : " + _system + " : " + _userName + "\r\n";
-                            LogActivity(message);
+                            LogActivity("IDENT: " + message);
                             await handler.SendAsync(Encoding.UTF8.GetBytes(message), 0);
                             b = false;
                         }
@@ -105,17 +104,19 @@ namespace nexIRC.IrcProtocol {
                 err = true;
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Listen");
             }
-            if (err) 
+            if (!err) {
+                Close();
                 Listen(); // Keep listening again
-            else
-                throw new Exception("Ident Server failed to listen"); // Fail and die
+            } else {
+                //throw new Exception("Ident Server failed to listen"); // Fail and die
+            }
         }
         /// <summary>
         /// Close
         /// </summary>
         public void Close() {
             if (_listener != null) {
-                _listener?.Shutdown(SocketShutdown.Both);
+                if (_listener.Connected) _listener?.Shutdown(SocketShutdown.Both);
                 _listener?.Close();
             }
         }

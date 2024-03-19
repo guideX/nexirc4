@@ -43,7 +43,8 @@ namespace nexIRC.IrcProtocol.Collections {
         /// <param name="message"></param>
         public bool SendMessageAsUser(string channel, string user, string message) {
             try {
-                var clientsFound = _clients.Where(c => c.User == user);
+                var matrixUser = user + "[m]";
+                var clientsFound = _clients.Where(c => c.User == matrixUser);
                 var clientMessage = new ClientMessageToSend(channel, message);
                 if (clientsFound.Any()) {
                     var client = clientsFound.FirstOrDefault();
@@ -52,8 +53,8 @@ namespace nexIRC.IrcProtocol.Collections {
                         return true;
                     }
                 } else {
-                    _ident.ChangeSettings(113, "UNIX", user);
-                    var client = new ClientWrapper(_server, _port, user, user, "", channel);
+                    _ident?.ChangeSettings(113, "UNIX", user);
+                    var client = new ClientWrapper(_server, _port, matrixUser, user, "", channel);
                     client.Send(clientMessage);
                     client.Connect();
                     _clients.Add(client);

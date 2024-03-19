@@ -121,6 +121,7 @@ namespace nexIRC.ViewModels {
         public void IdentListen(string userName) {
             if(_ident != null) _ident.Close();
             _ident = new Ident(113, "UNIX", userName);
+            _ident.Listen();
         }
         /// <summary>
         /// Connect
