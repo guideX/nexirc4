@@ -14,7 +14,6 @@
     ShowIconOnTitleBar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <Button

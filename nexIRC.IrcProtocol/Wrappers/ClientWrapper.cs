@@ -73,7 +73,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
             if (string.IsNullOrWhiteSpace(_channel)) return;
             _autoJoinedChannel = true;
             await _client.SendRaw("JOIN :" + _channel + Environment.NewLine);
-            LogActivity("JOIN :" + _channel + Environment.NewLine);
+            LogHelper.LogActivity("JOIN :" + _channel + Environment.NewLine);
         }
         /// <summary>
         /// Connected
@@ -123,7 +123,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="raw"></param>
         private void SendRaw(string raw) {
             _client.SendRaw(raw);
-            LogActivity("Sent: " + raw);
+            LogHelper.LogActivity("Sent: " + raw);
         }
         /// <summary>
         /// Send Raw
@@ -131,7 +131,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="raw"></param>
         private async void SendRawAsync(string raw) {
             await _client.SendRaw(raw);
-            LogActivity("Sent: " + raw);
+            LogHelper.LogActivity("Sent: " + raw);
         }
         #endregion
         #region "public methods"
@@ -166,7 +166,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _connection_DataReceived(object? sender, Connection.DataReceivedEventArgs e) {
-            LogActivity(e.Data + Environment.NewLine);
+            LogHelper.LogActivity(e.Data + Environment.NewLine);
         }
         /// <summary>
         /// Connect
@@ -178,17 +178,10 @@ namespace nexIRC.IrcProtocol.Wrappers {
                 System.Threading.Thread.Sleep(2000);
                 //if (!_autoJoinedChannel) AutoJoinChannel(); System.Threading.Thread.Sleep(1000);
                 SendMessages();
-                LogActivity("Now Connected");
+                LogHelper.LogActivity("Now Connected");
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connect");
             }
-        }
-        /// <summary>
-        /// Log Activity
-        /// </summary>
-        /// <param name="activity"></param>
-        private void LogActivity(string activity) {
-            System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
         }
         /// <summary>
         /// Connected
@@ -214,7 +207,7 @@ namespace nexIRC.IrcProtocol.Wrappers {
             try {
                 _messagesToSend.Add(msg);
                 SendMessages();
-                LogActivity("Sent: " + msg.Message + ", to :" + msg.Channel);
+                LogHelper.LogActivity("Sent: " + msg.Message + ", to :" + msg.Channel);
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientWrapper.Send");
             }

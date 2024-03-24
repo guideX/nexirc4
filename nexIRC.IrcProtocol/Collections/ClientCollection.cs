@@ -62,6 +62,7 @@ namespace nexIRC.IrcProtocol.Collections {
                 }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ClientCollection.SendMessageAsUser");
+                throw;
             }
             return false;
         }

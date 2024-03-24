@@ -16,7 +16,8 @@ using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
 using nexIRC.Model;
 using nexIRC.Properties;
-namespace nexIRC.ViewModels {
+namespace nexIRC.ViewModels
+{
     /// <summary>
     /// Main View Model
     /// </summary>
@@ -141,6 +142,7 @@ namespace nexIRC.ViewModels {
         /// <exception cref="NotImplementedException"></exception>
         private void _matrixClient_MatrixConnected(object sender, EventArgs e) {
             try {
+                LogHelper.LogActivity("Matrix Connected");
                 _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixConnected");

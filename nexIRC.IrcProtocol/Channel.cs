@@ -1,50 +1,49 @@
 ﻿using nexIRC.Business.Helper;
 using nexIRC.Model;
+using nexIRC.Model.IrcProtocol;
 using System.Collections.ObjectModel;
 namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Channel
     /// </summary>
     public class Channel {
+        #region "private variables"
         /// <summary>
-        /// Name
+        /// Channel
         /// </summary>
-        public string Name { get; }
-        /// <summary>
-        /// Topic
-        /// </summary>
-        public string Topic { get; private set; }
-        /// <summary>
-        /// Users
-        /// </summary>
-        public ObservableCollection<ChannelUserModel> Users { get; }
+        private ChannelModel _channel;
+        #endregion
+        #region "public variables"
         /// <summary>
         /// Messages
         /// </summary>
         public ObservableCollection<ChannelMessage> Messages { get; }
-        /// <summary>
-        /// User Statuses
-        /// </summary>
-        internal static char[] UserStatuses = new[] { '~', '&', '@', '%', '+' };
+        #endregion
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="name"></param>
         public Channel(string name) {
-            Name = name;
-            Users = new ObservableCollection<ChannelUserModel>();
+            _channel = new ChannelModel(name);
             Messages = new ObservableCollection<ChannelMessage>();
-            Topic = "";
         }
         /// <summary>
-        /// Add User
+        /// Name
         /// </summary>
-        /// <param name="user"></param>
-        internal void AddUser(UserModel user) {
-            try {
-                AddUser(user, string.Empty);
-            } catch (Exception ex) {
-                ExceptionHelper.HandleException(ex, "AddUser");
+        public string Name {
+            get {
+                return _channel.Name;
+            }
+        }
+        /// <summary>
+        /// Topic
+        /// </summary>
+        public string? Topic {
+            get {
+                return _channel.Topic!;
+            }
+            set {
+                _channel.Topic = value;
             }
         }
         /// <summary>
@@ -54,7 +53,18 @@ namespace nexIRC.IrcProtocol {
         /// <param name="status"></param>
         internal void AddUser(UserModel user, string status) {
             try {
-                Client.DispatcherInvoker?.Invoke(() => Users.Add(new ChannelUserModel(user, status)));
+                Client.DispatcherInvoker?.Invoke(() => _channel.Users.Add(new ChannelUserModel(user, status)));
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "AddUser");
+            }
+        }
+        /// <summary>
+        /// Add User
+        /// </summary>
+        /// <param name="user"></param>
+        internal void AddUser(UserModel user) {
+            try {
+                Client.DispatcherInvoker?.Invoke(() => _channel.Users.Add(new ChannelUserModel(user, string.Empty)));
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "AddUser");
             }
@@ -67,25 +77,18 @@ namespace nexIRC.IrcProtocol {
             try {
                 var user = GetUser(nick);
                 if (user != null) {
-                    Client.DispatcherInvoker?.Invoke(() => Users.Remove(user));
+                    Client.DispatcherInvoker?.Invoke(() => _channel.Users.Remove(user));
                 }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "RemoveUser");
             }
         }
         /// <summary>
-        /// Set Topic
-        /// </summary>
-        /// <param name="topic"></param>
-        internal void SetTopic(string topic) {
-            Topic = topic;
-        }
-        /// <summary>
         /// Get User
         /// </summary>
         /// <param name="nick"></param>
         /// <returns></returns>
-        public ChannelUserModel GetUser(string nick) => 
-            Users.FirstOrDefault(u => string.Equals(u.Nick, nick, StringComparison.InvariantCultureIgnoreCase))!;
+        public ChannelUserModel GetUser(string nick) =>
+            _channel.Users.FirstOrDefault(u => string.Equals(u.Nick, nick, StringComparison.InvariantCultureIgnoreCase))!;
     }
 }

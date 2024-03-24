@@ -13,7 +13,7 @@ namespace nexIRC.IrcProtocol {
         /// <returns></returns>
         public int Compare(ChannelUserModel? u1, ChannelUserModel? u2) {
             if (!string.IsNullOrWhiteSpace(u1?.Status) && !string.IsNullOrWhiteSpace(u2?.Status)) {
-                var statuses = Channel.UserStatuses;
+                var statuses = IrcProtocol.Constants.UserStatuses;
                 var s1 = u1.Status[0];
                 var s2 = u2.Status[0];
                 if (Array.IndexOf(statuses, s1) < Array.IndexOf(statuses, s2))

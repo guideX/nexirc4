@@ -11,7 +11,8 @@ using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
-namespace nexIRC.ViewModels {
+namespace nexIRC.ViewModels
+{
     /// <summary>
     /// Channel View Model
     /// </summary>

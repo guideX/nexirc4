@@ -1,0 +1,431 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\devgitlab\\nexIRC4\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\eventhandlers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\eventhandlers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\channel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\channel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\ircprotocol\\channelmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\ircprotocol\\channelmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\channelmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\channelmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D50F31A4-7F20-4DC5-BE9D-398964548329}|nexIRC4\\nexIRC4.csproj|d:\\devgitlab\\nexirc4\\nexirc4\\viewmodels\\channelviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D50F31A4-7F20-4DC5-BE9D-398964548329}|nexIRC4\\nexIRC4.csproj|solutionrelative:nexirc4\\viewmodels\\channelviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\handlers\\privmsghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\handlers\\privmsghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\handlers\\parthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\handlers\\parthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\channelusercomparer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\channelusercomparer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\constants\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\constants\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\rplnamreplymessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\rplnamreplymessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\handlers\\rplnamreplyhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\handlers\\rplnamreplyhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\handlers\\joinhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\handlers\\joinhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\collections\\channelcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\collections\\channelcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\collections\\clientcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\collections\\clientcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\matrix\\server\\unstablefeaturesmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\matrix\\server\\unstablefeaturesmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\matrix\\server\\matrixserverversionsresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\matrix\\server\\matrixserverversionsresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\matrix\\room\\matrixroominputmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\matrix\\room\\matrixroominputmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\matrix\\events\\encryptedeventmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\matrix\\events\\encryptedeventmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\ircprotocol\\clientbuildermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\ircprotocol\\clientbuildermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\messages\\handlers\\topichandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\messages\\handlers\\topichandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|d:\\devgitlab\\nexirc4\\nexirc.ircprotocol\\ctcp\\ctcpcommands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D52AA52D-7BF7-4D4D-A48B-B2AEEC1AAF23}|nexIRC.IrcProtocol\\nexIRC.IrcProtocol.csproj|solutionrelative:nexirc.ircprotocol\\ctcp\\ctcpcommands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|d:\\devgitlab\\nexirc4\\nexirc.model\\nexirc.model.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{249A437F-5F34-4811-93BE-3ED7C99C7B51}|nexIRC.Model\\nexIRC.Model.csproj|solutionrelative:nexirc.model\\nexirc.model.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 331,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EventHandlers.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\EventHandlers.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\EventHandlers.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\EventHandlers.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\EventHandlers.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:46:45.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PrivMsgHandler.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\PrivMsgHandler.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\Handlers\\PrivMsgHandler.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\PrivMsgHandler.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\Handlers\\PrivMsgHandler.cs",
+              "ViewState": "AQIAAAEAAAAAAAAAAAArwBYAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:41:49.907Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChannelViewModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC4\\ViewModels\\ChannelViewModel.cs",
+              "RelativeDocumentMoniker": "nexIRC4\\ViewModels\\ChannelViewModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC4\\ViewModels\\ChannelViewModel.cs",
+              "RelativeToolTip": "nexIRC4\\ViewModels\\ChannelViewModel.cs",
+              "ViewState": "AQIAAE4AAAAAAAAAAAArwGQAAABVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:40:54.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ChannelMessage.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\ChannelMessage.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\ChannelMessage.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\ChannelMessage.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\ChannelMessage.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:37:48.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PartHandler.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\PartHandler.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\Handlers\\PartHandler.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\PartHandler.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\Handlers\\PartHandler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:31:56.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "RplNamReplyMessage.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\RplNamReplyMessage.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\RplNamReplyMessage.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\RplNamReplyMessage.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\RplNamReplyMessage.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAAArwBgAAAAUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:31:55.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ChannelUserComparer.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\ChannelUserComparer.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\ChannelUserComparer.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\ChannelUserComparer.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\ChannelUserComparer.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:31:54.925Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Constants.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Constants\\Constants.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Constants\\Constants.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Constants\\Constants.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Constants\\Constants.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:12:09.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Channel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Channel.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Channel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Channel.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Channel.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAADUAAAA7AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T02:51:52.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ChannelModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\IrcProtocol\\ChannelModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\IrcProtocol\\ChannelModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\IrcProtocol\\ChannelModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\IrcProtocol\\ChannelModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T02:52:30.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Client.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Client.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Client.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Client.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Client.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:30:08.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "RplNamReplyHandler.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\RplNamReplyHandler.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\Handlers\\RplNamReplyHandler.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\RplNamReplyHandler.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\Handlers\\RplNamReplyHandler.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAArwBkAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:30:54.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ClientCollection.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Collections\\ClientCollection.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Collections\\ClientCollection.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Collections\\ClientCollection.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Collections\\ClientCollection.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:48.018Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UnstableFeaturesModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Server\\UnstableFeaturesModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\Matrix\\Server\\UnstableFeaturesModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Server\\UnstableFeaturesModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\Matrix\\Server\\UnstableFeaturesModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:38.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "MatrixServerVersionsResponseModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Server\\MatrixServerVersionsResponseModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\Matrix\\Server\\MatrixServerVersionsResponseModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Server\\MatrixServerVersionsResponseModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\Matrix\\Server\\MatrixServerVersionsResponseModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:37.714Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "MatrixRoomInputModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Room\\MatrixRoomInputModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\Matrix\\Room\\MatrixRoomInputModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Room\\MatrixRoomInputModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\Matrix\\Room\\MatrixRoomInputModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:35.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "EncryptedEventModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Events\\EncryptedEventModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\Matrix\\Events\\EncryptedEventModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\Matrix\\Events\\EncryptedEventModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\Matrix\\Events\\EncryptedEventModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:32.067Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ChannelCollection.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Collections\\ChannelCollection.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Collections\\ChannelCollection.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Collections\\ChannelCollection.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Collections\\ChannelCollection.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T02:57:48.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "JoinHandler.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\JoinHandler.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\Handlers\\JoinHandler.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\JoinHandler.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\Handlers\\JoinHandler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAArwBUAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:00:15.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ClientBuilderModel.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\IrcProtocol\\ClientBuilderModel.cs",
+              "RelativeDocumentMoniker": "nexIRC.Model\\IrcProtocol\\ClientBuilderModel.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\IrcProtocol\\ClientBuilderModel.cs",
+              "RelativeToolTip": "nexIRC.Model\\IrcProtocol\\ClientBuilderModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:06:23.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "TopicHandler.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\TopicHandler.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Messages\\Handlers\\TopicHandler.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Messages\\Handlers\\TopicHandler.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Messages\\Handlers\\TopicHandler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:03:51.979Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "CtcpCommands.cs",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Ctcp\\CtcpCommands.cs",
+              "RelativeDocumentMoniker": "nexIRC.IrcProtocol\\Ctcp\\CtcpCommands.cs",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.IrcProtocol\\Ctcp\\CtcpCommands.cs",
+              "RelativeToolTip": "nexIRC.IrcProtocol\\Ctcp\\CtcpCommands.cs",
+              "ViewState": "AQIAABkAAAAAAAAAAAArwC4AAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T03:00:10.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "nexIRC.Model",
+              "DocumentMoniker": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj",
+              "RelativeDocumentMoniker": "nexIRC.Model\\nexIRC.Model.csproj",
+              "ToolTip": "D:\\devgitlab\\nexIRC4\\nexIRC.Model\\nexIRC.Model.csproj",
+              "RelativeToolTip": "nexIRC.Model\\nexIRC.Model.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-03-24T02:52:09.365Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

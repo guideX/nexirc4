@@ -37,6 +37,10 @@ namespace nexIRC.IrcProtocol {
         /// User Name
         /// </summary>
         private string _userName;
+        /// <summary>
+        /// Close Connection Timer
+        /// </summary>
+        private static System.Timers.Timer? _closeConnectionTimer;
         #endregion
         #region "methods"
         /// <summary>
@@ -49,12 +53,24 @@ namespace nexIRC.IrcProtocol {
             _userName = userName;
         }
         /// <summary>
-        /// Log Activity
+        /// Set Timer
         /// </summary>
-        /// <param name="activity"></param>
-        private void LogActivity(string activity) {
-            System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
+        private void SetTimer() {
+            _closeConnectionTimer = new System.Timers.Timer(60000);
+            _closeConnectionTimer.Elapsed += _closeConnectionTimer_Elapsed; ;
+            _closeConnectionTimer.AutoReset = false;
+            _closeConnectionTimer.Enabled = true;
         }
+        /// <summary>
+        /// Listen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _closeConnectionTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e) {
+            Close();
+            Listen();
+        }
+
         /// <summary>
         /// Change Settings
         /// </summary>
@@ -83,18 +99,19 @@ namespace nexIRC.IrcProtocol {
                 _listener.Bind(ep);
                 _listener.Listen(100);
                 var handler = await _listener.AcceptAsync();
+                SetTimer();
                 var b = true;
                 while (b) {
                     var buffer = new byte[1_024];
                     int received = 0;
                     received = await handler.ReceiveAsync(buffer, SocketFlags.None);
                     var response = Encoding.UTF8.GetString(buffer, 0, received);
-                    LogActivity("IDENT: " + response);
+                    LogHelper.LogActivity("Ident_Incoming: " + response);
                     if (!string.IsNullOrEmpty(response)) {
                         var splt = response.Split(',');
-                        if (splt.Length > 0) {
+                        if (splt.Length >= 2) {
                             var message = splt[0].Replace("\r\n", "").Trim() + ", " + splt[1].Replace("\r\n", "").Trim() + " : USERID : " + _system + " : " + _userName + "\r\n";
-                            LogActivity("IDENT: " + message);
+                            LogHelper.LogActivity("Ident_Incoming: " + message);
                             await handler.SendAsync(Encoding.UTF8.GetBytes(message), 0);
                             b = false;
                         }

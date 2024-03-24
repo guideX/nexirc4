@@ -1,6 +1,7 @@
 ﻿using nexIRC.Business.Helper;
 using System.Collections.ObjectModel;
-namespace nexIRC.IrcProtocol {
+namespace nexIRC.IrcProtocol
+{
     /// <summary>
     /// Channel Collection
     /// </summary>

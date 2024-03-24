@@ -1,5 +1,6 @@
 ﻿using nexIRC.Business.Helper;
-namespace nexIRC.IrcProtocol.Messages {
+namespace nexIRC.IrcProtocol.Messages
+{
     /// <summary>
     /// Rpl Nam Reply Message
     /// </summary>
@@ -21,7 +22,7 @@ namespace nexIRC.IrcProtocol.Messages {
             Channel = parsedMessage.Parameters![2];
             try {
                 foreach (var nick in parsedMessage.Trailing.Split(' ')) {
-                    if (!string.IsNullOrWhiteSpace(nick) && nexIRC.IrcProtocol.Channel.UserStatuses.Contains(nick[0]))
+                    if (!string.IsNullOrWhiteSpace(nick) && IrcProtocol.Constants.UserStatuses.Contains(nick[0]))
                         Nicks.Add(nick.Substring(1), nick.Substring(0, 1));
                     else
                         Nicks.Add(nick, string.Empty);

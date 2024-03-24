@@ -61,13 +61,17 @@ namespace nexIRC.IrcProtocol.Connection {
         /// </summary>
         /// <returns></returns>
         private async Task RunDataReceiver() {
-            var buffer = new ArraySegment<byte>(new byte[1024]);
-            while (!disposalTokenSource.IsCancellationRequested) {
-                var received = await clientWebSocket.ReceiveAsync(buffer, disposalTokenSource.Token).ConfigureAwait(false);
-                var receivedAsText = Encoding.ASCII.GetString(buffer.Array!, 0, received.Count);
-                DataReceived?.Invoke(this, new DataReceivedEventArgs(receivedAsText));
+            try {
+                var buffer = new ArraySegment<byte>(new byte[1024]);
+                while (!disposalTokenSource.IsCancellationRequested) {
+                    var received = await clientWebSocket.ReceiveAsync(buffer, disposalTokenSource.Token).ConfigureAwait(false);
+                    var receivedAsText = Encoding.ASCII.GetString(buffer.Array!, 0, received.Count);
+                    DataReceived?.Invoke(this, new DataReceivedEventArgs(receivedAsText));
+                }
+                Disconnected?.Invoke(this, EventArgs.Empty);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connection.RunDataReceiver");
             }
-            Disconnected?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>
         /// Send Async
@@ -75,9 +79,13 @@ namespace nexIRC.IrcProtocol.Connection {
         /// <param name="data"></param>
         /// <returns></returns>
         public async Task SendAsync(string data) {
-            if (!data.EndsWith(ConstantsHelper.CrLf)) data += ConstantsHelper.CrLf;
-            var dataToSend = new ArraySegment<byte>(Encoding.ASCII.GetBytes(data));
-            await clientWebSocket.SendAsync(dataToSend, WebSocketMessageType.Text, true, disposalTokenSource.Token).ConfigureAwait(false);
+            try {
+                if (!data.EndsWith(ConstantsHelper.CrLf)) data += ConstantsHelper.CrLf;
+                var dataToSend = new ArraySegment<byte>(Encoding.ASCII.GetBytes(data));
+                await clientWebSocket.SendAsync(dataToSend, WebSocketMessageType.Text, true, disposalTokenSource.Token).ConfigureAwait(false);
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.Connection.SendAsync");
+            }
         }
         /// <summary>
         /// Dispose
