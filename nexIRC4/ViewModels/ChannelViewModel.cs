@@ -57,7 +57,7 @@ namespace nexIRC.ViewModels
         private void SortUsers(object items) {
             try {
                 var view = CollectionViewSource.GetDefaultView(items) as ListCollectionView;
-                view.CustomSort = new ChannelUserComparer();
+                if (view != null) view.CustomSort = new ChannelUserComparer();
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChannelViewModel.SortUsers");
             }
@@ -100,7 +100,9 @@ namespace nexIRC.ViewModels
                 foreach (ChannelMessage message in e.NewItems) {
                     if (!main.IsUserInClientCollection(message.User.Nick, message.Channel.Name)) {
                         App.Dispatcher.Invoke(() => Messages.Add(Models.Message.Received(message)));
-                        _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
+                        if (Settings.Default.UseMatrix) {
+                            _matrixClient.SendMessage(_matrixClient.CurrentChannelID, message.User.Nick + ": " + message.Text);
+                        }
                     }
                 }
             } catch (Exception ex) {

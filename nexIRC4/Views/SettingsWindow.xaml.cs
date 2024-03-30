@@ -64,6 +64,7 @@ namespace nexIRC.Views {
                 Settings.Default.UseMultipleNicknames = chkUseMultipleNicknames.IsChecked.Value;
                 Settings.Default.AutoReconnect = chkAutoReconnect.IsChecked.Value;
                 Settings.Default.IdentUsername = IdentUserName.Text;
+                Settings.Default.UseMatrix = chkUseMatrix.IsChecked.Value;
                 Settings.Default.Save();
                 //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
             } catch (Exception ex) {

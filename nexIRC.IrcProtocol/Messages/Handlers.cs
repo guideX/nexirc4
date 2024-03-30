@@ -233,7 +233,7 @@ namespace nexIRC.IrcProtocol.Messages {
         /// <returns></returns>
         public override Task HandleAsync(TopicMessage serverMessage, Client client) {
             var channel = client.Channels.GetChannel(serverMessage.Channel);
-            channel.Topic = serverMessage.Topic;
+            channel?.SetTopic(serverMessage.Topic);
             return Task.CompletedTask;
         }
     }

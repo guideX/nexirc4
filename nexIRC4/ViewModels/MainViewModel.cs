@@ -16,8 +16,7 @@ using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
 using nexIRC.Model;
 using nexIRC.Properties;
-namespace nexIRC.ViewModels
-{
+namespace nexIRC.ViewModels {
     /// <summary>
     /// Main View Model
     /// </summary>
@@ -87,9 +86,11 @@ namespace nexIRC.ViewModels
                 ShowSettingsWindow = new Command(showSettingsAction);
                 ShowAboutWindow = new Command(showAboutAction);
                 App.EventAggregator.SubscribeOnPublishedThread(this);
-                _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, Settings.Default.Nick, Settings.Default.MatrixUserName);
-                _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
-                _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
+                if (Settings.Default.UseMatrix) {
+                    _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, Settings.Default.Nick, Settings.Default.MatrixUserName);
+                    _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
+                    _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
+                }
                 _ircClient = App.CreateClient();
                 _ircClient.RegistrationCompleted += Client_RegistrationCompleted;
                 _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
@@ -142,8 +143,10 @@ namespace nexIRC.ViewModels
         /// <exception cref="NotImplementedException"></exception>
         private void _matrixClient_MatrixConnected(object sender, EventArgs e) {
             try {
-                LogHelper.LogActivity("Matrix Connected");
-                _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
+                if (Settings.Default.UseMatrix) {
+                    LogHelper.LogActivity("Matrix Connected");
+                    _matrixClient.JoinChannel(Settings.Default.MatrixChannel);
+                }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixConnected");
             }
@@ -171,63 +174,65 @@ namespace nexIRC.ViewModels
         /// <param name="e"></param>
         private void _matrixClient_MatrixRoomEvent(object sender, MatrixRoomEventArgs e) {
             try {
-                switch (e.EventType) {
-                    case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                        if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
-                            if (Settings.Default.UseMultipleNicknames) {
-                                /*
-                                if (!_clientCollection.IsUserInCollection(e.Details.IrcChannel, e.Details.SenderUserID)) {
-                                    var linkedUserTab = new ServerViewModel(_ircClient, _matrixClient, this);
-                                    App.Dispatcher.Invoke(() => Tabs.Add(linkedUserTab));
-                                    //Tabs.Add(linkedUserTab);
-                                    SelectedTab = linkedUserTab;
-                                }*/
-                                _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
-                            } else {
-                                if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava speed");
-                                    System.Threading.Thread.Sleep(500);
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava speed");
-                                } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava elev")) {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava elev");
-                                    System.Threading.Thread.Sleep(500);
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava elev");
-                                } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava slope")) {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava slope");
-                                    System.Threading.Thread.Sleep(500);
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava slope");
-                                } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava")) {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava");
-                                    System.Threading.Thread.Sleep(500);
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava");
-                                } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!help")) {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!help");
-                                    System.Threading.Thread.Sleep(500);
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !help");
+                if (Settings.Default.UseMatrix) {
+                    switch (e.EventType) {
+                        case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
+                            if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
+                                if (Settings.Default.UseMultipleNicknames) {
+                                    /*
+                                    if (!_clientCollection.IsUserInCollection(e.Details.IrcChannel, e.Details.SenderUserID)) {
+                                        var linkedUserTab = new ServerViewModel(_ircClient, _matrixClient, this);
+                                        App.Dispatcher.Invoke(() => Tabs.Add(linkedUserTab));
+                                        //Tabs.Add(linkedUserTab);
+                                        SelectedTab = linkedUserTab;
+                                    }*/
+                                    _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
                                 } else {
-                                    _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
+                                    if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava speed");
+                                        System.Threading.Thread.Sleep(500);
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava speed");
+                                    } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava elev")) {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava elev");
+                                        System.Threading.Thread.Sleep(500);
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava elev");
+                                    } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava slope")) {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava slope");
+                                        System.Threading.Thread.Sleep(500);
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava slope");
+                                    } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava")) {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!strava");
+                                        System.Threading.Thread.Sleep(500);
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !strava");
+                                    } else if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!help")) {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :!help");
+                                        System.Threading.Thread.Sleep(500);
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.SenderUserID + " requested !help");
+                                    } else {
+                                        _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
+                                    }
                                 }
-                            }
-                        break;
-                    case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
-                        switch (e.Algorithm) {
-                            // THIS DOESN'T WORK YET !!!
-                            case "m.megolm.v1.aes-sha2":
-                                e.Message = "Warning: Decryption Failure";
-                                /*
-                                var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
-                                if (decryptionResult.Success && decryptionResult.Bytes != null) {
-                                    e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
-                                } else {
+                            break;
+                        case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
+                            switch (e.Algorithm) {
+                                // THIS DOESN'T WORK YET !!!
+                                case "m.megolm.v1.aes-sha2":
                                     e.Message = "Warning: Decryption Failure";
-                                }
-                                */
-                                /*
-                                var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
-                                */
-                                break;
-                        }
-                        break;
+                                    /*
+                                    var decryptionResult = Olm.OlmHelper.GroupDecrypt(e.SenderSessionID, e.Message);
+                                    if (decryptionResult.Success && decryptionResult.Bytes != null) {
+                                        e.Message = System.Text.Encoding.UTF8.GetString(decryptionResult.Bytes, 0, decryptionResult.Bytes.Length - 1);
+                                    } else {
+                                        e.Message = "Warning: Decryption Failure";
+                                    }
+                                    */
+                                    /*
+                                    var n = EncryptionDecryptionHelper.Decrypt(e.SenderKey, e.Message);
+                                    */
+                                    break;
+                            }
+                            break;
+                    }
                 }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels._matrixClient_MatrixRoomEvent");
@@ -295,7 +300,9 @@ namespace nexIRC.ViewModels
                 var channel = Settings.Default.DefaultChannel;
                 if (string.IsNullOrWhiteSpace(channel)) return;
                 await App.Client.SendAsync(new JoinMessage(channel));
-                _matrixClient.Login();
+                if (Settings.Default.UseMatrix) {
+                    _matrixClient.Login();
+                }
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Client_RegistrationCompleted");
             }

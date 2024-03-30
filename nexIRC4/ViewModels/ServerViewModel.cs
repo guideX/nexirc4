@@ -35,8 +35,10 @@ namespace nexIRC.ViewModels {
             _mainViewModel = mainViewModel;
             _ircClient = client;
             _matrixClient = matrixClient;
-            _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
-            _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
+            if (Settings.Default.UseMatrix) {
+                _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
+                _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
+            }
             _ircClient.ServerMessages.CollectionChanged += ServerMessages_CollectionChanged;
             SendMessageCommand = new AsyncCommand(SendServerMessage);
         }

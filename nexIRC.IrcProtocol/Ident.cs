@@ -57,7 +57,7 @@ namespace nexIRC.IrcProtocol {
         /// </summary>
         private void SetTimer() {
             _closeConnectionTimer = new System.Timers.Timer(60000);
-            _closeConnectionTimer.Elapsed += _closeConnectionTimer_Elapsed; ;
+            _closeConnectionTimer.Elapsed += _closeConnectionTimer_Elapsed;
             _closeConnectionTimer.AutoReset = false;
             _closeConnectionTimer.Enabled = true;
         }
