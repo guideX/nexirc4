@@ -1,5 +1,7 @@
 ﻿using nexIRC.IrcProtocol.Ctcp;
-namespace nexIRC.IrcProtocol.Messages {
+using nexIRC.IrcProtocol.Interfaces;
+namespace nexIRC.IrcProtocol.Messages
+{
     /// <summary>
     /// Ctcp Reply Message
     /// </summary>

@@ -1,10 +1,12 @@
 ﻿using nexIRC.IrcProtocol.Builder;
 using nexIRC.IrcProtocol.Connection;
 using nexIRC.IrcProtocol.Ctcp;
+using nexIRC.IrcProtocol.Interfaces;
 using nexIRC.IrcProtocol.Messages;
 using nexIRC.Model;
 using System.Reflection;
-namespace nexIRC.IrcProtocol {
+namespace nexIRC.IrcProtocol
+{
     /// <summary>
     /// Client
     /// </summary>

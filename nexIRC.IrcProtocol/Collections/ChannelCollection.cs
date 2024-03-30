@@ -1,7 +1,6 @@
 ﻿using nexIRC.Business.Helper;
 using System.Collections.ObjectModel;
-namespace nexIRC.IrcProtocol
-{
+namespace nexIRC.IrcProtocol {
     /// <summary>
     /// Channel Collection
     /// </summary>
@@ -24,7 +23,7 @@ namespace nexIRC.IrcProtocol
                     Client.DispatcherInvoker?.Invoke(() => Add(channel));
                 }
                 return channel;
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.IrcProtocol.ChannelCollection");
                 throw;
             }

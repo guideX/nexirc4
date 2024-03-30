@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using nexIRC.IrcProtocol.Interfaces;
 [assembly: InternalsVisibleTo("NetIRC.Tests")]
-namespace nexIRC.IrcProtocol.Messages {
+namespace nexIRC.IrcProtocol.Messages
+{
     internal class MessageHandlerContainer {
         /// <summary>
         /// Client

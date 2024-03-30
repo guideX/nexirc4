@@ -1,7 +1,9 @@
 ﻿using nexIRC.Business.Helper;
 using nexIRC.IrcProtocol.Ctcp;
+using nexIRC.IrcProtocol.Interfaces;
 using System.Text;
-namespace nexIRC.IrcProtocol.Messages {
+namespace nexIRC.IrcProtocol.Messages
+{
     /// <summary>
     /// Priv Msg Message
     /// </summary>

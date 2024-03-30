@@ -1,4 +1,7 @@
-﻿namespace nexIRC.IrcProtocol.Messages {
+﻿using nexIRC.IrcProtocol.Interfaces;
+
+namespace nexIRC.IrcProtocol.Messages
+{
     public class KickMessage : IRCMessage, IServerMessage {
         /// <summary>
         /// Kicked By

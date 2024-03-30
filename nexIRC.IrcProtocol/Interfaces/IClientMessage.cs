@@ -1,4 +1,4 @@
-﻿namespace nexIRC.IrcProtocol.Messages {
+﻿namespace nexIRC.IrcProtocol.Interfaces {
     /// <summary>
     /// Client Message
     /// </summary>

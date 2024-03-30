@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using nexIRC.Business.Helper;
-namespace nexIRC.IrcProtocol.Messages {
+using nexIRC.IrcProtocol.Interfaces;
+namespace nexIRC.IrcProtocol.Messages
+{
     /// <summary>
     /// IRC Message
     /// </summary>

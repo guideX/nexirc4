@@ -1,4 +1,5 @@
 ﻿using nexIRC.Business.Helper;
+using nexIRC.IrcProtocol.Interfaces;
 namespace nexIRC.IrcProtocol.Messages
 {
     /// <summary>
