@@ -153,8 +153,29 @@
             </TabItem>
             <TabItem Background="#3A3B3C" HorizontalAlignment="Center" Height="38" Header="Autojoin" VerticalAlignment="Center" Width="148">
                 <Grid Background="#3A3B3C" Height="300">
-                    <ListView Name="lvwAutoJoin">
+                    <ListView Name="lvwAutoJoin" Background="#3A3B3C" Foreground="White" Margin="0,0,0,32" RenderTransformOrigin="0.5,0.5">
+                        <ListView.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="0.242"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="0.54"/>
+                            </TransformGroup>
+                        </ListView.RenderTransform>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="IRC Channel" DisplayMemberBinding="{Binding IRCChannel}" Width="200" />
+                                <GridViewColumn Header="Matrix Channel ID" DisplayMemberBinding="{Binding MatrixChannelID}" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+
                     </ListView>
+                    <Button Content="Add" HorizontalAlignment="Right" Margin="10,247,55,0" VerticalAlignment="Bottom" Name="cmdAdd"/>
+                    <Button Content="Delete" HorizontalAlignment="Right" Margin="10,247,0,0" VerticalAlignment="Bottom" Name="cmdDelete"/>
+                    <Label Content="IRC Channel:" HorizontalAlignment="Left" Foreground="White" Margin="10,273,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="txtIRCChannel" HorizontalAlignment="Left" Margin="112,279,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Matrix Channel ID:" HorizontalAlignment="Left" Foreground="White" Margin="237,275,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtMatrixChannelID" HorizontalAlignment="Left" Margin="382,279,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
                 </Grid>
             </TabItem>
         </TabControl>

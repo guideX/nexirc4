@@ -10,6 +10,6 @@
         /// <summary>
         /// Matrix ChannelID
         /// </summary>
-        public string? MatrixChanelID { get; set; }
+        public string? MatrixChannelID { get; set; }
     }
 }

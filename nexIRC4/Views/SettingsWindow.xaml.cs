@@ -1,13 +1,21 @@
 ﻿using MahApps.Metro.Controls;
+using Microsoft.Extensions.Configuration;
 using nexIRC.Business.Helper;
 using nexIRC.Messages;
+using nexIRC.Model;
 using nexIRC.Properties;
 using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
 namespace nexIRC.Views {
     /// <summary>
     /// Settings Window
     /// </summary>
     public partial class SettingsWindow : MetroWindow {
+        /// <summary>
+        /// Autojoin
+        /// </summary>
+        private List<AutojoinModel> _autojoin;
         /// <summary>
         /// Themese
         /// </summary>
@@ -21,6 +29,42 @@ namespace nexIRC.Views {
         /// </summary>
         private SettingsWindow() {
             InitializeComponent();
+            cmdAdd.Click += cmdAdd_Click;
+            cmdDelete.Click += cmdDelete_Click;
+            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(System.AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
+            IConfigurationSection section = autojoin.GetSection("Settings");
+            int.TryParse(section["Count"], out int count);
+            _autojoin = new List<AutojoinModel>();
+            lvwAutoJoin.Items.Clear();
+            for (int i = 1; i < count + 1; i++) {
+                IConfigurationSection n = autojoin.GetSection(i.ToString());
+                var ajm = new AutojoinModel() {
+                    IRCChannel = n["IRCChannel"],
+                    MatrixChannelID = n["MatrixChannelID"]
+                };
+                _autojoin.Add(ajm);
+                var lvItem = new ListViewItem();
+                lvItem.Content = ajm;
+                lvwAutoJoin.Items.Add(lvItem);
+            }
+        }
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdDelete_Click(object sender, System.Windows.RoutedEventArgs e) {
+
+        }
+        /// <summary>
+        /// Add
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdAdd_Click(object sender, System.Windows.RoutedEventArgs e) {
+            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(System.AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
+            IConfigurationSection section = autojoin.GetSection("Settings");
+            //int.TryParse(section["Count"], out int count);
         }
         /// <summary>
         /// Contructor

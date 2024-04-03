@@ -61,6 +61,7 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
     <PackageReference Include="MahApps.Metro.IconPacks.BoxIcons" Version="4.8.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="8.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="PresentationFramework" Version="4.6.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
