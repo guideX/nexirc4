@@ -170,7 +170,7 @@
                         </ListView.View>
 
                     </ListView>
-                    <Button Content="Add" HorizontalAlignment="Right" Margin="10,247,55,0" VerticalAlignment="Bottom" Name="cmdAdd"/>
+                    <Button Content="Add" HorizontalAlignment="Right" Margin="10,247,55,0" VerticalAlignment="Bottom" Name="cmdAdd" Click="cmdAdd_Click_1"/>
                     <Button Content="Delete" HorizontalAlignment="Right" Margin="10,247,0,0" VerticalAlignment="Bottom" Name="cmdDelete"/>
                     <Label Content="IRC Channel:" HorizontalAlignment="Left" Foreground="White" Margin="10,273,0,0" VerticalAlignment="Top"/>
                     <TextBox Name="txtIRCChannel" HorizontalAlignment="Left" Margin="112,279,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>

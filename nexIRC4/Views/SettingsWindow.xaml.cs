@@ -62,7 +62,7 @@ namespace nexIRC.Views {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void cmdAdd_Click(object sender, System.Windows.RoutedEventArgs e) {
-            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(System.AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
+            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
             IConfigurationSection section = autojoin.GetSection("Settings");
             //int.TryParse(section["Count"], out int count);
         }
