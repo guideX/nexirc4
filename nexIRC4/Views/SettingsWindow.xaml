@@ -7,184 +7,303 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:props="clr-namespace:nexIRC.Properties"
-    Title="Settings"
-    Width="1047"
-    Height="427"
+    Title="nexIRC Settings"
+    Width="900"
+    Height="600"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
-    SizeToContent="Height"
     WindowStartupLocation="CenterOwner"
+    AllowsTransparency="True"
     WindowStyle="None"
-    mc:Ignorable="d"
-    Background="#3A3B3C">
-    <StackPanel Margin="20,10,23,0" DataContext="{Binding Source={x:Static props:Settings.Default}}" Background="#3A3B3C">
-        <TabControl>
-            <TabItem FontSize="13" Header="IRC" Background="#3A3B3C" FontFamily="Tahoma" Margin="0,0,-4,4">
-                <Grid Background="#3A3B3C" Height="320" Margin="-7,0,7,0">
-                    <StackPanel>
-                        <Label FontSize="13" FontFamily="Tahoma"  Margin="0,0,0,10" Content="User Information" FontWeight="Bold" Foreground="White" />
+    GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+    BorderThickness="1"
+    BorderBrush="#4169E1"
+    TitleCharacterCasing="Normal"
+    mc:Ignorable="d">
+    
+    <!-- Background with modern gradient -->
+    <mah:MetroWindow.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.98">
+            <GradientStop Color="#1a1a2e" Offset="0"/>
+            <GradientStop Color="#16213e" Offset="0.5"/>
+            <GradientStop Color="#0f3460" Offset="1"/>
+        </LinearGradientBrush>
+    </mah:MetroWindow.Background>
+    
+    <mah:MetroWindow.Resources>
+        <!-- Enhanced Label Style -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
+        
+        <!-- Enhanced TextBox Style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#20FFFFFF"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="BorderBrush" Value="#4169E1"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="CaretBrush" Value="#00D9FF"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
+        <!-- Enhanced ComboBox Style -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#20FFFFFF"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="BorderBrush" Value="#4169E1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+        
+        <!-- Enhanced CheckBox Style -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Margin" Value="15,8"/>
+        </Style>
+        
+        <!-- Enhanced TabControl Style -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="#20FFFFFF"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#404169E1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#304169E1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </mah:MetroWindow.Resources>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TabControl Background="Transparent" DataContext="{Binding Source={x:Static props:Settings.Default}}">
+            <TabItem Header="🌐 Network &amp; Server">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <Label Content="📡 IRC Network Selection" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        
+                        <Label Content="Network:"/>
+                        <ComboBox x:Name="NetworkComboBox" 
+                                  DisplayMemberPath="Name"
+                                  SelectionChanged="NetworkComboBox_SelectionChanged"/>
+                        
+                        <Label Content="Server:" Margin="0,15,0,0"/>
+                        <ComboBox x:Name="ServerComboBox" 
+                                  DisplayMemberPath="Name"/>
+                        
+                        <CheckBox x:Name="chkAutoConnect" Content="✓ Auto-connect on startup" Margin="15,20,15,10"/>
+                        
+                        <Separator Margin="0,20" Background="#304169E1"/>
+                        
+                        <Label Content="📝 Custom Server" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width=".5*" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" MinWidth="120"/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-
-                            <Label FontSize="13" FontFamily="Tahoma" HorizontalAlignment="Left" Content="Nickname:" Background="Transparent" Foreground="White" BorderThickness="0" />
-                            <TextBox FontSize="13" x:Name="Nickname" Grid.Column="1" Margin="5,0,10,5" Text="{Binding Nick, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
-
-                            <Label FontSize="13" FontFamily="Tahoma" Grid.Row="1" HorizontalAlignment="Left" Content="Alternative:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontSize="13" FontFamily="Tahoma" x:Name="Alternative" Grid.Row="1" Grid.Column="1" Margin="5,0,10,5" Text="{Binding Alternative, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
-
-                            <Label FontSize="13" FontFamily="Tahoma" Grid.Row="2" HorizontalAlignment="Left" Content="Name:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontSize="13" FontFamily="Tahoma" x:Name="RealName" Grid.Row="2" Grid.Column="1" Margin="5,0,10,5" Text="{Binding RealName, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
-
-                            <Label FontSize="13" FontFamily="Tahoma" Grid.Row="3" HorizontalAlignment="Left" Content="Channel:" Background="#3A3B3C" Foreground="White" BorderThickness="0" />
-                            <TextBox FontSize="13" FontFamily="Tahoma" x:Name="DefaultChannel" Grid.Row="3" Grid.Column="1" Margin="5,0,10,5" Text="{Binding DefaultChannel, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
+                            
+                            <Label Content="Server Name:"/>
+                            <TextBox x:Name="ServerName" Grid.Column="1" Text="{Binding ServerName, Mode=OneTime}"/>
+                            
+                            <Label Grid.Row="1" Content="Address:"/>
+                            <TextBox x:Name="ServerAddress" Grid.Row="1" Grid.Column="1" Text="{Binding ServerAddress, Mode=OneTime}"/>
+                            
+                            <Label Grid.Row="2" Content="Port:"/>
+                            <TextBox x:Name="ServerPort" Grid.Row="2" Grid.Column="1" Text="{Binding ServerPort, Mode=OneTime}"/>
+                            
+                            <Label Grid.Row="3" Content="Password:"/>
+                            <PasswordBox x:Name="ServerPassword" Grid.Row="3" Grid.Column="1" 
+                                       Background="#20FFFFFF" Foreground="#E8E8E8" 
+                                       BorderBrush="#4169E1" BorderThickness="0,0,0,2" 
+                                       Padding="8,6" Margin="5"/>
                         </Grid>
-
-                        <Label Margin="0,10,0,10" Content="Server" FontWeight="Bold" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            
+            <TabItem Header="👤 User Identity">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <Label Content="👤 User Information" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width=".5*" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" MinWidth="120"/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <Label FontSize="13" Grid.Row="0" Content="Server Name:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontSize="13" Grid.Row="0" FontFamily="Tahoma" x:Name="ServerName" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerName, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
+                            <Label Content="Nickname:"/>
+                            <TextBox x:Name="Nickname" Grid.Column="1" Text="{Binding Nick, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="1" Foreground="White" HorizontalAlignment="Left" Content="Address:" FontFamily="Tahoma" />
-                            <TextBox FontSize="13" Grid.Row="1" FontFamily="Tahoma" x:Name="ServerAddress" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerAddress, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" />
+                            <Label Grid.Row="1" Content="Alternative:"/>
+                            <TextBox x:Name="Alternative" Grid.Row="1" Grid.Column="1" Text="{Binding Alternative, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="2" Content="Port:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontSize="13" Grid.Row="2" FontFamily="Tahoma" x:Name="ServerPort" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerPort, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
+                            <Label Grid.Row="2" Content="Real Name:"/>
+                            <TextBox x:Name="RealName" Grid.Row="2" Grid.Column="1" Text="{Binding RealName, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="3" Content="Password:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontSize="13" Grid.Row="3" FontFamily="Tahoma" x:Name="ServerPassword" Grid.Column="1" Margin="5,0,10,5" Text="{Binding ServerPassword, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
+                            <Label Grid.Row="3" Content="Default Channel:"/>
+                            <TextBox x:Name="DefaultChannel" Grid.Row="3" Grid.Column="1" Text="{Binding DefaultChannel, Mode=OneTime}" 
+                                   ToolTip="e.g., #channel"/>
 
-                            <Label FontSize="13" Grid.Row="4" Content="Ident UserName:" Foreground="White" HorizontalAlignment="Left" FontFamily="Tahoma" />
-                            <TextBox FontSize="13" Grid.Row="4" FontFamily="Tahoma" x:Name="IdentUserName" Grid.Column="1" Margin="5,0,10,5" Text="{Binding IdentUsername, Mode=OneTime}" Background="#202020" Foreground="White"  BorderThickness="1" />
-
+                            <Label Grid.Row="4" Content="Ident Username:"/>
+                            <TextBox x:Name="IdentUserName" Grid.Row="4" Grid.Column="1" Text="{Binding IdentUsername, Mode=OneTime}"/>
                         </Grid>
                     </StackPanel>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
-            <TabItem FontSize="13" Header="Matrix" Background="#3A3B3C" FontFamily="Tahoma" Margin="5,0,-28,0">
-                <Grid Background="#3A3B3C" Height="300">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="31*"/>
-                        <ColumnDefinition Width="183*"/>
-                        <ColumnDefinition Width="33"/>
-                        <ColumnDefinition Width="751*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.ColumnSpan="4"  Background="#3A3B3C">
-                        <Label Content="Matrix Settings" FontWeight="Bold" FontFamily="Tahoma" Foreground="White" />
-                        <Grid Background="#3A3B3C">
+            
+            <TabItem Header="🔗 Matrix Integration">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <Label Content="🔐 Matrix Settings" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width=".5*" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" MinWidth="120"/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label FontSize="13" FontFamily="Tahoma" Foreground="White" Background="#3A3B3C" HorizontalAlignment="Left" Content="Matrix Node Address:" />
-                            <TextBox FontSize="13" x:Name="MatrixNodeAddress" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixNodeAddress, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            
+                            <Label Content="Node Address:"/>
+                            <TextBox x:Name="MatrixNodeAddress" Grid.Column="1" Text="{Binding MatrixNodeAddress, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="1" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix Username:" />
-                            <TextBox FontSize="13" x:Name="MatrixUsername" Grid.Row="1" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixUserName, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <Label Grid.Row="1" Content="Username:"/>
+                            <TextBox x:Name="MatrixUsername" Grid.Row="1" Grid.Column="1" Text="{Binding MatrixUserName, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="2" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix Password:" />
-                            <TextBox FontSize="13" x:Name="MatrixPassword" Grid.Row="2" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixPassword, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <Label Grid.Row="2" Content="Password:"/>
+                            <PasswordBox x:Name="MatrixPassword" Grid.Row="2" Grid.Column="1"
+                                       Background="#20FFFFFF" Foreground="#E8E8E8" 
+                                       BorderBrush="#4169E1" BorderThickness="0,0,0,2" 
+                                       Padding="8,6" Margin="5"/>
 
-                            <Label FontSize="13" Grid.Row="3" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix MachineID:" />
-                            <TextBox FontSize="13" x:Name="MatrixMachineID" Grid.Row="3" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixMachineID, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <Label Grid.Row="3" Content="Machine ID:"/>
+                            <TextBox x:Name="MatrixMachineID" Grid.Row="3" Grid.Column="1" Text="{Binding MatrixMachineID, Mode=OneTime}"/>
 
-                            <Label FontSize="13" Grid.Row="4" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" Content="Matrix ChannelID:" />
-                            <TextBox FontSize="13" x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Margin="5,0,10,5" Text="{Binding MatrixChannel, Mode=OneTime}" Background="#202020" Foreground="White" BorderThickness="1" FontFamily="Tahoma" />
+                            <Label Grid.Row="4" Content="Channel ID:"/>
+                            <TextBox x:Name="MatrixChannel" Grid.Row="4" Grid.Column="1" Text="{Binding MatrixChannel, Mode=OneTime}"/>
                         </Grid>
-                        <CheckBox IsChecked="{Binding UseMatrix}" HorizontalAlignment="Left" FontSize="13" Background="#3A3B3C" x:Name="chkUseMatrix" Content="Use Matrix" Height="23" Width="248" Foreground="White" />
+                        
+                        <CheckBox x:Name="chkUseMatrix" Content="✓ Enable Matrix Integration" IsChecked="{Binding UseMatrix}" Margin="0,15"/>
                     </StackPanel>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
-            <TabItem FontSize="13" Header="Settings" HorizontalAlignment="Center" Background="#3A3B3C" Height="38" VerticalAlignment="Center" Width="146">
-                <Grid Background="#3A3B3C" Height="300">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="31*"/>
-                        <ColumnDefinition Width="216*"/>
-                        <ColumnDefinition Width="752*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.ColumnSpan="3"  Background="#3A3B3C">
-                        <Label Margin="0,10,0,10" Content="Matrix Settings" FontWeight="Bold" FontFamily="Tahoma" Foreground="White" HorizontalAlignment="Left" />
-                        <Grid Background="#3A3B3C">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width=".5*" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <CheckBox FontSize="13" Background="#3A3B3C" x:Name="chkUseMultipleNicknames" Content="Use Multiple Nicknames" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMultipleNicknames}" HorizontalAlignment="Left" Margin="15,0,0,-23" Grid.Row="4" />
-                            <CheckBox FontSize="13" x:Name="chkUseMatrixDoubleRelayDetection" Content="Use Double Relay Detection" Height="23" Width="248" Foreground="White" IsChecked="{Binding UseMatrixDoubleRelayDetection}" HorizontalAlignment="Left" Margin="15,46,0,-69" Grid.Row="4" />
-                            <CheckBox FontSize="13" x:Name="chkAutoReconnect" Content="Auto Reconnect" Height="23" Width="248" Foreground="White" IsChecked="{Binding AutoReconnect}" HorizontalAlignment="Left" Margin="15,23,0,-46" Grid.Row="4" />
-                        </Grid>
+            
+            <TabItem Header="⚙️ Advanced">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <Label Content="🔧 Advanced Options" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        
+                        <CheckBox x:Name="chkUseMultipleNicknames" Content="✓ Use Multiple Nicknames" 
+                                IsChecked="{Binding UseMultipleNicknames}" />
+                        <CheckBox x:Name="chkAutoReconnect" Content="✓ Auto Reconnect on Disconnect" 
+                                IsChecked="{Binding AutoReconnect}" />
+                        <CheckBox x:Name="chkUseMatrixDoubleRelayDetection" Content="✓ Double Relay Detection" 
+                                IsChecked="{Binding UseMatrixDoubleRelayDetection}" />
+                        
+                        <Separator Margin="0,20" Background="#304169E1"/>
+                        
+                        <Label Content="🎨 Display Options" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" />
+                        <CheckBox x:Name="chkShowMircColors" Content="✓ Show mIRC color codes" 
+                                IsChecked="True" 
+                                ToolTip="Display colored text from IRC messages"/>
+                        <CheckBox x:Name="chkShowTimestamps" Content="✓ Show timestamps" 
+                                IsChecked="True"/>
                     </StackPanel>
-                </Grid>
-
+                </ScrollViewer>
             </TabItem>
-            <TabItem Background="#3A3B3C" HorizontalAlignment="Center" Height="38" Header="Autojoin" VerticalAlignment="Center" Width="148">
-                <Grid Background="#3A3B3C" Height="300">
-                    <ListView Name="lvwAutoJoin" Background="#3A3B3C" Foreground="White" Margin="0,0,0,32" RenderTransformOrigin="0.5,0.5">
-                        <ListView.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform AngleX="0.242"/>
-                                <RotateTransform/>
-                                <TranslateTransform X="0.54"/>
-                            </TransformGroup>
-                        </ListView.RenderTransform>
+            
+            <TabItem Header="📋 Auto-join">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <ListView Name="lvwAutoJoin" Background="#15FFFFFF" Foreground="#E0E0E0" BorderThickness="0">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="IRC Channel" DisplayMemberBinding="{Binding IRCChannel}" Width="200" />
-                                <GridViewColumn Header="Matrix Channel ID" DisplayMemberBinding="{Binding MatrixChannelID}" Width="200"/>
+                                <GridViewColumn Header="Matrix Channel ID" DisplayMemberBinding="{Binding MatrixChannelID}" Width="300"/>
                             </GridView>
                         </ListView.View>
-
                     </ListView>
-                    <Button Content="Add" HorizontalAlignment="Right" Margin="10,247,55,0" VerticalAlignment="Bottom" Name="cmdAdd" Click="cmdAdd_Click_1"/>
-                    <Button Content="Delete" HorizontalAlignment="Right" Margin="10,247,0,0" VerticalAlignment="Bottom" Name="cmdDelete"/>
-                    <Label Content="IRC Channel:" HorizontalAlignment="Left" Foreground="White" Margin="10,273,0,0" VerticalAlignment="Top"/>
-                    <TextBox Name="txtIRCChannel" HorizontalAlignment="Left" Margin="112,279,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                    <Label Content="Matrix Channel ID:" HorizontalAlignment="Left" Foreground="White" Margin="237,275,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtMatrixChannelID" HorizontalAlignment="Left" Margin="382,279,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    
+                    <Grid Grid.Row="1" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Content="IRC Channel:" VerticalAlignment="Center"/>
+                        <TextBox Name="txtIRCChannel" Grid.Column="1" VerticalAlignment="Center" ToolTip="e.g., #mychannel"/>
+                        <Label Grid.Column="2" Content="Matrix ID:" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBox x:Name="txtMatrixChannelID" Grid.Column="3" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Button Name="cmdAdd" Content="➕ Add" Margin="0,0,5,0" Padding="12,6"/>
+                            <Button Name="cmdDelete" Content="🗑️ Delete" Padding="12,6"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>
 
-
-        <DockPanel HorizontalAlignment="Right">
-            <Button FontSize="13" x:Name="ConnectButton" Width="100" Content="Connect" Margin="0,0,10,0" FontFamily="Tahoma" />
-            <Button FontSize="13" x:Name="OkButton" Width="80" Content="OK" IsDefault="True" Margin="0,0,10,0" FontFamily="Tahoma" />
-            <Button FontSize="13" x:Name="CancelButton" Grid.Column="1" Width="80" Content="Cancel" IsCancel="True" FontFamily="Tahoma" />
-        </DockPanel>
-    </StackPanel>
+        <!-- Action buttons with enhanced styling -->
+        <Border Grid.Row="1" Background="#10FFFFFF" 
+                CornerRadius="6" 
+                Padding="15,10" 
+                Margin="0,20,0,0">
+            <DockPanel HorizontalAlignment="Right">
+                <Button x:Name="ConnectButton" Content="🔌 Connect" Margin="0,0,10,0" Padding="20,8" FontWeight="SemiBold">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#4169E1" Offset="0"/>
+                            <GradientStop Color="#00D9FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="OkButton" Content="✓ Save" IsDefault="True" Margin="0,0,10,0" Padding="20,8" Background="#404169E1"/>
+                <Button x:Name="CancelButton" Content="✕ Cancel" IsCancel="True" Padding="20,8" Background="#40FF4444"/>
+            </DockPanel>
+        </Border>
+    </Grid>
 </mah:MetroWindow>

@@ -16,6 +16,7 @@ using nexIRC.MatrixProtocol.Wrapper;
 using nexIRC.Messages;
 using nexIRC.Model;
 using nexIRC.Properties;
+
 namespace nexIRC.ViewModels {
     /// <summary>
     /// Main View Model
@@ -73,7 +74,65 @@ namespace nexIRC.ViewModels {
         /// Client Collection
         /// </summary>
         private ClientCollection _clientCollection;
+        
+        /// <summary>
+        /// Is Connected
+        /// </summary>
+        private bool _isConnected;
+        public bool IsConnected {
+            get => _isConnected;
+            set {
+                SetProperty(ref _isConnected, value);
+                UpdateCommandStates();
+            }
+        }
+        
+        /// <summary>
+        /// Connection Status Text
+        /// </summary>
+        private string _connectionStatus = "Disconnected";
+        public string ConnectionStatus {
+            get => _connectionStatus;
+            set => SetProperty(ref _connectionStatus, value);
+        }
+        
+        /// <summary>
+        /// Connect Command
+        /// </summary>
+        public ICommand ConnectCommand { get; }
+        
+        /// <summary>
+        /// Disconnect Command
+        /// </summary>
+        public ICommand DisconnectCommand { get; }
+        
+        /// <summary>
+        /// Join Channel Command
+        /// </summary>
+        public ICommand JoinChannelCommand { get; }
+        
+        /// <summary>
+        /// Part Channel Command
+        /// </summary>
+        public ICommand PartChannelCommand { get; }
+        
+        /// <summary>
+        /// Change Nick Command
+        /// </summary>
+        public ICommand ChangeNickCommand { get; }
+        
+        /// <summary>
+        /// Show Users Command
+        /// </summary>
+        public ICommand ShowUsersCommand { get; }
+        
+        /// <summary>
+        /// Clear Messages Command
+        /// </summary>
+        public ICommand ClearMessagesCommand { get; }
+        
         #endregion
+        
         #region "methods"
         /// <summary>
         /// Constructor
@@ -82,40 +141,242 @@ namespace nexIRC.ViewModels {
         /// <param name="showAboutAction"></param>
         public MainViewModel(Action showSettingsAction, Action showAboutAction) {
             try {
-                IdentListen(Settings.Default.Nick);
+                if (Settings.Default.UseMultipleNicknames) IdentListen(Settings.Default.Nick);
+                
+                // Initialize Commands
                 ShowSettingsWindow = new Command(showSettingsAction);
                 ShowAboutWindow = new Command(showAboutAction);
+                ConnectCommand = new AsyncCommand(ConnectToServer);
+                DisconnectCommand = new AsyncCommand(DisconnectFromServer);
+                JoinChannelCommand = new AsyncCommand(JoinChannel);
+                PartChannelCommand = new AsyncCommand(PartChannel);
+                ChangeNickCommand = new AsyncCommand(ChangeNick);
+                ShowUsersCommand = new Command(ShowUsers);
+                ClearMessagesCommand = new Command(ClearMessages);
+                
                 App.EventAggregator.SubscribeOnPublishedThread(this);
+                
                 if (Settings.Default.UseMatrix) {
                     _matrixClient = new MatrixProtocol.Wrapper.MatrixWrapper(Settings.Default.MatrixNodeAddress, Settings.Default.MatrixUserName, Settings.Default.MatrixPassword, Settings.Default.MatrixMachineID, Settings.Default.MatrixChannel, Settings.Default.DefaultChannel, Settings.Default.Nick, Settings.Default.MatrixUserName);
                     _matrixClient.MatrixRoomEvent += _matrixClient_MatrixRoomEvent;
                     _matrixClient.MatrixConnected += _matrixClient_MatrixConnected;
                 }
+                
                 _ircClient = App.CreateClient();
                 _ircClient.RegistrationCompleted += Client_RegistrationCompleted;
                 _ircClient.Queries.CollectionChanged += Queries_CollectionChanged;
                 _ircClient.Channels.CollectionChanged += Channels_CollectionChanged;
+                
                 if (Settings.Default.UseMultipleNicknames)
                     _clientCollection = new ClientCollection(Settings.Default.ServerAddress, Settings.Default.ServerPort, _ident);
+                
                 _matrixDelay = new DispatcherTimer();
                 _matrixDelay.Tick += _matrixDelay_Tick;
                 _matrixDelay.Interval = new TimeSpan(0, 0, 10);
                 _matrixDelay.Start();
+                
                 if (Settings.Default.AutoReconnect && _ircClient != null)
                     Connect();
+                    
+                UpdateConnectionStatus();
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.MainViewModel");
             }
         }
+        
+        /// <summary>
+        /// Update Command States
+        /// </summary>
+        private void UpdateCommandStates() {
+            // Commands will check CanExecute based on IsConnected property
+        }
+        
+        /// <summary>
+        /// Update Connection Status
+        /// </summary>
+        private void UpdateConnectionStatus() {
+            IsConnected = ((App)Application.Current).IsConnected;
+            ConnectionStatus = IsConnected ? $"Connected to {Settings.Default.ServerAddress}" : "Disconnected";
+        }
+        
+        /// <summary>
+        /// Connect to Server
+        /// </summary>
+        private async Task ConnectToServer() {
+            try {
+                if (((App)Application.Current).IsConnected) {
+                    MessageBox.Show("Already connected to server.", "Connected", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                await App.EventAggregator.PublishOnUIThreadAsync(new ConnectMessage());
+                UpdateConnectionStatus();
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ConnectToServer");
+            }
+        }
+        
+        /// <summary>
+        /// Disconnect from Server
+        /// </summary>
+        private async Task DisconnectFromServer() {
+            try {
+                if (!((App)Application.Current).IsConnected) {
+                    MessageBox.Show("Not connected to any server.", "Not Connected", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                
+                if (_ircClient != null) {
+                    await _ircClient.SendAsync(new QuitMessage("User disconnected"));
+                    _ircClient.Dispose();
+                    
+                    // Clear tabs except server tab
+                    var serverTab = Tabs.OfType<ServerViewModel>().FirstOrDefault();
+                    Tabs.Clear();
+                    if (serverTab != null) {
+                        Tabs.Add(serverTab);
+                        SelectedTab = serverTab;
+                    }
+                    
+                    UpdateConnectionStatus();
+                    MessageBox.Show("Disconnected from server.", "Disconnected", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.DisconnectFromServer");
+            }
+        }
+        
+        /// <summary>
+        /// Join Channel
+        /// </summary>
+        private async Task JoinChannel() {
+            try {
+                if (!((App)Application.Current).IsConnected) {
+                    MessageBox.Show("Not connected to server.", "Not Connected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                
+                var channelName = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Enter channel name (e.g., #mychannel):",
+                    "Join Channel",
+                    "#");
+                    
+                if (!string.IsNullOrWhiteSpace(channelName)) {
+                    if (!channelName.StartsWith("#")) {
+                        channelName = "#" + channelName;
+                    }
+                    await _ircClient.SendAsync(new JoinMessage(channelName));
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.JoinChannel");
+            }
+        }
+        
+        /// <summary>
+        /// Part Channel
+        /// </summary>
+        private async Task PartChannel() {
+            try {
+                if (!((App)Application.Current).IsConnected) {
+                    MessageBox.Show("Not connected to server.", "Not Connected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                
+                if (SelectedTab is ChannelViewModel channelTab) {
+                    var result = MessageBox.Show(
+                        $"Leave channel {channelTab.Channel.Name}?",
+                        "Part Channel",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                        
+                    if (result == MessageBoxResult.Yes) {
+                        await _ircClient.SendAsync(new PartMessage(channelTab.Channel.Name));
+                        Tabs.Remove(channelTab);
+                    }
+                } else {
+                    MessageBox.Show("Please select a channel tab first.", "No Channel Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.PartChannel");
+            }
+        }
+        
+        /// <summary>
+        /// Change Nick
+        /// </summary>
+        private async Task ChangeNick() {
+            try {
+                if (!((App)Application.Current).IsConnected) {
+                    MessageBox.Show("Not connected to server.", "Not Connected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                
+                var newNick = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Enter new nickname:",
+                    "Change Nickname",
+                    Settings.Default.Nick);
+                    
+                if (!string.IsNullOrWhiteSpace(newNick)) {
+                    await _ircClient.SendAsync(new NickMessage(newNick));
+                    Settings.Default.Nick = newNick;
+                    Settings.Default.Save();
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ChangeNick");
+            }
+        }
+        
+        /// <summary>
+        /// Show Users
+        /// </summary>
+        private void ShowUsers() {
+            try {
+                if (SelectedTab is ChannelViewModel channelTab) {
+                    var users = string.Join(", ", channelTab.Channel.Users.Select(u => u.Nick));
+                    MessageBox.Show(
+                        $"Users in {channelTab.Channel.Name}:\n\n{users}",
+                        "Channel Users",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                } else {
+                    MessageBox.Show("Please select a channel tab first.", "No Channel Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ShowUsers");
+            }
+        }
+        
+        /// <summary>
+        /// Clear Messages
+        /// </summary>
+        private void ClearMessages() {
+            try {
+                if (SelectedTab is ChannelViewModel channelTab) {
+                    channelTab.Channel.Messages.Clear();
+                } else if (SelectedTab is QueryViewModel queryTab) {
+                    queryTab.Query.Messages.Clear();
+                } else if (SelectedTab is ServerViewModel serverTab) {
+                    serverTab.Messages.Clear();
+                } else {
+                    MessageBox.Show("Please select a tab first.", "No Tab Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.ClearMessages");
+            }
+        }
+        
         /// <summary>
         /// Is User In Client Collection
         /// </summary>
         /// <param name="user"></param>
         /// <param name="channel"></param>
         /// <returns></returns>
-        public bool IsUserInClientCollection(string user, string channel) { 
-            return _clientCollection.IsUserInCollection(channel, user);
+        public bool IsUserInClientCollection(string user, string channel) {
+            if (_clientCollection != null) {
+                return _clientCollection.IsUserInCollection(channel, user);
+            }
+            return false;
         }
+        
         /// <summary>
         /// Ident Listen
         /// </summary>
@@ -177,15 +438,8 @@ namespace nexIRC.ViewModels {
                 if (Settings.Default.UseMatrix) {
                     switch (e.EventType) {
                         case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Message:
-                            if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage)
+                            if (_sendMatrixMessages && !e.Details.DoubleRelayDetected && e.Details.SendMessage) {
                                 if (Settings.Default.UseMultipleNicknames) {
-                                    /*
-                                    if (!_clientCollection.IsUserInCollection(e.Details.IrcChannel, e.Details.SenderUserID)) {
-                                        var linkedUserTab = new ServerViewModel(_ircClient, _matrixClient, this);
-                                        App.Dispatcher.Invoke(() => Tabs.Add(linkedUserTab));
-                                        //Tabs.Add(linkedUserTab);
-                                        SelectedTab = linkedUserTab;
-                                    }*/
                                     _clientCollection.SendMessageAsUser(e.Details.IrcChannel, e.Details.SenderUserID, e.Details.RawMessage);
                                 } else {
                                     if (e.Details.IrcChannel == "##running" && e.Details.Message.Contains("!strava speed")) {
@@ -212,6 +466,53 @@ namespace nexIRC.ViewModels {
                                         _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + e.Details.Message);
                                     }
                                 }
+                            }
+                            if (e.Details.IrcChannel.StartsWith("##running") && e.Details.Message != null && e.Details.Message.Contains("!pace ")) {
+                                // Parameters:
+                                //   --time:<time> // <time> is in minutes/seconds format, example: 50:52
+                                //   --distance:<miles or km> // <miles> example: 4.52, <km> example: 3.1k
+                                //   --method:<conversion method> // either eu or us (us is presumed)
+                                //var splt = e.Details.Message.Split(' ')
+                                var time = "";
+                                double minutes = 0;
+                                var distance = "";
+                                var method = "us";
+                                double result = 0;
+                                if (e.Details.Message.ToLower().Contains("--time:")) {
+                                    var time_splt1 = e.Details.Message.SplitStringByOtherString("--time");
+                                    var time_splt2 = time_splt1[1].Split(' ');
+                                    if (time_splt2[0].Contains(":")) {
+                                        var time_split3 = time_splt2[0].Split(':');
+                                        minutes = time_split3[1].ToIntNotNullable();
+                                    } else if (time_splt2[0].IsNumeric()) {
+                                        time = time_splt2[0];
+                                    }
+                                }
+                                if (e.Details.Message.ToLower().Contains("--method:eu")) {
+                                    method = "eu";
+                                }
+                                if (e.Details.Message.ToLower().Contains("--distance:")) {
+                                    var distance_splt1 = e.Details.Message.SplitStringByOtherString("--distance");
+                                    var distance_splt2 = distance_splt1[1].Split(' ');
+                                    distance = distance_splt2[0].Replace(":", "");
+                                }
+                                if (minutes != 0 && !string.IsNullOrWhiteSpace(distance)) {
+                                    result = (minutes / Convert.ToDouble(distance));
+                                    switch (method) {
+                                        case "us":
+                                            _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + String.Format("{0:0.00}", result) + " minutes per mile");
+                                            break;
+                                        case "eu":
+                                            result = (minutes / Convert.ToDouble(distance));
+                                            _ircClient.SendRaw("PRIVMSG " + e.Details.IrcChannel + " :" + String.Format("{0:0.00}", result) + " minutes per km");
+                                            break;
+                                    }
+                                }
+                            }
+
+
+
+
                             break;
                         case MatrixProtocol.Core.Infrastructure.Dto.Sync.Event.EventType.Encrypted:
                             switch (e.Algorithm) {
@@ -246,7 +547,7 @@ namespace nexIRC.ViewModels {
         /// <returns></returns>
         public async Task HandleAsync(ConnectMessage message, CancellationToken cancellationToken) {
             try {
-                if (App.IsConnected) {
+                if (((App)Application.Current).IsConnected) {
                     MessageBox.Show("Client is already connected.");
                     return;
                 }
@@ -254,6 +555,9 @@ namespace nexIRC.ViewModels {
                 Tabs.Add(serverTab);
                 SelectedTab = serverTab;
                 await _ircClient.ConnectAsync();
+                
+                // Update connection status after connecting
+                UpdateConnectionStatus();
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync");
             }
@@ -284,11 +588,13 @@ namespace nexIRC.ViewModels {
         /// <returns></returns>
         public Task HandleAsync(ClientDisconnectedMessage message, CancellationToken cancellationToken) {
             try {
+                // Update connection status when disconnected
+                UpdateConnectionStatus();
                 return Task.CompletedTask;
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.HandleAsync");
             }
-            return new(null);
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Client Registration Completed
@@ -326,7 +632,10 @@ namespace nexIRC.ViewModels {
         /// <param name="e"></param>
         private void Channels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             try {
-                foreach (Channel channel in e.NewItems) App.Dispatcher.Invoke(() => Tabs.Add(new ChannelViewModel(channel, _matrixClient)));
+                foreach (Channel channel in e.NewItems) 
+                    App.Dispatcher.Invoke(() => 
+                    Tabs.Add(new ChannelViewModel(channel, _matrixClient))
+                );
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.ViewModels.Channels_CollectionChanged");
             }

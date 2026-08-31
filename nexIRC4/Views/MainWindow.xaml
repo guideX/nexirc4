@@ -13,7 +13,76 @@
     FontSize="14"
     ShowIconOnTitleBar="True"
     WindowStartupLocation="CenterScreen"
+    AllowsTransparency="True"
+    WindowStyle="None"
+    GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+    BorderThickness="1"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+    NonActiveGlowBrush="{DynamicResource MahApps.Brushes.Gray5}"
+    TitleCharacterCasing="Normal"
     mc:Ignorable="d">
+    
+    <mah:MetroWindow.Resources>
+        <!-- Acrylic/Glass effect background -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#DD000000" Opacity="0.85"/>
+        <SolidColorBrush x:Key="AccentGlowBrush" Color="#4169E1" Opacity="0.6"/>
+        
+        <!-- Tab item styling -->
+        <Style x:Key="ModernTabItem" TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+            <Setter Property="Background" Value="#20FFFFFF"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0,0,2,0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#404169E1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="#4169E1"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#304169E1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Toolbar Button Style -->
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#20FFFFFF"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="36"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#404169E1"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Data templates -->
+        <DataTemplate x:Key="ServerViewTemplate" DataType="{x:Type viewModels:ServerViewModel}">
+            <views:ServerView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="QueryViewTemplate" DataType="{x:Type viewModels:QueryViewModel}">
+            <views:QueryView />
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChannelViewTemplate" DataType="{x:Type viewModels:ChannelViewModel}">
+            <views:ChannelView />
+        </DataTemplate>
+    </mah:MetroWindow.Resources>
+    
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <Button
@@ -22,11 +91,15 @@
                 ToolTip="Settings">
                 <Button.ContentTemplate>
                     <DataTemplate>
-                        <iconPacks:PackIconBoxIcons
-                            Width="18"
-                            Height="18"
-                            VerticalAlignment="Center"
-                            Kind="SolidCog" />
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons
+                                Width="18"
+                                Height="18"
+                                VerticalAlignment="Center"
+                                Kind="SolidCog" 
+                                Margin="0,0,5,0"/>
+                            <TextBlock Text="Settings" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
@@ -36,33 +109,178 @@
                 ToolTip="About">
                 <Button.ContentTemplate>
                     <DataTemplate>
-                        <iconPacks:PackIconBoxIcons
-                            Width="18"
-                            Height="18"
-                            VerticalAlignment="Center"
-                            Kind="SolidHelpCircle" />
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons
+                                Width="18"
+                                Height="18"
+                                VerticalAlignment="Center"
+                                Kind="SolidHelpCircle"
+                                Margin="0,0,5,0"/>
+                            <TextBlock Text="About" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
 
+    <!-- Main content with blur effect background -->
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <!-- Background with blur effect -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.95">
+                <GradientStop Color="#1a1a2e" Offset="0"/>
+                <GradientStop Color="#16213e" Offset="0.5"/>
+                <GradientStop Color="#0f3460" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <!-- Animated gradient overlay for extra cool effect -->
+        <Rectangle Grid.RowSpan="2" Opacity="0.1">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#4169E1" Offset="0"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Background="#15FFFFFF" BorderThickness="0,0,0,1" Padding="8,4">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#4169E1" Offset="0"/>
+                    <GradientStop Color="#00D9FF" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            
+            <DockPanel>
+                <!-- Connection buttons -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding ConnectCommand}"
+                            ToolTip="Connect to IRC server">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidPlug" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Connect"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding DisconnectCommand}"
+                            ToolTip="Disconnect from IRC server">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidXCircle" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Disconnect"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="8,0"/>
+                    
+                    <!-- Channel operations -->
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding JoinChannelCommand}"
+                            ToolTip="Join a channel">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidPlusCircle" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Join Channel"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding PartChannelCommand}"
+                            ToolTip="Leave current channel">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidMinusCircle" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Part Channel"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="8,0"/>
+                    
+                    <!-- User operations -->
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding ChangeNickCommand}"
+                            ToolTip="Change your nickname">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidUserCircle" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Change Nick"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding ShowUsersCommand}"
+                            ToolTip="Show users in current channel">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidGroup" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Users"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="8,0"/>
+                    
+                    <!-- Utility operations -->
+                    <Button Style="{StaticResource ToolbarButtonStyle}" 
+                            Command="{Binding ClearMessagesCommand}"
+                            ToolTip="Clear messages in current tab">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBoxIcons Kind="SolidEraser" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Clear"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <!-- Connection status -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                    <Ellipse Width="10" Height="10" Margin="0,0,6,0"
+                             Fill="{Binding IsConnected, Converter={StaticResource BoolToConnectionColorConverter}}"/>
+                    <TextBlock Text="{Binding ConnectionStatus, Mode=OneWay}" 
+                               Foreground="{StaticResource LightText}"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        
+        <!-- Main TabControl with enhanced styling -->
         <TabControl
+            Grid.Row="1"
             Padding="0"
             ItemsSource="{Binding Tabs}"
             SelectedItem="{Binding SelectedTab}"
-            TabStripPlacement="Left">
+            TabStripPlacement="Left"
+            Background="Transparent"
+            BorderThickness="0">
+            
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem" BasedOn="{StaticResource ModernTabItem}"/>
+            </TabControl.ItemContainerStyle>
+            
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel MinWidth="120">
+                    <DockPanel MinWidth="140">
+                        <iconPacks:PackIconBoxIcons 
+                            Width="16" 
+                            Height="16" 
+                            Kind="RegularHash"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=TabItem}, Path=Foreground}"/>
                         <TextBlock
                             FontFamily="{StaticResource MesloLGS}"
                             FontSize="14"
-                            Text="{Binding}" />
+                            Text="{Binding}"
+                            VerticalAlignment="Center"
+                            TextTrimming="CharacterEllipsis"/>
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
+            
             <TabControl.Resources>
                 <DataTemplate DataType="{x:Type viewModels:ServerViewModel}">
                     <views:ServerView />

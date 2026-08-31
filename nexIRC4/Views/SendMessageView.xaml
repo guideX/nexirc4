@@ -5,31 +5,70 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignWidth="800"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="Transparent">
 
     <UserControl.Resources>
         <DataTemplate x:Key="SendButtonTemplate">
-            <iconPacks:PackIconBoxIcons
-                Width="18"
-                Height="18"
-                VerticalAlignment="Center"
-                Kind="RegularSend" />
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBoxIcons
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Kind="SolidSend"
+                    Foreground="#00D9FF"/>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
 
-    <DockPanel Height="30">
+    <Border Background="#15FFFFFF" 
+            BorderThickness="0,2,0,0"
+            CornerRadius="0,0,8,8"
+            Padding="10,8">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="#4169E1" Offset="0"/>
+                <GradientStop Color="#00D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <!-- Enhanced TextBox -->
             <TextBox
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Center"
-                Background="Transparent"
+                Background="#20FFFFFF"
+                Foreground="#E8E8E8"
                 BorderThickness="0"
+                Padding="12,8"
+                CaretBrush="#00D9FF"
+                FontSize="14"
                 Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="20"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                    Focusable="False"
+                                                    HorizontalScrollBarVisibility="Hidden"
+                                                    VerticalScrollBarVisibility="Hidden"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
                 <TextBox.InputBindings>
                     <KeyBinding
                         Key="Return"
@@ -37,13 +76,46 @@
                 </TextBox.InputBindings>
             </TextBox>
 
+            <!-- Enhanced Send Button -->
             <Button
                 Grid.Column="1"
-                Background="Transparent"
+                Margin="10,0,0,0"
+                Background="#404169E1"
                 BorderThickness="0"
+                Padding="16,8"
                 Command="{Binding SendMessageCommand}"
-                ContentTemplate="{StaticResource SendButtonTemplate}" />
+                ContentTemplate="{StaticResource SendButtonTemplate}"
+                Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="20"
+                                            Padding="{TemplateBinding Padding}">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#4169E1" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
+                                        </Border.Effect>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#604169E1"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#804169E1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
-    </DockPanel>
+    </Border>
 
 </UserControl>

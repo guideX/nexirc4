@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="activity"></param>
         public static void LogActivity(string activity) {
-            System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
+            //System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "matrixirclog.txt", activity + Environment.NewLine);
         }
     }
 }

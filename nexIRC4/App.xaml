@@ -2,25 +2,52 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:models="clr-namespace:nexIRC.Models"
+    xmlns:controls="clr-namespace:nexIRC.Controls"
+    xmlns:converters="clr-namespace:nexIRC.Converters"
     StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="MesloLGS">pack://application:,,,/Fonts/#MesloLGS NF</FontFamily>
 
+            <!-- Converters -->
+            <converters:BoolToConnectionColorConverter x:Key="BoolToConnectionColorConverter"/>
+
+            <!-- Enhanced color palette -->
+            <SolidColorBrush x:Key="PrimaryAccent" Color="#4169E1"/>
+            <SolidColorBrush x:Key="SecondaryAccent" Color="#00D9FF"/>
+            <SolidColorBrush x:Key="DarkBackground" Color="#1a1a2e"/>
+            <SolidColorBrush x:Key="MediumBackground" Color="#16213e"/>
+            <SolidColorBrush x:Key="LightText" Color="#E0E0E0"/>
+            
+            <!-- Enhanced TextBlock style with modern look -->
             <Style TargetType="{x:Type TextBlock}">
                 <Style.Setters>
                     <Setter Property="FontFamily" Value="{StaticResource MesloLGS}" />
+                    <Setter Property="Foreground" Value="{StaticResource LightText}"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.3"/>
+                        </Setter.Value>
+                    </Setter>
                 </Style.Setters>
             </Style>
 
+            <!-- Enhanced TextBox style -->
             <Style TargetType="{x:Type TextBox}">
                 <Style.Setters>
                     <Setter Property="FontFamily" Value="{StaticResource MesloLGS}" />
+                    <Setter Property="Background" Value="#20FFFFFF"/>
+                    <Setter Property="Foreground" Value="{StaticResource LightText}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryAccent}"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                    <Setter Property="Padding" Value="8,6"/>
+                    <Setter Property="CaretBrush" Value="{StaticResource SecondaryAccent}"/>
                 </Style.Setters>
             </Style>
 
             <ControlTemplate x:Key="MessagesControlTemplate">
-                <ScrollViewer CanContentScroll="True">
+                <ScrollViewer CanContentScroll="True" 
+                              Background="Transparent">
                     <ItemsPresenter />
                 </ScrollViewer>
             </ControlTemplate>
@@ -29,42 +56,100 @@
                 <VirtualizingStackPanel IsItemsHost="True" />
             </ItemsPanelTemplate>
 
+            <!-- Enhanced chat viewer with modern styling -->
             <Style x:Key="ChatViewerStyle" TargetType="ItemsControl">
                 <Setter Property="Template" Value="{StaticResource MessagesControlTemplate}" />
                 <Setter Property="ItemsPanel" Value="{StaticResource MessageItemsTemplate}" />
+                <Setter Property="Background" Value="Transparent"/>
             </Style>
 
+            <!-- Enhanced message template with mIRC color support -->
             <DataTemplate DataType="{x:Type models:Message}">
-                <Grid IsSharedSizeScope="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <Border Margin="4,2" 
+                        Padding="8,4"
+                        Background="#10FFFFFF"
+                        BorderThickness="0,0,0,1"
+                        BorderBrush="#20FFFFFF"
+                        CornerRadius="4">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Opacity="0.2" Color="#4169E1"/>
+                    </Border.Effect>
+                    <Grid IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock
-                        Margin="5,0,5,0"
-                        FontWeight="Bold"
-                        Text="{Binding Timestamp, StringFormat=[\{0:HH:mm\}]}" />
-                    <TextBlock
-                        Grid.Column="1"
-                        Margin="10,0,10,0"
-                        HorizontalAlignment="Right"
-                        FontWeight="Bold"
-                        Text="{Binding From}" />
-                    <TextBlock
-                        Grid.Column="2"
-                        Text="{Binding Text}"
-                        TextWrapping="Wrap" />
-                </Grid>
+                        <TextBlock
+                            Margin="5,0,10,0"
+                            FontWeight="Bold"
+                            Foreground="#00D9FF"
+                            Text="{Binding Timestamp, StringFormat=[\{0:HH:mm\}]}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="10,0,10,0"
+                            HorizontalAlignment="Right"
+                            FontWeight="Bold"
+                            Foreground="#4169E1"
+                            Text="{Binding From}" />
+                        <!-- Use MircTextBlock for color code support -->
+                        <controls:MircTextBlock
+                            Grid.Column="2"
+                            Foreground="#E8E8E8"
+                            MircText="{Binding Text}"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </Border>
             </DataTemplate>
+
+            <!-- Enhanced ListBox style -->
+            <Style TargetType="ListBox">
+                <Setter Property="Background" Value="#15FFFFFF"/>
+                <Setter Property="Foreground" Value="{StaticResource LightText}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryAccent}"/>
+                <Setter Property="BorderThickness" Value="1,0,0,0"/>
+            </Style>
+            
+            <!-- Enhanced ListBoxItem style -->
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Foreground" Value="{StaticResource LightText}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Padding" Value="10,6"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#404169E1"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#204169E1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Enhanced Button style -->
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="#404169E1"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryAccent}"/>
+                <Setter Property="Padding" Value="12,6"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#604169E1"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#804169E1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
             <ResourceDictionary.MergedDictionaries>
                 <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <!--  Theme setting  -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

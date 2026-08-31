@@ -1,12 +1,14 @@
-﻿using MahApps.Metro.Controls;
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Linq;
+using System.Windows.Controls;
 using nexIRC.Business.Helper;
+using nexIRC.Business.Objects;
 using nexIRC.Messages;
 using nexIRC.Model;
+using nexIRC.Models;
 using nexIRC.Properties;
-using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
+using MahApps.Metro.Controls;
+
 namespace nexIRC.Views {
     /// <summary>
     /// Settings Window
@@ -15,15 +17,13 @@ namespace nexIRC.Views {
         /// <summary>
         /// Autojoin
         /// </summary>
-        private List<AutojoinModel> _autojoin;
+        private AutoJoinObject _autojoin;
+        
         /// <summary>
-        /// Themese
+        /// Available networks
         /// </summary>
-        private readonly string[] themes = new[] { "Light", "Dark" };
-        /// <summary>
-        /// Themes
-        /// </summary>
-        public string[] Themes => themes;
+        private readonly System.Collections.Generic.List<IrcNetwork> _networks;
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -31,48 +31,93 @@ namespace nexIRC.Views {
             InitializeComponent();
             cmdAdd.Click += cmdAdd_Click;
             cmdDelete.Click += cmdDelete_Click;
-            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(System.AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
-            IConfigurationSection section = autojoin.GetSection("Settings");
-            int.TryParse(section["Count"], out int count);
-            _autojoin = new List<AutojoinModel>();
-            lvwAutoJoin.Items.Clear();
-            for (int i = 1; i < count + 1; i++) {
-                IConfigurationSection n = autojoin.GetSection(i.ToString());
-                var ajm = new AutojoinModel() {
-                    IRCChannel = n["IRCChannel"],
-                    MatrixChannelID = n["MatrixChannelID"]
-                };
-                _autojoin.Add(ajm);
-                var lvItem = new ListViewItem();
-                lvItem.Content = ajm;
-                lvwAutoJoin.Items.Add(lvItem);
+            _autojoin = new AutoJoinObject();
+            
+            // Initialize networks
+            _networks = PredefinedNetworks.GetDefaultNetworks();
+            NetworkComboBox.ItemsSource = _networks;
+            
+            // Select default network or Custom
+            var defaultNetwork = _networks.FirstOrDefault(n => n.Name == "Libera.Chat") ?? _networks.Last();
+            NetworkComboBox.SelectedItem = defaultNetwork;
+            
+            FillAutoJoin();
+        }
+        
+        /// <summary>
+        /// Network selection changed
+        /// </summary>
+        private void NetworkComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            try {
+                if (NetworkComboBox.SelectedItem is IrcNetwork network) {
+                    ServerComboBox.ItemsSource = network.Servers;
+                    if (network.Servers.Count > 0) {
+                        ServerComboBox.SelectedIndex = 0;
+                        
+                        // Auto-fill server details
+                        var server = network.Servers[0];
+                        ServerAddress.Text = server.Address;
+                        ServerPort.Text = server.Port.ToString();
+                        
+                        // Fill default channel if network has one
+                        if (!string.IsNullOrEmpty(network.DefaultChannel)) {
+                            DefaultChannel.Text = network.DefaultChannel;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.NetworkComboBox_SelectionChanged");
             }
         }
+        
+        /// <summary>
+        /// Fill Auto Join
+        /// </summary>
+        private void FillAutoJoin() {
+            txtIRCChannel.Text = "";
+            txtMatrixChannelID.Text = "";
+            lvwAutoJoin.Items.Clear();
+            foreach (var aj in _autojoin.Autojoin)
+                lvwAutoJoin.Items.Add(aj);
+        }
+        
         /// <summary>
         /// Delete
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void cmdDelete_Click(object sender, System.Windows.RoutedEventArgs e) {
-
+            try {
+                if (lvwAutoJoin.SelectedItem is AutojoinModel item) {
+                    _autojoin.Delete(item.IRCChannel, item.MatrixChannelID);
+                    FillAutoJoin();
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.cmdDelete_Click");
+            }
         }
+        
         /// <summary>
         /// Add
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void cmdAdd_Click(object sender, System.Windows.RoutedEventArgs e) {
-            IConfiguration autojoin = new ConfigurationBuilder().AddIniFile(AppDomain.CurrentDomain.BaseDirectory + @"autojoin.ini").Build();
-            IConfigurationSection section = autojoin.GetSection("Settings");
-            //int.TryParse(section["Count"], out int count);
+            try {
+                _autojoin.Create(txtIRCChannel.Text, txtMatrixChannelID.Text);
+                FillAutoJoin();
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.cmdAdd_Click");
+            }
         }
+        
         /// <summary>
-        /// Contructor
+        /// Constructor
         /// </summary>
         /// <param name="parent"></param>
         public SettingsWindow(MainWindow parent) : this() {
             try {
                 Owner = parent;
+                
+                // Load current settings
+                LoadSettings();
+                
                 ConnectButton.Click += async (s, e) => {
                     Save();
                     Close();
@@ -87,6 +132,33 @@ namespace nexIRC.Views {
                 ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Constructor");
             }
         }
+        
+        /// <summary>
+        /// Load Settings
+        /// </summary>
+        private void LoadSettings() {
+            try {
+                // Try to match existing server to a network
+                var existingAddress = Settings.Default.ServerAddress;
+                var matchedNetwork = _networks.FirstOrDefault(n => 
+                    n.Servers.Any(s => s.Address.Equals(existingAddress, StringComparison.OrdinalIgnoreCase)));
+                
+                if (matchedNetwork != null) {
+                    NetworkComboBox.SelectedItem = matchedNetwork;
+                    var matchedServer = matchedNetwork.Servers.FirstOrDefault(s => 
+                        s.Address.Equals(existingAddress, StringComparison.OrdinalIgnoreCase));
+                    if (matchedServer != null) {
+                        ServerComboBox.SelectedItem = matchedServer;
+                    }
+                } else {
+                    // Select Custom network
+                    NetworkComboBox.SelectedItem = _networks.Last();
+                }
+            } catch (Exception ex) {
+                ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.LoadSettings");
+            }
+        }
+        
         /// <summary>
         /// Save
         /// </summary>
@@ -99,18 +171,17 @@ namespace nexIRC.Views {
                 Settings.Default.ServerName = ServerName.Text;
                 Settings.Default.ServerAddress = ServerAddress.Text;
                 Settings.Default.ServerPort = ServerPort.Text;
-                Settings.Default.ServerPassword = ServerPassword.Text;
+                Settings.Default.ServerPassword = ServerPassword.Password;
                 Settings.Default.MatrixChannel = MatrixChannel.Text;
                 Settings.Default.MatrixMachineID = MatrixMachineID.Text;
                 Settings.Default.MatrixNodeAddress = MatrixNodeAddress.Text;
-                Settings.Default.MatrixPassword = MatrixPassword.Text;
+                Settings.Default.MatrixPassword = MatrixPassword.Password;
                 Settings.Default.MatrixUserName = MatrixUsername.Text;
-                Settings.Default.UseMultipleNicknames = chkUseMultipleNicknames.IsChecked.Value;
-                Settings.Default.AutoReconnect = chkAutoReconnect.IsChecked.Value;
+                Settings.Default.UseMultipleNicknames = chkUseMultipleNicknames.IsChecked ?? false;
+                Settings.Default.AutoReconnect = chkAutoReconnect.IsChecked ?? false;
                 Settings.Default.IdentUsername = IdentUserName.Text;
-                Settings.Default.UseMatrix = chkUseMatrix.IsChecked.Value;
+                Settings.Default.UseMatrix = chkUseMatrix.IsChecked ?? false;
                 Settings.Default.Save();
-                //ThemeManager.Current.ChangeTheme(Application.Current, $"{Theme.SelectedValue}.Blue");
             } catch (Exception ex) {
                 ExceptionHelper.HandleException(ex, "nexIRC.Views.SettingsWindow.Save");
             }

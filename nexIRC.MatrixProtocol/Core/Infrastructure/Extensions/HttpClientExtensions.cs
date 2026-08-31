@@ -111,11 +111,4 @@ internal static class HttpClientExtensions {
             throw new ApiExceptionHelper(response.RequestMessage.RequestUri, null, result, response.StatusCode);
         return JsonConvert.DeserializeObject<TResponse>(result, GetJsonSettings())!;
     }
-    /// <summary>
-    /// Add Bearer Token
-    /// </summary>
-    /// <param name="httpClient"></param>
-    /// <param name="bearer"></param>
-    public static void AddBearerToken(this HttpClient httpClient, string bearer) =>
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
 }

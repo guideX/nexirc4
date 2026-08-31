@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\nexIRC.Model\nexIRC.Model.csproj" />
+    <ProjectReference Include="..\team-nexgen.core\team-nexgen.core\team-nexgen.core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Services
 {
     using System;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using Extensions;
 
     public abstract class BaseApiService
@@ -30,7 +31,7 @@ namespace nexIRC.MatrixProtocol.Core.Infrastructure.Services
             var httpClient = _httpClientFactory.CreateClient(Constants.Matrix);
 
             if (accessToken != null)
-                httpClient.AddBearerToken(accessToken);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             if (BaseAddress == null)
                 throw new NullReferenceException("set base address");
